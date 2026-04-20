@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez les annonces immobilières en Tunisie - Location et vente">
+  <title>GI Immobilier — Annonces Immobilières</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <h1 class="nav-logo">GI Immobilier</h1>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="annonces.html" class="nav-link">Annonces</a>
+      <a href="apropos.html" class="nav-link">À propos</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <a href="login.html" class="nav-btn">Connexion</a>
+  </nav>
+  
+  <div class="filters">
+    <input class="search-input" type="text" placeholder="Ville, quartier...">
+    <button class="search-btn">Rechercher</button>
+    <button class="filter-chip active">Tous</button>
+    <button class="filter-chip">Location</button>
+    <button class="filter-chip">Vente</button>
+  </div>
+
+  <section class="listings">
+    <!-- Les propriétés Zoho seront chargées dynamiquement ici par annonces.js -->
+  </section>
+
+  <div id="paginationControls" style="display:flex;justify-content:center;align-items:center;gap:12px;padding:24px 16px 40px;flex-wrap:wrap"></div>
+
+  <footer class="footer">
+    <div>
+      <span class="footer-logo">GI Immobilier</span>
+      <p style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">La meilleure plateforme immobilière de Tunisie</p>
+    </div>
+    <nav class="footer-links">
+      <a href="contact.html" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Conditions d'utilisation</a>
+      <a href="#" class="footer-link">Politique de confidentialité</a>
+    </nav>
+  </footer>
+  <script src="auth-helper.js"></script>
+  <script src="annonces.js"></script>
+</body>
+</html>

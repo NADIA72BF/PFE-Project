@@ -1,0 +1,2954 @@
+[
+  {
+    "ID": "4899073000000116002",
+    "ID1": "4899073000000116002",
+    "title": "éaaaaaaaaaaaaaa",
+    "description": "",
+    "Price1": "1111",
+    "status": "En négociation",
+    "type_field": "To Rent",
+    "Rooms1": "",
+    "Bathrooms1": "",
+    "Surface1": "",
+    "Floor": "",
+    "Year_Built": "",
+    "location": {
+      "address_line_1": "",
+      "address_line_2": "",
+      "district_city": "",
+      "display_value": ""
+    },
+    "Image": [
+      "/uploads/property-4899073000000116002.jpg",
+      "/uploads/property-4899073000000116002-2.jpg",
+      "/uploads/property-4899073000000116002-3.jpg",
+      "/uploads/property-4899073000000116002-4.jpg",
+      "/uploads/property-4899073000000116002-5.jpg"
+    ],
+    "image_url": "/uploads/property-4899073000000116002.jpg",
+    "image_proxy_url": "/uploads/property-4899073000000116002.jpg"
+  },
+  {
+    "ID": "4899073000000112002",
+    "ID1": "4899073000000112002",
+    "title": "azzzzzzzzzzzzzzzzzzzzz",
+    "description": "",
+    "Price1": "1608",
+    "status": "Loué",
+    "type_field": "To Rent",
+    "Rooms1": "",
+    "Bathrooms1": "",
+    "Surface1": "",
+    "Floor": "",
+    "Year_Built": "",
+    "location": {
+      "address_line_1": "",
+      "address_line_2": "",
+      "district_city": "",
+      "display_value": ""
+    },
+    "Image": [
+      "/uploads/property-4899073000000112002.webp",
+      "/uploads/property-4899073000000112002-2.png",
+      "/uploads/property-4899073000000112002-3.png"
+    ],
+    "image_url": "/uploads/property-4899073000000112002.webp",
+    "image_proxy_url": "/uploads/property-4899073000000112002.webp"
+  },
+  {
+    "ID": "local-1776357005678",
+    "ID1": "local-1776357005678",
+    "title": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbn",
+    "description": "",
+    "Price1": "1111",
+    "status": "En négociation",
+    "type_field": "To Rent",
+    "Rooms1": "-1",
+    "Bathrooms1": "",
+    "Surface1": "",
+    "Floor": "",
+    "Year_Built": "",
+    "location": {
+      "address_line_1": "",
+      "address_line_2": "",
+      "district_city": "",
+      "display_value": ""
+    },
+    "User": {
+      "ID": "4899073000000098003",
+      "display_value": "Kenniealaia@gmail.com"
+    },
+    "Image": [
+      "/uploads/property-local-1776357005678.webp",
+      "/uploads/property-local-1776357005678-2.webp"
+    ],
+    "image_url": "/uploads/property-local-1776357005678.webp",
+    "image_proxy_url": "/uploads/property-local-1776357005678.webp"
+  },
+  {
+    "ID": "local-1776325782589",
+    "ID1": "local-1776325782589",
+    "title": "qaqaqaq",
+    "description": "aaaaa",
+    "Price1": "1212",
+    "status": "Loué",
+    "type_field": "For Sale",
+    "Rooms1": "2",
+    "Bathrooms1": "",
+    "Surface1": "",
+    "Floor": "",
+    "Year_Built": "",
+    "location": {
+      "address_line_1": "",
+      "address_line_2": "",
+      "district_city": "",
+      "display_value": ""
+    },
+    "User": {
+      "ID": "4899073000000098003",
+      "display_value": "elfehriyossra12@gmail.com"
+    },
+    "Image": [
+      "/uploads/property-local-1776325782589.jpg"
+    ],
+    "image_url": "/uploads/property-local-1776325782589.jpg",
+    "image_proxy_url": "/uploads/property-local-1776325782589.jpg"
+  },
+  {
+    "ID": "local-1776325778561",
+    "ID1": "local-1776325778561",
+    "title": "qaqaqaq",
+    "description": "aaaaa",
+    "Price1": "1212",
+    "status": "Loué",
+    "type_field": "For Sale",
+    "Rooms1": "2",
+    "Bathrooms1": "",
+    "Surface1": "",
+    "Floor": "",
+    "Year_Built": "",
+    "location": {
+      "address_line_1": "",
+      "address_line_2": "",
+      "district_city": "",
+      "display_value": ""
+    },
+    "User": {
+      "ID": "4899073000000098003",
+      "display_value": "elfehriyossra12@gmail.com"
+    },
+    "Image": [
+      "/uploads/property-local-1776325778561.jpg"
+    ],
+    "image_url": "/uploads/property-local-1776325778561.jpg",
+    "image_proxy_url": "/uploads/property-local-1776325778561.jpg"
+  },
+  {
+    "ID": "local-1776300089492",
+    "ID1": "local-1776300089492",
+    "title": "appartemant !!!!!!!!!!!!!!",
+    "description": "",
+    "Price1": "4000",
+    "status": "Disponible",
+    "type_field": "To Rent",
+    "Rooms1": "6",
+    "Bathrooms1": "4",
+    "Surface1": "",
+    "Floor": "",
+    "Year_Built": "16-Jan-2023",
+    "location": {
+      "address_line_1": "tunis",
+      "address_line_2": "cité el khadhra",
+      "district_city": "tunis",
+      "display_value": "tunis, cité el khadhra, tunis"
+    },
+    "User": {
+      "ID": "4899073000000098003",
+      "display_value": "elfehriyossra12@gmail.com"
+    },
+    "Image": [
+      "/uploads/property-local-1776300089492.jpg",
+      "/uploads/property-local-1776300089492-2.jpg"
+    ],
+    "image_url": "/uploads/property-local-1776300089492.jpg",
+    "image_proxy_url": "/uploads/property-local-1776300089492.jpg"
+  },
+  {
+    "ID": "local-1776299593205",
+    "ID1": "local-1776299593205",
+    "title": "villa yassou et naddou",
+    "description": "",
+    "Price1": "4000",
+    "status": "Disponible",
+    "type_field": "To Rent",
+    "Rooms1": "6",
+    "Bathrooms1": "4",
+    "Surface1": "",
+    "Floor": "",
+    "Year_Built": "16-Jan-2023",
+    "location": {
+      "address_line_1": "tunis",
+      "address_line_2": "cité el khadhra",
+      "district_city": "tunis",
+      "display_value": "tunis, cité el khadhra, tunis"
+    },
+    "User": {
+      "ID": "4899073000000098003",
+      "display_value": "elfehriyossra12@gmail.com"
+    },
+    "Image": [
+      "/uploads/property-local-1776299593205.jpg",
+      "/uploads/property-local-1776299593205-2.jpg"
+    ],
+    "image_url": "/uploads/property-local-1776299593205.jpg",
+    "image_proxy_url": "/uploads/property-local-1776299593205.jpg"
+  },
+  {
+    "ID": "local-1776299457575",
+    "ID1": "local-1776299457575",
+    "title": "Local Fallback 639118998535696066",
+    "description": "fallback test",
+    "Price1": "999",
+    "status": "Disponible",
+    "type_field": "To Rent",
+    "Rooms1": "2",
+    "Bathrooms1": "1",
+    "Surface1": "80",
+    "Floor": "1",
+    "Year_Built": "01-Jan-2024",
+    "location": {
+      "address_line_1": "Rue test",
+      "address_line_2": "",
+      "district_city": "Tunis",
+      "display_value": "Rue test, Tunis"
+    },
+    "User": {
+      "ID": "4899073000000098003",
+      "display_value": "test-offline@example.com"
+    },
+    "Image": [],
+    "image_url": "/api/property-image/local-1776299457575",
+    "image_proxy_url": "/api/property-image/local-1776299457575"
+  },
+  {
+    "Floor": "1",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "1",
+    "description": "oauth scope verify",
+    "Year_Built": "01-Jan-2024",
+    "Surface1": "45",
+    "Bathrooms1": "1",
+    "title": "Scope verify 1776252849581",
+    "Image": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000105003/Image/download?filepath=1776252852353743_property-4899073000000105003.png"
+    ],
+    "Price1": "3333.00",
+    "type_field": "To Rent",
+    "ID1": "218",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "3 Rue Scope",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "3 Rue Scope",
+      "longitude": ""
+    },
+    "ID": "4899073000000105003",
+    "status": "Disponible",
+    "image_url": "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000105003/Image/download?filepath=1776252852353743_property-4899073000000105003.png",
+    "image_proxy_url": "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000105003%2FImage%2Fdownload%3Ffilepath%3D1776252852353743_property-4899073000000105003.png",
+    "image_urls": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000105003/Image/download?filepath=1776252852353743_property-4899073000000105003.png",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000105003%2FImage%2Fdownload%3Ffilepath%3D1776252852353743_property-4899073000000105003.png"
+    ],
+    "image_proxy_urls": [
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000105003%2FImage%2Fdownload%3Ffilepath%3D1776252852353743_property-4899073000000105003.png",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000105003%2FImage%2Fdownload%3Ffilepath%3D1776252852353743_property-4899073000000105003.png"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "3",
+    "description": "",
+    "Year_Built": "13-Jan-2023",
+    "Surface1": "",
+    "Bathrooms1": "2",
+    "title": "villa",
+    "Image": [],
+    "Price1": "1200.00",
+    "type_field": "To Rent",
+    "ID1": "214",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "nabeul, hammamet",
+      "state_province": "",
+      "address_line_2": "hammamet centre",
+      "postal_code": "",
+      "zc_display_value": "nabeul, hammamet, hammamet centre",
+      "longitude": ""
+    },
+    "ID": "4899073000000104003",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000104003",
+    "image_proxy_url": "/api/property-image/4899073000000104003",
+    "image_urls": [
+      "/api/property-image/4899073000000104003"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000104003"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "3",
+    "description": "",
+    "Year_Built": "13-Jan-2023",
+    "Surface1": "",
+    "Bathrooms1": "2",
+    "title": "villa yasminaa",
+    "Image": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000103006/Image/download?filepath=1776254569935398_property-4899073000000103006.jpg"
+    ],
+    "Price1": "3500.00",
+    "type_field": "To Rent",
+    "ID1": "222",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "nabeul",
+      "state_province": "",
+      "address_line_2": "sidi mahersi",
+      "postal_code": "",
+      "zc_display_value": "nabeul, sidi mahersi",
+      "longitude": ""
+    },
+    "ID": "4899073000000103006",
+    "status": "Disponible",
+    "image_url": "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000103006/Image/download?filepath=1776254569935398_property-4899073000000103006.jpg",
+    "image_proxy_url": "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000103006%2FImage%2Fdownload%3Ffilepath%3D1776254569935398_property-4899073000000103006.jpg",
+    "image_urls": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000103006/Image/download?filepath=1776254569935398_property-4899073000000103006.jpg",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000103006%2FImage%2Fdownload%3Ffilepath%3D1776254569935398_property-4899073000000103006.jpg",
+      "/uploads/property-4899073000000103006.jpg"
+    ],
+    "image_proxy_urls": [
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000103006%2FImage%2Fdownload%3Ffilepath%3D1776254569935398_property-4899073000000103006.jpg",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000103006%2FImage%2Fdownload%3Ffilepath%3D1776254569935398_property-4899073000000103006.jpg",
+      "/uploads/property-4899073000000103006.jpg"
+    ]
+  },
+  {
+    "Floor": "1",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "1",
+    "description": "scope test",
+    "Year_Built": "01-Jan-2024",
+    "Surface1": "45",
+    "Bathrooms1": "1",
+    "title": "Retest image upload scope",
+    "Image": [],
+    "Price1": "3333.00",
+    "type_field": "Location",
+    "ID1": "213",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "3 Rue Scope",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "3 Rue Scope",
+      "longitude": ""
+    },
+    "ID": "4899073000000103003",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000103003",
+    "image_proxy_url": "/api/property-image/4899073000000103003",
+    "image_urls": [
+      "/api/property-image/4899073000000103003"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000103003"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "3",
+    "description": "",
+    "Year_Built": "13-Jan-2023",
+    "Surface1": "",
+    "Bathrooms1": "2",
+    "title": "villa yasminaa",
+    "Image": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000102009/Image/download?filepath=1776253537703778_property-4899073000000102009.jpg"
+    ],
+    "Price1": "3500.00",
+    "type_field": "To Rent",
+    "ID1": "220",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "nabeul",
+      "state_province": "",
+      "address_line_2": "sidi mahersi",
+      "postal_code": "",
+      "zc_display_value": "nabeul, sidi mahersi",
+      "longitude": ""
+    },
+    "ID": "4899073000000102009",
+    "status": "Disponible",
+    "image_url": "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000102009/Image/download?filepath=1776253537703778_property-4899073000000102009.jpg",
+    "image_proxy_url": "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000102009%2FImage%2Fdownload%3Ffilepath%3D1776253537703778_property-4899073000000102009.jpg",
+    "image_urls": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000102009/Image/download?filepath=1776253537703778_property-4899073000000102009.jpg",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000102009%2FImage%2Fdownload%3Ffilepath%3D1776253537703778_property-4899073000000102009.jpg"
+    ],
+    "image_proxy_urls": [
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000102009%2FImage%2Fdownload%3Ffilepath%3D1776253537703778_property-4899073000000102009.jpg",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000102009%2FImage%2Fdownload%3Ffilepath%3D1776253537703778_property-4899073000000102009.jpg"
+    ]
+  },
+  {
+    "Floor": "1",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "1",
+    "description": "oauth scope verify",
+    "Year_Built": "01-Jan-2024",
+    "Surface1": "45",
+    "Bathrooms1": "1",
+    "title": "Scope verify 1776252695632",
+    "Image": [],
+    "Price1": "3333.00",
+    "type_field": "To Rent",
+    "ID1": "217",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "3 Rue Scope",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "3 Rue Scope",
+      "longitude": ""
+    },
+    "ID": "4899073000000102006",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000102006",
+    "image_proxy_url": "/api/property-image/4899073000000102006",
+    "image_urls": [
+      "/api/property-image/4899073000000102006"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000102006"
+    ]
+  },
+  {
+    "Floor": "1",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "1",
+    "description": "creation test with image after restart",
+    "Year_Built": "01-Jan-2024",
+    "Surface1": "45",
+    "Bathrooms1": "1",
+    "title": "Test with image local API restart",
+    "Image": [],
+    "Price1": "2222.00",
+    "type_field": "Location",
+    "ID1": "212",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "2 Rue Image",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "2 Rue Image",
+      "longitude": ""
+    },
+    "ID": "4899073000000102003",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000102003",
+    "image_proxy_url": "/api/property-image/4899073000000102003",
+    "image_urls": [
+      "/api/property-image/4899073000000102003"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000102003"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "6",
+      "ID": "4899073000000080018",
+      "zc_display_value": "6"
+    },
+    "Rooms1": "",
+    "description": "test",
+    "Year_Built": "",
+    "Surface1": "",
+    "Bathrooms1": "",
+    "title": "Test Property API",
+    "Image": [],
+    "Price1": "1234.00",
+    "type_field": "To Rent",
+    "ID1": "209",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "1 Rue Test",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "1 Rue Test",
+      "longitude": ""
+    },
+    "ID": "4899073000000101003",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000101003",
+    "image_proxy_url": "/api/property-image/4899073000000101003",
+    "image_urls": [
+      "/api/property-image/4899073000000101003"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000101003"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "6",
+      "ID": "4899073000000080018",
+      "zc_display_value": "6"
+    },
+    "Rooms1": "",
+    "description": "test",
+    "Year_Built": "",
+    "Surface1": "",
+    "Bathrooms1": "",
+    "title": "Test Property API",
+    "Image": [],
+    "Price1": "1234.00",
+    "type_field": "Location",
+    "ID1": "208",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "1 Rue Test",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "1 Rue Test",
+      "longitude": ""
+    },
+    "ID": "4899073000000100003",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000100003",
+    "image_proxy_url": "/api/property-image/4899073000000100003",
+    "image_urls": [
+      "/api/property-image/4899073000000100003"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000100003"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "3",
+    "description": "",
+    "Year_Built": "13-Jan-2023",
+    "Surface1": "",
+    "Bathrooms1": "2",
+    "title": "villa yasminaa",
+    "Image": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000099007/Image/download?filepath=1776252976015999_property-4899073000000099007.jpg"
+    ],
+    "Price1": "3500.00",
+    "type_field": "To Rent",
+    "ID1": "219",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "nabeul",
+      "state_province": "",
+      "address_line_2": "sidi mahersi",
+      "postal_code": "",
+      "zc_display_value": "nabeul, sidi mahersi",
+      "longitude": ""
+    },
+    "ID": "4899073000000099007",
+    "status": "Disponible",
+    "image_url": "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000099007/Image/download?filepath=1776252976015999_property-4899073000000099007.jpg",
+    "image_proxy_url": "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000099007%2FImage%2Fdownload%3Ffilepath%3D1776252976015999_property-4899073000000099007.jpg",
+    "image_urls": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000099007/Image/download?filepath=1776252976015999_property-4899073000000099007.jpg",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000099007%2FImage%2Fdownload%3Ffilepath%3D1776252976015999_property-4899073000000099007.jpg"
+    ],
+    "image_proxy_urls": [
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000099007%2FImage%2Fdownload%3Ffilepath%3D1776252976015999_property-4899073000000099007.jpg",
+      "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000099007%2FImage%2Fdownload%3Ffilepath%3D1776252976015999_property-4899073000000099007.jpg"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "6",
+      "ID": "4899073000000080018",
+      "zc_display_value": "6"
+    },
+    "Rooms1": "",
+    "description": "test",
+    "Year_Built": "",
+    "Surface1": "",
+    "Bathrooms1": "",
+    "title": "Test Property API",
+    "Image": [],
+    "Price1": "1234.00",
+    "type_field": "To Rent",
+    "ID1": "210",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000099004",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000099004",
+    "image_proxy_url": "/api/property-image/4899073000000099004",
+    "image_urls": [
+      "/api/property-image/4899073000000099004"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000099004"
+    ]
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "13",
+      "ID": "4899073000000086003",
+      "zc_display_value": "13"
+    },
+    "Rooms1": "",
+    "description": "",
+    "Year_Built": "",
+    "Surface1": "",
+    "Bathrooms1": "",
+    "title": "éaaaaaaaaaaaaaa",
+    "Image": [],
+    "Price1": "1200.00",
+    "type_field": "Location",
+    "ID1": "207",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000099002",
+    "status": "En négociation",
+    "image_url": "/api/property-image/4899073000000099002",
+    "image_proxy_url": "/api/property-image/4899073000000099002",
+    "image_urls": [
+      "/api/property-image/4899073000000099002"
+    ],
+    "image_proxy_urls": [
+      "/api/property-image/4899073000000099002"
+    ]
+  },
+  {
+    "Price1": "950.00",
+    "type_field": "To Rent",
+    "ID1": "206",
+    "description": "Propriété lumineuse et spacieuse, parfaite pour une famille ou un investissement locatif.",
+    "location": {
+      "display_value": "68 Rue de Tunis, Appt 20, Menzah / Tunis",
+      "country": "",
+      "district_city": "Menzah / Tunis",
+      "latitude": "",
+      "address_line_1": "68 Rue de Tunis",
+      "state_province": "",
+      "address_line_2": "Appt 20",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090300",
+    "title": "Appartement S+2 à louer à Tunis",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "2650.00",
+    "type_field": "To Rent",
+    "ID1": "205",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "104 Rue du Lac, Appt 21, Sfax Centre / Sfax",
+      "country": "",
+      "district_city": "Sfax Centre / Sfax",
+      "latitude": "",
+      "address_line_1": "104 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "Appt 21",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090298",
+    "title": "Duplex à louer à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1500.00",
+    "type_field": "To Rent",
+    "ID1": "204",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "40 Impasse des Jasmins, Gabès Centre / Gabès",
+      "country": "",
+      "district_city": "Gabès Centre / Gabès",
+      "latitude": "",
+      "address_line_1": "40 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090296",
+    "title": "Appartement S+2 à louer à Gabès",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "2350.00",
+    "type_field": "To Rent",
+    "ID1": "203",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "119 Rue du Lac, Appt 21, Sahloul / Sousse",
+      "country": "",
+      "district_city": "Sahloul / Sousse",
+      "latitude": "",
+      "address_line_1": "119 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "Appt 21",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090294",
+    "title": "Appartement S+3 à louer à Sousse",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "3450.00",
+    "type_field": "To Rent",
+    "ID1": "202",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "105 Rue des Roses, Khzema / Sousse",
+      "country": "",
+      "district_city": "Khzema / Sousse",
+      "latitude": "",
+      "address_line_1": "105 Rue des Roses",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090292",
+    "title": "Villa à louer à Sousse",
+    "status": "Loué"
+  },
+  {
+    "Price1": "1150.00",
+    "type_field": "To Rent",
+    "ID1": "201",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "11 Rue Ali Belhouane, Appt 28, Hammam Lif / Ben Arous",
+      "country": "",
+      "district_city": "Hammam Lif / Ben Arous",
+      "latitude": "",
+      "address_line_1": "11 Rue Ali Belhouane",
+      "state_province": "",
+      "address_line_2": "Appt 28",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090290",
+    "title": "Appartement S+2 à louer à Ben Arous",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "700.00",
+    "type_field": "To Rent",
+    "ID1": "200",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "52 Boulevard de la Terre, Appt 10, Ksour Essef / Mahdia",
+      "country": "",
+      "district_city": "Ksour Essef / Mahdia",
+      "latitude": "",
+      "address_line_1": "52 Boulevard de la Terre",
+      "state_province": "",
+      "address_line_2": "Appt 10",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090288",
+    "title": "Appartement S+1 à louer à Mahdia",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1650.00",
+    "type_field": "To Rent",
+    "ID1": "199",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "69 Boulevard de l'Environnement, Appt 17, Skanes / Monastir",
+      "country": "",
+      "district_city": "Skanes / Monastir",
+      "latitude": "",
+      "address_line_1": "69 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "Appt 17",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090286",
+    "title": "Appartement S+2 à louer à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "2200.00",
+    "type_field": "To Rent",
+    "ID1": "198",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "77 Avenue Habib Bourguiba, Mahdia Centre / Mahdia",
+      "country": "",
+      "district_city": "Mahdia Centre / Mahdia",
+      "latitude": "",
+      "address_line_1": "77 Avenue Habib Bourguiba",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090284",
+    "title": "Villa à louer à Mahdia",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1050.00",
+    "type_field": "To Rent",
+    "ID1": "197",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "57 Boulevard de la Terre, Appt 9, Carthage / Tunis",
+      "country": "",
+      "district_city": "Carthage / Tunis",
+      "latitude": "",
+      "address_line_1": "57 Boulevard de la Terre",
+      "state_province": "",
+      "address_line_2": "Appt 9",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090282",
+    "title": "Appartement S+1 à louer à Tunis",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1750.00",
+    "type_field": "To Rent",
+    "ID1": "196",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "48 Avenue Mohamed V, Appt 24, Sakiet Eddaier / Sfax",
+      "country": "",
+      "district_city": "Sakiet Eddaier / Sfax",
+      "latitude": "",
+      "address_line_1": "48 Avenue Mohamed V",
+      "state_province": "",
+      "address_line_2": "Appt 24",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090280",
+    "title": "Appartement meublé de standing à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1550.00",
+    "type_field": "To Rent",
+    "ID1": "195",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "118 Rue de Marseille, Appt 12, Ksour Essef / Mahdia",
+      "country": "",
+      "district_city": "Ksour Essef / Mahdia",
+      "latitude": "",
+      "address_line_1": "118 Rue de Marseille",
+      "state_province": "",
+      "address_line_2": "Appt 12",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090278",
+    "title": "Appartement S+3 à louer à Mahdia",
+    "status": "Loué"
+  },
+  {
+    "Price1": "400.00",
+    "type_field": "To Rent",
+    "ID1": "194",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "14 Avenue de Paris, Appt 28, Ksar Hellal / Monastir",
+      "country": "",
+      "district_city": "Ksar Hellal / Monastir",
+      "latitude": "",
+      "address_line_1": "14 Avenue de Paris",
+      "state_province": "",
+      "address_line_2": "Appt 28",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090276",
+    "title": "Studio meublé à louer à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "750.00",
+    "type_field": "To Rent",
+    "ID1": "193",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "72 Avenue Taïeb Mhiri, Appt 11, Sfax Centre / Sfax",
+      "country": "",
+      "district_city": "Sfax Centre / Sfax",
+      "latitude": "",
+      "address_line_1": "72 Avenue Taïeb Mhiri",
+      "state_province": "",
+      "address_line_2": "Appt 11",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090274",
+    "title": "Appartement S+1 à louer à Sfax",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "2500.00",
+    "type_field": "To Rent",
+    "ID1": "192",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "41 Rue Farhat Hached, Korba / Nabeul",
+      "country": "",
+      "district_city": "Korba / Nabeul",
+      "latitude": "36.57432",
+      "address_line_1": "41 Rue Farhat Hached",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": "10.85521"
+    },
+    "ID": "4899073000000090272",
+    "title": "Maison à louer à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1050.00",
+    "type_field": "To Rent",
+    "ID1": "191",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "102 Avenue de Carthage, Appt 28, Hammam Sousse / Sousse",
+      "country": "",
+      "district_city": "Hammam Sousse / Sousse",
+      "latitude": "",
+      "address_line_1": "102 Avenue de Carthage",
+      "state_province": "",
+      "address_line_2": "Appt 28",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090270",
+    "title": "Appartement S+1 à louer à Sousse",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "500.00",
+    "type_field": "To Rent",
+    "ID1": "190",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "92 Impasse des Jasmins, Appt 3, Soukra / Ariana",
+      "country": "",
+      "district_city": "Soukra / Ariana",
+      "latitude": "",
+      "address_line_1": "92 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 3",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090268",
+    "title": "Studio meublé à louer à Ariana",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1650.00",
+    "type_field": "To Rent",
+    "ID1": "189",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "66 Rue du Lac, Appt 4, Carthage / Tunis",
+      "country": "",
+      "district_city": "Carthage / Tunis",
+      "latitude": "",
+      "address_line_1": "66 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "Appt 4",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090266",
+    "title": "Duplex à louer à Tunis",
+    "status": "Loué"
+  },
+  {
+    "Price1": "2850.00",
+    "type_field": "To Rent",
+    "ID1": "188",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "102 Boulevard de l'Environnement, Sahloul / Sousse",
+      "country": "",
+      "district_city": "Sahloul / Sousse",
+      "latitude": "",
+      "address_line_1": "102 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090264",
+    "title": "Duplex à louer à Sousse",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "350.00",
+    "type_field": "To Rent",
+    "ID1": "187",
+    "description": "Propriété lumineuse et spacieuse, parfaite pour une famille ou un investissement locatif.",
+    "location": {
+      "display_value": "28 Boulevard de l'Environnement, Appt 11, Belvédère / Tunis",
+      "country": "",
+      "district_city": "Belvédère / Tunis",
+      "latitude": "",
+      "address_line_1": "28 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "Appt 11",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090262",
+    "title": "Studio meublé à louer à Tunis",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1750.00",
+    "type_field": "To Rent",
+    "ID1": "186",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "106 Impasse des Jasmins, Appt 3, Bizerte Centre / Bizerte",
+      "country": "",
+      "district_city": "Bizerte Centre / Bizerte",
+      "latitude": "",
+      "address_line_1": "106 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 3",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090260",
+    "title": "Appartement S+3 à louer à Bizerte",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "2350.00",
+    "type_field": "To Rent",
+    "ID1": "185",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "36 Avenue Habib Bourguiba, Appt 23, Chenini / Gabès",
+      "country": "",
+      "district_city": "Chenini / Gabès",
+      "latitude": "",
+      "address_line_1": "36 Avenue Habib Bourguiba",
+      "state_province": "",
+      "address_line_2": "Appt 23",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090258",
+    "title": "Appartement meublé de standing à Gabès",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "1300.00",
+    "type_field": "To Rent",
+    "ID1": "184",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "15 Avenue de Carthage, Gremda / Sfax",
+      "country": "",
+      "district_city": "Gremda / Sfax",
+      "latitude": "",
+      "address_line_1": "15 Avenue de Carthage",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090256",
+    "title": "Appartement S+3 à louer à Sfax",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "600.00",
+    "type_field": "To Rent",
+    "ID1": "183",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "14 Boulevard de l'Environnement, Appt 16, Ksar Hellal / Monastir",
+      "country": "",
+      "district_city": "Ksar Hellal / Monastir",
+      "latitude": "",
+      "address_line_1": "14 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "Appt 16",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090254",
+    "title": "Studio meublé à louer à Monastir",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "1300.00",
+    "type_field": "To Rent",
+    "ID1": "182",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "93 Rue Ali Belhouane, Ksar Hellal / Monastir",
+      "country": "",
+      "district_city": "Ksar Hellal / Monastir",
+      "latitude": "",
+      "address_line_1": "93 Rue Ali Belhouane",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090252",
+    "title": "Maison à louer à Monastir",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "750.00",
+    "type_field": "To Rent",
+    "ID1": "181",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "47 Rue de Tunis, Appt 17, Skanes / Monastir",
+      "country": "",
+      "district_city": "Skanes / Monastir",
+      "latitude": "",
+      "address_line_1": "47 Rue de Tunis",
+      "state_province": "",
+      "address_line_2": "Appt 17",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090250",
+    "title": "Appartement S+1 à louer à Monastir",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "4550.00",
+    "type_field": "To Rent",
+    "ID1": "180",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "101 Impasse des Jasmins, Nabeul Centre / Nabeul",
+      "country": "",
+      "district_city": "Nabeul Centre / Nabeul",
+      "latitude": "",
+      "address_line_1": "101 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090248",
+    "title": "Villa à louer à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "2650.00",
+    "type_field": "To Rent",
+    "ID1": "179",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "96 Cité El Khadhra, Appt 27, Monastir Centre / Monastir",
+      "country": "",
+      "district_city": "Monastir Centre / Monastir",
+      "latitude": "",
+      "address_line_1": "96 Cité El Khadhra",
+      "state_province": "",
+      "address_line_2": "Appt 27",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090246",
+    "title": "Duplex à louer à Monastir",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "1050.00",
+    "type_field": "To Rent",
+    "ID1": "178",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "110 Cité El Khadhra, Appt 4, Chenini / Gabès",
+      "country": "",
+      "district_city": "Chenini / Gabès",
+      "latitude": "",
+      "address_line_1": "110 Cité El Khadhra",
+      "state_province": "",
+      "address_line_2": "Appt 4",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090244",
+    "title": "Appartement S+1 à louer à Gabès",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "2150.00",
+    "type_field": "To Rent",
+    "ID1": "177",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "103 Impasse des Jasmins, Appt 29, Metouia / Gabès",
+      "country": "",
+      "district_city": "Metouia / Gabès",
+      "latitude": "",
+      "address_line_1": "103 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 29",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090242",
+    "title": "Appartement S+3 à louer à Gabès",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "550.00",
+    "type_field": "To Rent",
+    "ID1": "176",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "24 Avenue de la République, Appt 6, Skanes / Monastir",
+      "country": "",
+      "district_city": "Skanes / Monastir",
+      "latitude": "",
+      "address_line_1": "24 Avenue de la République",
+      "state_province": "",
+      "address_line_2": "Appt 6",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090240",
+    "title": "Studio meublé à louer à Monastir",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "500.00",
+    "type_field": "To Rent",
+    "ID1": "175",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "13 Impasse des Jasmins, Appt 6, Ezzahra / Ben Arous",
+      "country": "",
+      "district_city": "Ezzahra / Ben Arous",
+      "latitude": "",
+      "address_line_1": "13 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 6",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090238",
+    "title": "Studio meublé à louer à Ben Arous",
+    "status": "Loué"
+  },
+  {
+    "Price1": "2350.00",
+    "type_field": "To Rent",
+    "ID1": "174",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "110 Avenue Taïeb Mhiri, Appt 13, Khzema / Sousse",
+      "country": "",
+      "district_city": "Khzema / Sousse",
+      "latitude": "",
+      "address_line_1": "110 Avenue Taïeb Mhiri",
+      "state_province": "",
+      "address_line_2": "Appt 13",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090236",
+    "title": "Appartement meublé de standing à Sousse",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "1250.00",
+    "type_field": "To Rent",
+    "ID1": "173",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "13 Impasse des Jasmins, Appt 4, Ksour Essef / Mahdia",
+      "country": "",
+      "district_city": "Ksour Essef / Mahdia",
+      "latitude": "",
+      "address_line_1": "13 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 4",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090234",
+    "title": "Appartement meublé de standing à Mahdia",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "2450.00",
+    "type_field": "To Rent",
+    "ID1": "172",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "30 Boulevard de la Terre, Menzel Bourguiba / Bizerte",
+      "country": "",
+      "district_city": "Menzel Bourguiba / Bizerte",
+      "latitude": "",
+      "address_line_1": "30 Boulevard de la Terre",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090232",
+    "title": "Maison à louer à Bizerte",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "2250.00",
+    "type_field": "To Rent",
+    "ID1": "171",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "39 Rue du Lac, Appt 19, Rades / Ben Arous",
+      "country": "",
+      "district_city": "Rades / Ben Arous",
+      "latitude": "",
+      "address_line_1": "39 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "Appt 19",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090230",
+    "title": "Appartement S+3 à louer à Ben Arous",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "900.00",
+    "type_field": "To Rent",
+    "ID1": "170",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "62 Cité El Khadhra, Appt 8, Hammamet / Nabeul",
+      "country": "",
+      "district_city": "Hammamet / Nabeul",
+      "latitude": "",
+      "address_line_1": "62 Cité El Khadhra",
+      "state_province": "",
+      "address_line_2": "Appt 8",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090228",
+    "title": "Appartement S+1 à louer à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1550.00",
+    "type_field": "To Rent",
+    "ID1": "169",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "91 Avenue de la République, Appt 10, Raoued / Ariana",
+      "country": "",
+      "district_city": "Raoued / Ariana",
+      "latitude": "",
+      "address_line_1": "91 Avenue de la République",
+      "state_province": "",
+      "address_line_2": "Appt 10",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090226",
+    "title": "Duplex à louer à Ariana",
+    "status": "Loué"
+  },
+  {
+    "Price1": "2200.00",
+    "type_field": "To Rent",
+    "ID1": "168",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "80 Cité El Khadhra, Gremda / Sfax",
+      "country": "",
+      "district_city": "Gremda / Sfax",
+      "latitude": "",
+      "address_line_1": "80 Cité El Khadhra",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090224",
+    "title": "Villa à louer à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1850.00",
+    "type_field": "To Rent",
+    "ID1": "167",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "52 Avenue Taïeb Mhiri, Appt 2, Menzel Bourguiba / Bizerte",
+      "country": "",
+      "district_city": "Menzel Bourguiba / Bizerte",
+      "latitude": "",
+      "address_line_1": "52 Avenue Taïeb Mhiri",
+      "state_province": "",
+      "address_line_2": "Appt 2",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090222",
+    "title": "Appartement meublé de standing à Bizerte",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "2250.00",
+    "type_field": "To Rent",
+    "ID1": "166",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "24 Rue du Lac, Appt 14, Ezzahra / Ben Arous",
+      "country": "",
+      "district_city": "Ezzahra / Ben Arous",
+      "latitude": "",
+      "address_line_1": "24 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "Appt 14",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090220",
+    "title": "Appartement S+3 à louer à Ben Arous",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "1150.00",
+    "type_field": "To Rent",
+    "ID1": "165",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "56 Rue de Marseille, Ksar Hellal / Monastir",
+      "country": "",
+      "district_city": "Ksar Hellal / Monastir",
+      "latitude": "",
+      "address_line_1": "56 Rue de Marseille",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090218",
+    "title": "Maison à louer à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1500.00",
+    "type_field": "To Rent",
+    "ID1": "164",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "40 Boulevard du 7 Novembre, Appt 24, Mahdia Centre / Mahdia",
+      "country": "",
+      "district_city": "Mahdia Centre / Mahdia",
+      "latitude": "",
+      "address_line_1": "40 Boulevard du 7 Novembre",
+      "state_province": "",
+      "address_line_2": "Appt 24",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090216",
+    "title": "Appartement S+3 à louer à Mahdia",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "2450.00",
+    "type_field": "To Rent",
+    "ID1": "163",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "59 Rue Ibn Khaldoun, Hammam Lif / Ben Arous",
+      "country": "",
+      "district_city": "Hammam Lif / Ben Arous",
+      "latitude": "36.73537",
+      "address_line_1": "59 Rue Ibn Khaldoun",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": "10.32717"
+    },
+    "ID": "4899073000000090214",
+    "title": "Maison à louer à Ben Arous",
+    "status": "Loué"
+  },
+  {
+    "Price1": "1950.00",
+    "type_field": "To Rent",
+    "ID1": "162",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "31 Avenue de la République, Appt 18, Ezzahra / Ben Arous",
+      "country": "",
+      "district_city": "Ezzahra / Ben Arous",
+      "latitude": "",
+      "address_line_1": "31 Avenue de la République",
+      "state_province": "",
+      "address_line_2": "Appt 18",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090212",
+    "title": "Duplex à louer à Ben Arous",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1500.00",
+    "type_field": "To Rent",
+    "ID1": "161",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "67 Rue Ali Belhouane, Appt 15, Hammam Sousse / Sousse",
+      "country": "",
+      "district_city": "Hammam Sousse / Sousse",
+      "latitude": "",
+      "address_line_1": "67 Rue Ali Belhouane",
+      "state_province": "",
+      "address_line_2": "Appt 15",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090210",
+    "title": "Appartement S+2 à louer à Sousse",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "2000.00",
+    "type_field": "To Rent",
+    "ID1": "160",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "52 Cité El Khadhra, Appt 3, Chenini / Gabès",
+      "country": "",
+      "district_city": "Chenini / Gabès",
+      "latitude": "",
+      "address_line_1": "52 Cité El Khadhra",
+      "state_province": "",
+      "address_line_2": "Appt 3",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090208",
+    "title": "Duplex à louer à Gabès",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "1300.00",
+    "type_field": "To Rent",
+    "ID1": "159",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "17 Cité El Khadhra, Bizerte Centre / Bizerte",
+      "country": "",
+      "district_city": "Bizerte Centre / Bizerte",
+      "latitude": "",
+      "address_line_1": "17 Cité El Khadhra",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090206",
+    "title": "Appartement S+3 à louer à Bizerte",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "4950.00",
+    "type_field": "To Rent",
+    "ID1": "158",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "68 Boulevard du 7 Novembre, Sakiet Eddaier / Sfax",
+      "country": "",
+      "district_city": "Sakiet Eddaier / Sfax",
+      "latitude": "",
+      "address_line_1": "68 Boulevard du 7 Novembre",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090204",
+    "title": "Villa à louer à Sfax",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "2650.00",
+    "type_field": "To Rent",
+    "ID1": "157",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "35 Avenue Mohamed V, Appt 9, Mégrine / Ben Arous",
+      "country": "",
+      "district_city": "Mégrine / Ben Arous",
+      "latitude": "",
+      "address_line_1": "35 Avenue Mohamed V",
+      "state_province": "",
+      "address_line_2": "Appt 9",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090202",
+    "title": "Duplex à louer à Ben Arous",
+    "status": "Loué"
+  },
+  {
+    "Price1": "523000.00",
+    "type_field": "For Sale",
+    "ID1": "156",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "3 Rue Ibn Khaldoun, Appt 10, Sakiet Eddaier / Sfax",
+      "country": "",
+      "district_city": "Sakiet Eddaier / Sfax",
+      "latitude": "",
+      "address_line_1": "3 Rue Ibn Khaldoun",
+      "state_province": "",
+      "address_line_2": "Appt 10",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090200",
+    "title": "Appartement S+3 à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "105000.00",
+    "type_field": "For Sale",
+    "ID1": "155",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "113 Boulevard du 7 Novembre, Appt 23, Chenini / Gabès",
+      "country": "",
+      "district_city": "Chenini / Gabès",
+      "latitude": "",
+      "address_line_1": "113 Boulevard du 7 Novembre",
+      "state_province": "",
+      "address_line_2": "Appt 23",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090198",
+    "title": "Studio à vendre à Gabès",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1102000.00",
+    "type_field": "For Sale",
+    "ID1": "154",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "32 Impasse des Jasmins, Appt 19, Ksour Essef / Mahdia",
+      "country": "",
+      "district_city": "Ksour Essef / Mahdia",
+      "latitude": "",
+      "address_line_1": "32 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 19",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090196",
+    "title": "Penthouse vue mer à Mahdia",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "2248000.00",
+    "type_field": "For Sale",
+    "ID1": "153",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "94 Rue de Tunis, Gabès Centre / Gabès",
+      "country": "",
+      "district_city": "Gabès Centre / Gabès",
+      "latitude": "",
+      "address_line_1": "94 Rue de Tunis",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090194",
+    "title": "Villa avec piscine à Gabès",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "244000.00",
+    "type_field": "For Sale",
+    "ID1": "152",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "55 Avenue de Paris, Appt 3, Rades / Ben Arous",
+      "country": "",
+      "district_city": "Rades / Ben Arous",
+      "latitude": "",
+      "address_line_1": "55 Avenue de Paris",
+      "state_province": "",
+      "address_line_2": "Appt 3",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090192",
+    "title": "Appartement S+1 à Ben Arous",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "571000.00",
+    "type_field": "For Sale",
+    "ID1": "151",
+    "description": "Bien situé dans une résidence sécurisée avec gardien, piscine commune et espaces verts.",
+    "location": {
+      "display_value": "40 Rue du Lac, Ezzahra / Ben Arous",
+      "country": "",
+      "district_city": "Ezzahra / Ben Arous",
+      "latitude": "",
+      "address_line_1": "40 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090190",
+    "title": "Riad authentique à Ben Arous",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "76000.00",
+    "type_field": "For Sale",
+    "ID1": "150",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "28 Impasse des Jasmins, Appt 23, Nabeul Centre / Nabeul",
+      "country": "",
+      "district_city": "Nabeul Centre / Nabeul",
+      "latitude": "",
+      "address_line_1": "28 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 23",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090188",
+    "title": "Studio à vendre à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "931000.00",
+    "type_field": "For Sale",
+    "ID1": "149",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "7 Avenue de Paris, El Jem / Mahdia",
+      "country": "",
+      "district_city": "El Jem / Mahdia",
+      "latitude": "",
+      "address_line_1": "7 Avenue de Paris",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090186",
+    "title": "Villa avec jardin à Mahdia",
+    "status": "Loué"
+  },
+  {
+    "Price1": "1077000.00",
+    "type_field": "For Sale",
+    "ID1": "148",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "34 Rue Ali Belhouane, Ezzahra / Ben Arous",
+      "country": "",
+      "district_city": "Ezzahra / Ben Arous",
+      "latitude": "36.74775",
+      "address_line_1": "34 Rue Ali Belhouane",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": "10.30444"
+    },
+    "ID": "4899073000000090184",
+    "title": "Villa avec piscine à Ben Arous",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "692000.00",
+    "type_field": "For Sale",
+    "ID1": "147",
+    "description": "Propriété lumineuse et spacieuse, parfaite pour une famille ou un investissement locatif.",
+    "location": {
+      "display_value": "108 Impasse des Jasmins, Appt 30, El Jem / Mahdia",
+      "country": "",
+      "district_city": "El Jem / Mahdia",
+      "latitude": "",
+      "address_line_1": "108 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 30",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090182",
+    "title": "Duplex spacieux à Mahdia",
+    "status": "Loué"
+  },
+  {
+    "Price1": "1148000.00",
+    "type_field": "For Sale",
+    "ID1": "146",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "95 Avenue Taïeb Mhiri, El Jem / Mahdia",
+      "country": "",
+      "district_city": "El Jem / Mahdia",
+      "latitude": "",
+      "address_line_1": "95 Avenue Taïeb Mhiri",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090180",
+    "title": "Riad authentique à Mahdia",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1477000.00",
+    "type_field": "For Sale",
+    "ID1": "145",
+    "description": "Bien situé dans une résidence sécurisée avec gardien, piscine commune et espaces verts.",
+    "location": {
+      "display_value": "8 Rue du Printemps, Sahloul / Sousse",
+      "country": "",
+      "district_city": "Sahloul / Sousse",
+      "latitude": "",
+      "address_line_1": "8 Rue du Printemps",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090178",
+    "title": "Villa avec piscine à Sousse",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1085000.00",
+    "type_field": "For Sale",
+    "ID1": "144",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "41 Avenue Taïeb Mhiri, Kelibia / Nabeul",
+      "country": "",
+      "district_city": "Kelibia / Nabeul",
+      "latitude": "",
+      "address_line_1": "41 Avenue Taïeb Mhiri",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090176",
+    "title": "Maison de maître à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "925000.00",
+    "type_field": "For Sale",
+    "ID1": "143",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "97 Boulevard de l'Environnement, Appt 27, Hammam Lif / Ben Arous",
+      "country": "",
+      "district_city": "Hammam Lif / Ben Arous",
+      "latitude": "",
+      "address_line_1": "97 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "Appt 27",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090174",
+    "title": "Penthouse vue mer à Ben Arous",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "242000.00",
+    "type_field": "For Sale",
+    "ID1": "142",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "103 Impasse des Jasmins, Appt 22, Mahdia Centre / Mahdia",
+      "country": "",
+      "district_city": "Mahdia Centre / Mahdia",
+      "latitude": "",
+      "address_line_1": "103 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "Appt 22",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090172",
+    "title": "Appartement S+1 à Mahdia",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "748000.00",
+    "type_field": "For Sale",
+    "ID1": "141",
+    "description": "Propriété lumineuse et spacieuse, parfaite pour une famille ou un investissement locatif.",
+    "location": {
+      "display_value": "52 Boulevard de l'Environnement, Gremda / Sfax",
+      "country": "",
+      "district_city": "Gremda / Sfax",
+      "latitude": "34.77236",
+      "address_line_1": "52 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": "10.71031"
+    },
+    "ID": "4899073000000090170",
+    "title": "Riad authentique à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "791000.00",
+    "type_field": "For Sale",
+    "ID1": "140",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "29 Rue du Printemps, Appt 5, Khzema / Sousse",
+      "country": "",
+      "district_city": "Khzema / Sousse",
+      "latitude": "",
+      "address_line_1": "29 Rue du Printemps",
+      "state_province": "",
+      "address_line_2": "Appt 5",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090168",
+    "title": "Penthouse vue mer à Sousse",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "496000.00",
+    "type_field": "For Sale",
+    "ID1": "139",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "60 Impasse des Jasmins, Les Berges du Lac / Tunis",
+      "country": "",
+      "district_city": "Les Berges du Lac / Tunis",
+      "latitude": "",
+      "address_line_1": "60 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090166",
+    "title": "Maison traditionnelle à Tunis",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "646000.00",
+    "type_field": "For Sale",
+    "ID1": "138",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "49 Avenue de la République, Ksour Essef / Mahdia",
+      "country": "",
+      "district_city": "Ksour Essef / Mahdia",
+      "latitude": "",
+      "address_line_1": "49 Avenue de la République",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090164",
+    "title": "Villa avec jardin à Mahdia",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "540000.00",
+    "type_field": "For Sale",
+    "ID1": "137",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "85 Avenue de Carthage, Raoued / Ariana",
+      "country": "",
+      "district_city": "Raoued / Ariana",
+      "latitude": "",
+      "address_line_1": "85 Avenue de Carthage",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090162",
+    "title": "Maison traditionnelle à Ariana",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "137000.00",
+    "type_field": "For Sale",
+    "ID1": "136",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "74 Rue du Printemps, Appt 9, Gremda / Sfax",
+      "country": "",
+      "district_city": "Gremda / Sfax",
+      "latitude": "",
+      "address_line_1": "74 Rue du Printemps",
+      "state_province": "",
+      "address_line_2": "Appt 9",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090160",
+    "title": "Studio à vendre à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1145000.00",
+    "type_field": "For Sale",
+    "ID1": "135",
+    "description": "Propriété rare sur le marché, offrant une vue imprenable et des espaces de vie généreux.",
+    "location": {
+      "display_value": "4 Avenue de Carthage, Monastir Centre / Monastir",
+      "country": "",
+      "district_city": "Monastir Centre / Monastir",
+      "latitude": "",
+      "address_line_1": "4 Avenue de Carthage",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090158",
+    "title": "Villa avec jardin à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "463000.00",
+    "type_field": "For Sale",
+    "ID1": "134",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "106 Boulevard de l'Environnement, Appt 8, Khzema / Sousse",
+      "country": "",
+      "district_city": "Khzema / Sousse",
+      "latitude": "",
+      "address_line_1": "106 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "Appt 8",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090156",
+    "title": "Duplex spacieux à Sousse",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "401000.00",
+    "type_field": "For Sale",
+    "ID1": "133",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "4 Avenue de la République, Appt 24, Hammamet / Nabeul",
+      "country": "",
+      "district_city": "Hammamet / Nabeul",
+      "latitude": "",
+      "address_line_1": "4 Avenue de la République",
+      "state_province": "",
+      "address_line_2": "Appt 24",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090154",
+    "title": "Appartement S+3 à Nabeul",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "107000.00",
+    "type_field": "For Sale",
+    "ID1": "132",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "17 Avenue Habib Bourguiba, Appt 10, Sfax Centre / Sfax",
+      "country": "",
+      "district_city": "Sfax Centre / Sfax",
+      "latitude": "",
+      "address_line_1": "17 Avenue Habib Bourguiba",
+      "state_province": "",
+      "address_line_2": "Appt 10",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090152",
+    "title": "Studio à vendre à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "767000.00",
+    "type_field": "For Sale",
+    "ID1": "131",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "21 Impasse des Jasmins, El Jem / Mahdia",
+      "country": "",
+      "district_city": "El Jem / Mahdia",
+      "latitude": "",
+      "address_line_1": "21 Impasse des Jasmins",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090150",
+    "title": "Maison de maître à Mahdia",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "252000.00",
+    "type_field": "For Sale",
+    "ID1": "130",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "27 Rue Farhat Hached, Appt 17, Monastir Centre / Monastir",
+      "country": "",
+      "district_city": "Monastir Centre / Monastir",
+      "latitude": "",
+      "address_line_1": "27 Rue Farhat Hached",
+      "state_province": "",
+      "address_line_2": "Appt 17",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090148",
+    "title": "Appartement S+2 à Monastir",
+    "status": "Loué"
+  },
+  {
+    "Price1": "220000.00",
+    "type_field": "For Sale",
+    "ID1": "129",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "79 Rue de Tunis, Appt 1, Bizerte Centre / Bizerte",
+      "country": "",
+      "district_city": "Bizerte Centre / Bizerte",
+      "latitude": "",
+      "address_line_1": "79 Rue de Tunis",
+      "state_province": "",
+      "address_line_2": "Appt 1",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090146",
+    "title": "Appartement S+2 à Bizerte",
+    "status": "Loué"
+  },
+  {
+    "Price1": "1438000.00",
+    "type_field": "For Sale",
+    "ID1": "128",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "13 Rue Ibn Khaldoun, Skanes / Monastir",
+      "country": "",
+      "district_city": "Skanes / Monastir",
+      "latitude": "",
+      "address_line_1": "13 Rue Ibn Khaldoun",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090144",
+    "title": "Maison de maître à Monastir",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "1420000.00",
+    "type_field": "For Sale",
+    "ID1": "127",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "27 Rue de Marseille, Ezzahra / Ben Arous",
+      "country": "",
+      "district_city": "Ezzahra / Ben Arous",
+      "latitude": "36.74106",
+      "address_line_1": "27 Rue de Marseille",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": "10.29639"
+    },
+    "ID": "4899073000000090142",
+    "title": "Riad authentique à Ben Arous",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "980000.00",
+    "type_field": "For Sale",
+    "ID1": "126",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "111 Boulevard de l'Environnement, Appt 13, Raoued / Ariana",
+      "country": "",
+      "district_city": "Raoued / Ariana",
+      "latitude": "",
+      "address_line_1": "111 Boulevard de l'Environnement",
+      "state_province": "",
+      "address_line_2": "Appt 13",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090140",
+    "title": "Penthouse vue mer à Ariana",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1245000.00",
+    "type_field": "For Sale",
+    "ID1": "125",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "70 Avenue Habib Bourguiba, Ettadhamen / Ariana",
+      "country": "",
+      "district_city": "Ettadhamen / Ariana",
+      "latitude": "",
+      "address_line_1": "70 Avenue Habib Bourguiba",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090138",
+    "title": "Villa avec piscine à Ariana",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "121000.00",
+    "type_field": "For Sale",
+    "ID1": "124",
+    "description": "Bien situé dans une résidence sécurisée avec gardien, piscine commune et espaces verts.",
+    "location": {
+      "display_value": "22 Rue Ali Belhouane, Appt 1, Sakiet Eddaier / Sfax",
+      "country": "",
+      "district_city": "Sakiet Eddaier / Sfax",
+      "latitude": "34.81915",
+      "address_line_1": "22 Rue Ali Belhouane",
+      "state_province": "",
+      "address_line_2": "Appt 1",
+      "postal_code": "",
+      "longitude": "10.78184"
+    },
+    "ID": "4899073000000090136",
+    "title": "Studio à vendre à Sfax",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "208000.00",
+    "type_field": "For Sale",
+    "ID1": "123",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "112 Rue Ibn Khaldoun, Appt 15, Nabeul Centre / Nabeul",
+      "country": "",
+      "district_city": "Nabeul Centre / Nabeul",
+      "latitude": "",
+      "address_line_1": "112 Rue Ibn Khaldoun",
+      "state_province": "",
+      "address_line_2": "Appt 15",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090134",
+    "title": "Appartement S+1 à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1525000.00",
+    "type_field": "For Sale",
+    "ID1": "122",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "111 Avenue Habib Bourguiba, Hammamet / Nabeul",
+      "country": "",
+      "district_city": "Hammamet / Nabeul",
+      "latitude": "36.40399",
+      "address_line_1": "111 Avenue Habib Bourguiba",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": "10.61182"
+    },
+    "ID": "4899073000000090132",
+    "title": "Villa avec piscine à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "669000.00",
+    "type_field": "For Sale",
+    "ID1": "121",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "120 Rue du Lac, Sakiet Eddaier / Sfax",
+      "country": "",
+      "district_city": "Sakiet Eddaier / Sfax",
+      "latitude": "",
+      "address_line_1": "120 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090130",
+    "title": "Villa avec jardin à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "250000.00",
+    "type_field": "For Sale",
+    "ID1": "120",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "1 Rue Ibn Khaldoun, Appt 23, Nabeul Centre / Nabeul",
+      "country": "",
+      "district_city": "Nabeul Centre / Nabeul",
+      "latitude": "",
+      "address_line_1": "1 Rue Ibn Khaldoun",
+      "state_province": "",
+      "address_line_2": "Appt 23",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090128",
+    "title": "Appartement S+1 à Nabeul",
+    "status": "En négociation"
+  },
+  {
+    "Price1": "234000.00",
+    "type_field": "For Sale",
+    "ID1": "119",
+    "description": "Bien en excellent état, prêt à habiter, avec parking privatif et espace extérieur.",
+    "location": {
+      "display_value": "40 Rue Ali Belhouane, Appt 22, Metouia / Gabès",
+      "country": "",
+      "district_city": "Metouia / Gabès",
+      "latitude": "",
+      "address_line_1": "40 Rue Ali Belhouane",
+      "state_province": "",
+      "address_line_2": "Appt 22",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090126",
+    "title": "Appartement S+2 à Gabès",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "67000.00",
+    "type_field": "For Sale",
+    "ID1": "118",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "11 Cité El Khadhra, Appt 27, Chihia / Sfax",
+      "country": "",
+      "district_city": "Chihia / Sfax",
+      "latitude": "",
+      "address_line_1": "11 Cité El Khadhra",
+      "state_province": "",
+      "address_line_2": "Appt 27",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090124",
+    "title": "Studio à vendre à Sfax",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "195000.00",
+    "type_field": "For Sale",
+    "ID1": "117",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "100 Rue de Tunis, Appt 30, Ksar Hellal / Monastir",
+      "country": "",
+      "district_city": "Ksar Hellal / Monastir",
+      "latitude": "",
+      "address_line_1": "100 Rue de Tunis",
+      "state_province": "",
+      "address_line_2": "Appt 30",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090122",
+    "title": "Appartement S+1 à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1429000.00",
+    "type_field": "For Sale",
+    "ID1": "116",
+    "description": "Superbe bien neuf livré clés en main, avec cuisine équipée et salle de bains moderne.",
+    "location": {
+      "display_value": "113 Rue Farhat Hached, Bizerte Centre / Bizerte",
+      "country": "",
+      "district_city": "Bizerte Centre / Bizerte",
+      "latitude": "",
+      "address_line_1": "113 Rue Farhat Hached",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090120",
+    "title": "Maison de maître à Bizerte",
+    "status": "Retiré du marché"
+  },
+  {
+    "Price1": "332000.00",
+    "type_field": "For Sale",
+    "ID1": "115",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "71 Rue de la Liberté, Appt 22, Kantaoui / Sousse",
+      "country": "",
+      "district_city": "Kantaoui / Sousse",
+      "latitude": "35.8937",
+      "address_line_1": "71 Rue de la Liberté",
+      "state_province": "",
+      "address_line_2": "Appt 22",
+      "postal_code": "",
+      "longitude": "10.59652"
+    },
+    "ID": "4899073000000090118",
+    "title": "Appartement S+2 à Sousse",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "329000.00",
+    "type_field": "For Sale",
+    "ID1": "114",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "18 Rue de Tunis, Appt 16, Monastir Centre / Monastir",
+      "country": "",
+      "district_city": "Monastir Centre / Monastir",
+      "latitude": "",
+      "address_line_1": "18 Rue de Tunis",
+      "state_province": "",
+      "address_line_2": "Appt 16",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090116",
+    "title": "Appartement S+2 à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "485000.00",
+    "type_field": "For Sale",
+    "ID1": "113",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "73 Rue de Marseille, Appt 7, Bizerte Centre / Bizerte",
+      "country": "",
+      "district_city": "Bizerte Centre / Bizerte",
+      "latitude": "",
+      "address_line_1": "73 Rue de Marseille",
+      "state_province": "",
+      "address_line_2": "Appt 7",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090114",
+    "title": "Appartement S+3 à Bizerte",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1800000.00",
+    "type_field": "For Sale",
+    "ID1": "112",
+    "description": "Propriété de caractère avec beaux volumes, idéale pour recevoir en famille ou entre amis.",
+    "location": {
+      "display_value": "32 Avenue de la République, Ksar Hellal / Monastir",
+      "country": "",
+      "district_city": "Ksar Hellal / Monastir",
+      "latitude": "",
+      "address_line_1": "32 Avenue de la République",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090112",
+    "title": "Maison de maître à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "1278000.00",
+    "type_field": "For Sale",
+    "ID1": "111",
+    "description": "Propriété lumineuse et spacieuse, parfaite pour une famille ou un investissement locatif.",
+    "location": {
+      "display_value": "107 Avenue de Paris, Kelibia / Nabeul",
+      "country": "",
+      "district_city": "Kelibia / Nabeul",
+      "latitude": "",
+      "address_line_1": "107 Avenue de Paris",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090110",
+    "title": "Maison de maître à Nabeul",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "521000.00",
+    "type_field": "For Sale",
+    "ID1": "110",
+    "description": "Beau bien rénové avec goût, alliant charme et modernité dans un quartier prisé.",
+    "location": {
+      "display_value": "47 Rue du Lac, Gremda / Sfax",
+      "country": "",
+      "district_city": "Gremda / Sfax",
+      "latitude": "",
+      "address_line_1": "47 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090108",
+    "title": "Maison traditionnelle à Sfax",
+    "status": "Vendu"
+  },
+  {
+    "Price1": "544000.00",
+    "type_field": "For Sale",
+    "ID1": "109",
+    "description": "Investissement idéal dans une zone à forte demande, rendement locatif assuré.",
+    "location": {
+      "display_value": "109 Avenue de Paris, Monastir Centre / Monastir",
+      "country": "",
+      "district_city": "Monastir Centre / Monastir",
+      "latitude": "",
+      "address_line_1": "109 Avenue de Paris",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090106",
+    "title": "Villa avec jardin à Monastir",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "143000.00",
+    "type_field": "For Sale",
+    "ID1": "108",
+    "description": "Magnifique propriété offrant un cadre de vie exceptionnel avec des finitions haut de gamme.",
+    "location": {
+      "display_value": "58 Rue du Lac, Appt 9, Sakiet Eddaier / Sfax",
+      "country": "",
+      "district_city": "Sakiet Eddaier / Sfax",
+      "latitude": "",
+      "address_line_1": "58 Rue du Lac",
+      "state_province": "",
+      "address_line_2": "Appt 9",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090104",
+    "title": "Studio à vendre à Sfax",
+    "status": "Disponible"
+  },
+  {
+    "Price1": "957000.00",
+    "type_field": "For Sale",
+    "ID1": "107",
+    "description": "Bien immobilier idéalement situé, proche de toutes les commodités et des transports en commun.",
+    "location": {
+      "display_value": "87 Avenue Taïeb Mhiri, Sfax Centre / Sfax",
+      "country": "",
+      "district_city": "Sfax Centre / Sfax",
+      "latitude": "",
+      "address_line_1": "87 Avenue Taïeb Mhiri",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000090102",
+    "title": "Maison de maître à Sfax",
+    "status": "Loué"
+  },
+  {
+    "Floor": "",
+    "User": {},
+    "Rooms1": "",
+    "description": "",
+    "Year_Built": "",
+    "Surface1": "",
+    "Bathrooms1": "",
+    "title": "AQAQAQQAAAAA",
+    "Image": [],
+    "Price1": "1212.00",
+    "type_field": "11",
+    "ID1": "226",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000111002",
+    "status": "En négociation",
+    "image_url": "/api/property-image/4899073000000111002",
+    "image_proxy_url": "/api/property-image/4899073000000111002"
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "6",
+    "description": "villa yassou et nadou à cité el khadhra",
+    "Year_Built": "16-Jan-2023",
+    "Surface1": "",
+    "Bathrooms1": "4",
+    "title": "villa yassou et naddou",
+    "Image": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000098012/Image/download?filepath=1776295848151332_property-4899073000000098012.jpg",
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000098012/Image/download?filepath=1776295848712844_property-4899073000000098012.jpg"
+    ],
+    "Price1": "4000.00",
+    "type_field": "To Rent",
+    "ID1": "225",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "tunis",
+      "state_province": "",
+      "address_line_2": "cité el khadhra",
+      "postal_code": "",
+      "zc_display_value": "tunis, cité el khadhra",
+      "longitude": ""
+    },
+    "ID": "4899073000000098012",
+    "status": "Disponible",
+    "image_url": "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000098012/Image/download?filepath=1776295848151332_property-4899073000000098012.jpg",
+    "image_proxy_url": "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000098012%2FImage%2Fdownload%3Ffilepath%3D1776295848151332_property-4899073000000098012.jpg"
+  },
+  {
+    "Floor": "1",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "1",
+    "description": "oauth scope verify",
+    "Year_Built": "01-Jan-2024",
+    "Surface1": "45",
+    "Bathrooms1": "1",
+    "title": "Scope verify 1776252526739",
+    "Image": [],
+    "Price1": "3333.00",
+    "type_field": "To Rent",
+    "ID1": "216",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "3 Rue Scope",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "3 Rue Scope",
+      "longitude": ""
+    },
+    "ID": "4899073000000098009",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000098009",
+    "image_proxy_url": "/api/property-image/4899073000000098009"
+  },
+  {
+    "Floor": "1",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "1",
+    "description": "oauth scope retest",
+    "Year_Built": "01-Jan-2024",
+    "Surface1": "45",
+    "Bathrooms1": "1",
+    "title": "Scope final test 1776252259440",
+    "Image": [],
+    "Price1": "3333.00",
+    "type_field": "To Rent",
+    "ID1": "215",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "3 Rue Scope",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "3 Rue Scope",
+      "longitude": ""
+    },
+    "ID": "4899073000000098006",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000098006",
+    "image_proxy_url": "/api/property-image/4899073000000098006"
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "5",
+      "ID": "4899073000000080016",
+      "zc_display_value": "5"
+    },
+    "Rooms1": "",
+    "description": "aaaaaaaaaaaaaaaaa",
+    "Year_Built": "",
+    "Surface1": "",
+    "Bathrooms1": "",
+    "title": "aaaaaaaaaaaaaaa",
+    "Image": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000097004/Image/download?filepath=1776273253076793_Capture_d_écran_2026-04-08_215508.png"
+    ],
+    "Price1": "800.00",
+    "type_field": "qqqqqq",
+    "ID1": "223",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "",
+      "longitude": ""
+    },
+    "ID": "4899073000000097004",
+    "status": "Loué",
+    "image_url": "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000097004/Image/download?filepath=1776273253076793_Capture_d_écran_2026-04-08_215508.png",
+    "image_proxy_url": "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000097004%2FImage%2Fdownload%3Ffilepath%3D1776273253076793_Capture_d_%25C3%25A9cran_2026-04-08_215508.png"
+  },
+  {
+    "Floor": "2",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "2",
+    "description": "creation test local api",
+    "Year_Built": "01-Jan-2024",
+    "Surface1": "88",
+    "Bathrooms1": "1",
+    "title": "Test via local API",
+    "Image": [],
+    "Price1": "1111.00",
+    "type_field": "Location",
+    "ID1": "211",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "1 Rue Local API",
+      "state_province": "",
+      "address_line_2": "",
+      "postal_code": "",
+      "zc_display_value": "1 Rue Local API",
+      "longitude": ""
+    },
+    "ID": "4899073000000096005",
+    "status": "Disponible",
+    "image_url": "/api/property-image/4899073000000096005",
+    "image_proxy_url": "/api/property-image/4899073000000096005"
+  },
+  {
+    "Floor": "",
+    "User": {
+      "ID1": "15",
+      "ID": "4899073000000098003",
+      "zc_display_value": "15"
+    },
+    "Rooms1": "6",
+    "description": "villa yassou",
+    "Year_Built": "16-Jan-2023",
+    "Surface1": "",
+    "Bathrooms1": "7",
+    "title": "villa yassou",
+    "Image": [
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000095005/Image/download?filepath=1776295490616538_property-4899073000000095005.jpg",
+      "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000095005/Image/download?filepath=1776295492043350_property-4899073000000095005.jpg"
+    ],
+    "Price1": "4000.00",
+    "type_field": "To Rent",
+    "ID1": "224",
+    "location": {
+      "country": "",
+      "district_city": "",
+      "latitude": "",
+      "address_line_1": "nabeul, hammamet",
+      "state_province": "",
+      "address_line_2": "hammamet centre",
+      "postal_code": "",
+      "zc_display_value": "nabeul, hammamet, hammamet centre",
+      "longitude": ""
+    },
+    "ID": "4899073000000095005",
+    "status": "Disponible",
+    "image_url": "/api/v2.1/2demonexflow/gestion-immobili-re/report/All_Properties/4899073000000095005/Image/download?filepath=1776295490616538_property-4899073000000095005.jpg",
+    "image_proxy_url": "/api/media?url=https%3A%2F%2Fcreator.zoho.com%2Fapi%2Fv2.1%2F2demonexflow%2Fgestion-immobili-re%2Freport%2FAll_Properties%2F4899073000000095005%2FImage%2Fdownload%3Ffilepath%3D1776295490616538_property-4899073000000095005.jpg"
+  }
+]

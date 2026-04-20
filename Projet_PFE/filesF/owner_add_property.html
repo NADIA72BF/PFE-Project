@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Ajouter un bien</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .error-alert {
+      background-color: #fce4ec;
+      border-left: 4px solid #ea4335;
+      color: #c62828;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      display: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .error-alert.show {
+      display: block;
+    }
+
+    .success-alert {
+      background-color: #e8f5e9;
+      border-left: 4px solid #34a853;
+      color: #2e7d32;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      display: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .success-alert.show {
+      display: block;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+
+    .btn.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .btn.loading .loading-spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #propertyForm {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .flabel {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .finput, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .finput:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .finput::placeholder {
+      color: #999;
+    }
+
+    textarea.ftextarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-field {
+      margin-bottom: 20px;
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .grid2 {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      #propertyForm {
+        padding: 20px;
+      }
+    }
+
+    .image-upload-area {
+      border: 2px dashed #667eea;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #f8f9ff;
+    }
+
+    .image-upload-area:hover {
+      border-color: #5568d3;
+      background: #f0f2ff;
+    }
+
+    .image-upload-area.has-image {
+      border-color: #34a853;
+      background: #f1f8f4;
+    }
+
+    .upload-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .upload-text {
+      font-size: 14px;
+      color: #667eea;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .upload-subtext {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .image-preview-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 10px;
+    }
+
+    .image-preview-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #dbe2ff;
+      background: #fff;
+      aspect-ratio: 1 / 1;
+    }
+
+    .image-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-preview-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 22px;
+      height: 22px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.65);
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .upload-count {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #5060b8;
+      font-weight: 600;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-o {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      width: 100%;
+    }
+
+    .btn-o:hover:not(.loading):not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-o:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav nav-o">
+    <span class="nl">Ajouter un bien</span>
+    <div class="nr"><a href="user_dashboard.html" class="nlink">← Tableau de bord</a></div>
+  </div>
+
+  <div class="sec">
+    <div id="errorMessage" class="error-alert"></div>
+    <div id="successMessage" class="success-alert"></div>
+
+    <form id="propertyForm">
+      <div class="grid2">
+        <!-- Left Column -->
+        <div>
+          <div class="form-field">
+            <div class="flabel">Titre du bien *</div>
+            <input id="propertyTitle" class="finput" type="text" placeholder="Villa avec jardin" required>
+          </div>
+          <div class="form-field">
+            <div class="flabel">Description</div>
+            <textarea id="propertyDescription" class="finput ftextarea" placeholder="Décrivez votre propriété..."></textarea>
+          </div>
+          <div class="form-field">
+            <div class="flabel">Prix (DT) *</div>
+            <input id="propertyPrice" class="finput" type="number" placeholder="250000" step="0.01" required>
+          </div>
+          <div class="form-field">
+            <div class="flabel">Statut *</div>
+            <select id="propertyStatus" class="finput" required>
+              <option value="">-- Sélectionner --</option>
+              <option value="Disponible">Disponible</option>
+              <option value="En négociation">En négociation</option>
+              <option value="Loué">Loué</option>
+              <option value="Vendu">Vendu</option>
+              <option value="Retiré du marché">Retiré du marché</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <div class="flabel">Type *</div>
+            <select id="propertyType" class="finput" required>
+              <option value="">-- Sélectionner --</option>
+              <option value="To Rent">Location</option>
+              <option value="For Sale">Vente</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div>
+          <div class="form-field">
+            <div class="flabel">Adresse - Ligne 1</div>
+            <input id="propertyAddressLine1" class="finput" type="text" placeholder="123 Rue de la Paix">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Adresse - Ligne 2</div>
+            <input id="propertyAddressLine2" class="finput" type="text" placeholder="Appartement 5">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Ville / District</div>
+            <input id="propertyCityDistrict" class="finput" type="text" placeholder="Tunis">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Surface (m²)</div>
+            <input id="propertySurface" class="finput" type="number" placeholder="150">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Étage</div>
+            <input id="propertyFloor" class="finput" type="number" placeholder="3">
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top: 16px">
+        <!-- Left Column -->
+        <div>
+          <div class="form-field">
+            <div class="flabel">Chambres</div>
+            <input id="propertyRooms" class="finput" type="number" placeholder="3">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Salles de bain</div>
+            <input id="propertyBathrooms" class="finput" type="number" placeholder="2">
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div>
+          <div class="form-field">
+            <div class="flabel">Année de construction</div>
+            <input id="propertyYearBuilt" class="finput" type="date">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <div class="flabel">Photos</div>
+        <div class="image-upload-area" id="uploadArea">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">Cliquez pour uploader une ou plusieurs photos</div>
+          <div class="upload-subtext">ou glissez-déposez plusieurs images (max 10)</div>
+          <div id="imagePreviewGrid" class="image-preview-grid"></div>
+          <div id="uploadCount" class="upload-count" style="display:none"></div>
+        </div>
+        <input id="propertyImage" type="file" accept="image/*" multiple style="display:none">
+      </div>
+
+      <button type="submit" class="btn btn-o" style="margin-top:16px;width:100%">
+        <span class="loading-spinner"></span>
+        Soumettre pour approbation
+      </button>
+    </form>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Immobilier</span>
+    <div class="footer-links"><a href="contact.html" class="footer-link">Contact</a></div>
+  </div>
+
+  <script src="auth-helper.js"></script>
+  <script>
+    // ✅ Image upload handling
+    const uploadArea = document.getElementById('uploadArea');
+    const propertyImage = document.getElementById('propertyImage');
+    const imagePreviewGrid = document.getElementById('imagePreviewGrid');
+    const uploadCount = document.getElementById('uploadCount');
+    const MAX_IMAGES = 10;
+    let selectedImages = [];
+
+    // Click to upload
+    uploadArea.addEventListener('click', () => propertyImage.click());
+
+    // File selected
+    propertyImage.addEventListener('change', async (e) => {
+      if (e.target.files.length > 0) {
+        await handleImageSelection(Array.from(e.target.files));
+        propertyImage.value = '';
+      }
+    });
+
+    // Drag & drop
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.style.borderColor = '#667eea';
+      uploadArea.style.background = '#f0f2ff';
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.style.borderColor = '#ddd';
+      uploadArea.style.background = 'white';
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer.files.length > 0) {
+        handleImageSelection(Array.from(e.dataTransfer.files));
+      }
+    });
+
+    imagePreviewGrid.addEventListener('click', (e) => {
+      const removeBtn = e.target.closest('.image-preview-remove');
+      if (!removeBtn) return;
+      const index = Number(removeBtn.dataset.index);
+      if (Number.isInteger(index) && index >= 0 && index < selectedImages.length) {
+        selectedImages.splice(index, 1);
+        renderImagePreviews();
+      }
+    });
+
+    async function handleImageSelection(files) {
+      const messages = [];
+
+      for (const file of files) {
+        if (selectedImages.length >= MAX_IMAGES) {
+          messages.push(`Maximum ${MAX_IMAGES} images atteint.`);
+          break;
+        }
+
+        if (!file.type.startsWith('image/')) {
+          messages.push(`${file.name}: format non supporté.`);
+          continue;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          messages.push(`${file.name}: dépasse 5 MB.`);
+          continue;
+        }
+
+        try {
+          const dataUrl = await readFileAsDataUrl(file);
+          selectedImages.push(dataUrl);
+        } catch (err) {
+          messages.push(`${file.name}: lecture impossible.`);
+        }
+      }
+
+      renderImagePreviews();
+
+      if (messages.length > 0) {
+        alert(messages.join('\n'));
+      }
+    }
+
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('read-failed'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderImagePreviews() {
+      imagePreviewGrid.innerHTML = selectedImages
+        .map((src, index) => `
+          <div class="image-preview-item">
+            <img src="${src}" alt="Photo ${index + 1}">
+            <button type="button" class="image-preview-remove" data-index="${index}" aria-label="Supprimer la photo">&times;</button>
+          </div>
+        `)
+        .join('');
+
+      if (selectedImages.length > 0) {
+        uploadArea.classList.add('has-image');
+        uploadCount.style.display = 'block';
+        uploadCount.textContent = `${selectedImages.length} photo(s) sélectionnée(s)`;
+      } else {
+        uploadArea.classList.remove('has-image');
+        uploadCount.style.display = 'none';
+        uploadCount.textContent = '';
+      }
+    }
+
+    // ✅ Vérifier l'authentification au chargement
+    document.addEventListener('DOMContentLoaded', async () => {
+      const authStatus = await requireAuth();
+      if (authStatus.loggedIn) {
+        console.log(`✅ Bienvenue ${authStatus.user.name || authStatus.user.email}`);
+        updateNavbarAuth();
+      }
+    });
+
+    // ✅ Soumission du formulaire
+    document.getElementById('propertyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('propertyTitle').value.trim();
+      const description = document.getElementById('propertyDescription').value.trim();
+      const type = document.getElementById('propertyType').value;
+      const price = document.getElementById('propertyPrice').value;
+      const status = document.getElementById('propertyStatus').value;
+      const address_line_1 = document.getElementById('propertyAddressLine1').value.trim();
+      const address_line_2 = document.getElementById('propertyAddressLine2').value.trim();
+      const city_district = document.getElementById('propertyCityDistrict').value.trim();
+      const bedrooms = document.getElementById('propertyRooms').value;
+      const bathrooms = document.getElementById('propertyBathrooms').value;
+      const surface = document.getElementById('propertySurface').value;
+      const floor = document.getElementById('propertyFloor').value;
+      const year_built = document.getElementById('propertyYearBuilt').value;
+
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+      const submitBtn = e.target.querySelector('button');
+
+      // Reset messages
+      errorMessage.classList.remove('show');
+      successMessage.classList.remove('show');
+
+      // Validation
+      if (!title || !price || !type || !status) {
+        errorMessage.textContent = 'Veuillez remplir tous les champs requis (*): Titre, Prix, Type et Statut';
+        errorMessage.classList.add('show');
+        return;
+      }
+
+      const hasAnyLocationPart = !!(address_line_1 || address_line_2 || city_district);
+
+      try {
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+
+        const response = await fetch('/api/properties/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            type,
+            price,
+            status,
+            address_line_1,
+            address_line_2,
+            city_district,
+            location: hasAnyLocationPart ? [address_line_1, address_line_2, city_district].filter(Boolean).join(', ') : null,
+            bedrooms: bedrooms || null,
+            bathrooms: bathrooms || null,
+            surface: surface || null,
+            floor: floor || null,
+            year_built: year_built || null,
+            image: selectedImages[0] || null,
+            images: selectedImages
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          if (data.localOnly) {
+            successMessage.textContent = '✓ Propriété enregistrée localement (quota Zoho atteint). Elle sera visible sur le site et synchronisée quand le quota se réinitialise. Redirection...';
+            successMessage.classList.add('show');
+            setTimeout(() => {
+              window.location.href = 'user_dashboard.html';
+            }, 4000);
+          } else {
+            const imageFailures = Array.isArray(data.imageUploads)
+              ? data.imageUploads.filter(item => !item.uploaded)
+              : [];
+
+            if (imageFailures.length > 0 || (data.imageUpload && data.imageUpload.uploaded === false)) {
+              const firstFailure = imageFailures[0] || data.imageUpload;
+              errorMessage.textContent = `⚠️ Propriété créée, mais certaines images n'ont pas été uploadées vers Zoho: ${firstFailure.reason || 'raison inconnue'}`;
+              errorMessage.classList.add('show');
+              successMessage.textContent = '✓ Propriété créée avec succès. Redirection...';
+              successMessage.classList.add('show');
+              setTimeout(() => {
+                window.location.href = 'user_dashboard.html';
+              }, 3000);
+            } else {
+              successMessage.textContent = '✓ Propriété créée avec succès! Redirection...';
+              successMessage.classList.add('show');
+              setTimeout(() => {
+                window.location.href = 'user_dashboard.html';
+              }, 2000);
+            }
+          }
+        } else {
+          errorMessage.textContent = data.error || 'Erreur lors de la création de la propriété';
+          errorMessage.classList.add('show');
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
+        }
+      } catch (error) {
+        errorMessage.textContent = 'Erreur réseau: ' + error.message;
+        errorMessage.classList.add('show');
+        console.error('Erreur:', error);
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+
+</body>
+</html>

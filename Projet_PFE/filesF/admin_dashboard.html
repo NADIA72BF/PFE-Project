@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Admin — Dashboard</title>
+  <link rel="stylesheet" href="styles_admin.css">
+</head>
+<body>
+
+  <div class="nav">
+    <span class="nl">GI Admin Panel</span>
+    <div class="nr">
+      <a href="admin_dashboard.html" class="nlink">Dashboard</a>
+      <a href="admin_users.html" class="nlink">Users</a>
+      <a href="admin_users.html" class="nlink">Paiements</a>
+      <a href="user_contracts.html" class="nlink">Contrats</a>
+      <a href="admin_chatbot.html" class="nlink">Chatbot</a>
+      <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">AD</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="stitle">Dashboard administrateur</div>
+    <div class="grid4" style="margin-bottom:12px">
+      <div class="metric"><div class="mnum">247</div><div class="mlabel">Utilisateurs</div></div>
+      <div class="metric"><div class="mnum">89</div><div class="mlabel">Biens actifs</div></div>
+      <div class="metric"><div class="mnum">156</div><div class="mlabel">Réservations</div></div>
+      <div class="metric"><div class="mnum">48 200 DT</div><div class="mlabel">CA ce mois</div></div>
+    </div>
+    <div class="grid2">
+      <div>
+        <div class="stitle">Activité récente</div>
+        <div class="notif"><div class="notif-dot"></div><div><div class="notif-text">Nouvelle réservation — Appartement Lac</div><div class="notif-time">Il y a 5 min</div></div></div>
+        <div class="notif"><div class="notif-dot" style="background:#854F0B"></div><div><div class="notif-text">Bien en attente — Villa Tunis</div><div class="notif-time">Il y a 15 min</div></div></div>
+        <div class="notif"><div class="notif-dot" style="background:#3B6D11"></div><div><div class="notif-text">Paiement reçu — Contrat #001</div><div class="notif-time">Il y a 1h</div></div></div>
+      </div>
+      <div>
+        <div class="stitle">Biens en attente</div>
+        <table class="table">
+          <tr><th>Titre</th><th>Propriétaire</th><th>Action</th></tr>
+          <tr><td>Villa jardin</td><td>Sara M.</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Traiter</button></td></tr>
+          <tr><td>Appart. Sfax</td><td>Mohamed K.</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Traiter</button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Admin</span>
+    <div class="footer-links"><a href="#" class="footer-link">Déconnexion</a></div>
+  </div>
+
+</body>
+</html>

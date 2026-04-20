@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Mes contrats</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--color-background-tertiary,#f5f5f5);color:var(--color-text-primary,#2D2D2D)}
+.mk{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg,12px);overflow:hidden;background:var(--color-background-primary,#fff)}
+.nav{padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.nav-u{background:#2E86AB}
+.nl{color:#fff;font-size:12px;font-weight:500}
+.nr{display:flex;gap:8px;align-items:center}
+.nlink{color:rgba(255,255,255,0.8);font-size:10px;text-decoration:none}
+.sec{padding:12px 14px}
+.stitle{font-size:12px;font-weight:500;color:var(--color-text-primary,#2D2D2D);margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{background:var(--color-background-secondary,#f0f0f0);border-radius:var(--border-radius-md,8px);padding:10px;text-align:center}
+.mnum{font-size:16px;font-weight:500}
+.mnum-u{color:#2E86AB}
+.mlabel{font-size:9px;color:var(--color-text-secondary,#888);margin-top:2px}
+.table{width:100%;font-size:10px;border-collapse:collapse}
+.table th{text-align:left;color:var(--color-text-secondary,#888);padding:4px 6px;border-bottom:0.5px solid var(--color-border-tertiary,#ddd);font-weight:500}
+.table td{padding:5px 6px;border-bottom:0.5px solid var(--color-border-tertiary,#ddd);color:var(--color-text-primary,#2D2D2D)}
+.status{display:inline-block;font-size:9px;padding:2px 6px;border-radius:3px}
+.s-conf{background:#EAF3DE;color:#3B6D11}
+.s-pend{background:#FAEEDA;color:#633806}
+.s-canc{background:#FCEBEB;color:#791F1F}
+.btn{display:inline-block;font-size:10px;padding:5px 10px;border-radius:var(--border-radius-md,8px);font-weight:500;cursor:pointer;border:none}
+.btn-u{background:#2E86AB;color:#fff}
+.btn-out{background:transparent;border:0.5px solid var(--color-border-tertiary,#ddd);color:var(--color-text-primary,#2D2D2D)}
+.contract-card{border:0.5px solid var(--color-border-tertiary,#ddd);border-radius:var(--border-radius-md,8px);padding:10px;margin-bottom:8px;background:var(--color-background-primary,#fff)}
+.contract-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.contract-title{font-size:11px;font-weight:500;color:var(--color-text-primary,#2D2D2D)}
+.contract-detail{font-size:9px;color:var(--color-text-secondary,#888);margin-bottom:4px}
+.footer{background:#2D2D2D;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.footer-logo{color:#fff;font-size:12px;font-weight:500}
+.footer-links{display:flex;gap:10px}
+.footer-link{color:rgba(255,255,255,0.6);font-size:10px;text-decoration:none}
+.divider{height:0.5px;background:var(--color-border-tertiary,#ddd);margin:0 14px}
+</style>
+</head>
+<body>
+  <div class="mk">
+    <div class="nav nav-u">
+      <span class="nl">Mes contrats</span>
+      <div class="nr">
+        <a href="user_dashboard.html" class="nlink">← Tableau de bord</a>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="grid2" style="margin-bottom:12px">
+        <div class="metric"><div class="mnum mnum-u">3</div><div class="mlabel">Contrats actifs</div></div>
+        <div class="metric"><div class="mnum" style="color:#633806">1</div><div class="mlabel">En attente</div></div>
+      </div>
+
+      <div class="stitle">Mes contrats</div>
+
+      <div class="contract-card">
+        <div class="contract-header">
+          <span class="contract-title">Contrat #001 — Location</span>
+          <span class="status s-conf">Actif</span>
+        </div>
+        <div class="contract-detail">Bien : Appartement Lac — Tunis</div>
+        <div class="contract-detail">Date : 01/03/2026 → 01/03/2027</div>
+        <div class="contract-detail">Loyer : 1 200 DT / mois</div>
+        <div style="margin-top:8px;display:flex;gap:6px">
+          <button class="btn btn-u" style="font-size:9px;padding:3px 8px">Télécharger PDF</button>
+          <button class="btn btn-out" style="font-size:9px;padding:3px 8px">Voir détails</button>
+        </div>
+      </div>
+
+      <div class="contract-card">
+        <div class="contract-header">
+          <span class="contract-title">Contrat #002 — Location</span>
+          <span class="status s-pend">En attente</span>
+        </div>
+        <div class="contract-detail">Bien : Studio Sousse</div>
+        <div class="contract-detail">Date : 15/04/2026 → 15/04/2027</div>
+        <div class="contract-detail">Loyer : 650 DT / mois</div>
+        <div style="margin-top:8px;display:flex;gap:6px">
+          <button class="btn btn-out" style="font-size:9px;padding:3px 8px">En attente de signature</button>
+        </div>
+      </div>
+
+      <div class="divider" style="margin:10px 0"></div>
+
+      <div class="stitle">Vue tableau</div>
+      <table class="table">
+        <tr><th>Contrat</th><th>Type</th><th>Bien</th><th>Date</th><th>Statut</th><th>PDF</th></tr>
+        <tr>
+          <td>#001</td><td>Location</td><td>Appart. Lac</td><td>01/03/2026</td>
+          <td><span class="status s-conf">Actif</span></td>
+          <td><button class="btn btn-u" style="font-size:9px;padding:2px 6px">PDF</button></td>
+        </tr>
+        <tr>
+          <td>#002</td><td>Location</td><td>Studio Sousse</td><td>15/04/2026</td>
+          <td><span class="status s-pend">En attente</span></td>
+          <td>—</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <span class="footer-logo">GI Immobilier</span>
+      <div class="footer-links">
+        <a href="contact.html" class="footer-link">Contact</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

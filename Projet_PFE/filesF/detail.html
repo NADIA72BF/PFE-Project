@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Détails complets du bien immobilier - GI Immobilier">
+  <title>GI Immobilier — Appartement Lac à Tunis</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <h1 class="nav-logo">GI Immobilier</h1>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="annonces.html" class="nav-link">← Retour aux annonces</a>
+    </div>
+    <a href="login.html" class="nav-btn">Connexion</a>
+  </nav>
+
+  <div class="detail-img">🏠 Galerie photos du bien</div>
+
+  <article class="detail-body">
+    <p style="text-align:center;color:var(--gray-600);padding:32px">Chargement des détails...</p>
+  </article>
+
+  <div class="map-placeholder">🗺️ Carte Google Maps — Localisation du bien</div>
+
+  <!-- ✅ Reservation Modal -->
+  <div id="reservationModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:12px;padding:32px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <h2 style="font-size:24px;font-weight:700;margin:0">Réserver cette propriété</h2>
+        <button id="closeModal" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-400)">&times;</button>
+      </div>
+
+      <div id="reservationMessage" class="error-alert" style="display:none;margin-bottom:16px;padding:12px 16px;border-radius:4px"></div>
+
+      <form id="reservationForm" style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--gray-900)">Date de début *</label>
+          <input id="reservationStartDate" type="date" required style="width:100%;padding:12px;border:1px solid var(--gray-300);border-radius:8px;font-size:14px">
+        </div>
+
+        <div>
+          <label style="display:block;font-weight:600;margin-bottom:8px;color:var(--gray-900)">Date de fin *</label>
+          <input id="reservationEndDate" type="date" required style="width:100%;padding:12px;border:1px solid var(--gray-300);border-radius:8px;font-size:14px">
+        </div>
+
+        <div style="background:var(--gray-50);padding:12px;border-radius:8px;border-left:4px solid var(--primary)">
+          <p style="font-size:12px;color:var(--gray-600);margin:0">
+            📅 Durée estimée: <span id="estimatedDuration" style="font-weight:600;color:var(--primary)">—</span>
+          </p>
+        </div>
+
+        <button type="submit" style="background:linear-gradient(135deg,var(--primary),var(--accent));color:white;padding:12px 24px;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;margin-top:8px">
+          Confirmer la réservation
+        </button>
+
+        <p style="font-size:12px;color:var(--gray-600);text-align:center;margin:0">
+          Une notification sera envoyée au propriétaire pour validation
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ✅ Modal CSS -->
+  <style>
+    #reservationModal[style*="display: flex"] {
+      display: flex !important;
+    }
+
+    .error-alert {
+      background-color: #fce4ec;
+      border-left: 4px solid #ea4335;
+      color: #c62828;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .success-alert {
+      background-color: #e8f5e9;
+      border-left: 4px solid #34a853;
+      color: #2e7d32;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  </style>
+
+  <section style="padding:24px;max-width:600px;margin:0 auto;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--gray-300);margin-top:-20px;position:relative;z-index:1">
+    <div id="actionButtons" style="display:flex;gap:12px;margin-bottom:24px">
+      <button class="cta-btn" data-action="buy-property" data-property-id="" style="flex:1;border:none;cursor:pointer">Acheter</button>
+      <button class="cta-btn" data-action="rent-property" data-property-id="" style="flex:1;border:none;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:white">Louer</button>
+      <button class="cta-btn" data-action="visit-property" data-property-id="" style="flex:1;border:none;cursor:pointer">Visiter</button>
+    </div>
+
+    <h3 style="font-size:16px;font-weight:700;color:var(--gray-900);margin-bottom:16px">Demander une visite</h3>
+    <form class="contact-form" style="padding:0;background:none;box-shadow:none;max-width:none">
+      <div class="form-field">
+        <label class="form-label" for="visitor-name">Votre nom</label>
+        <input id="visitor-name" class="form-input" type="text" placeholder="Ahmed Ben Ali" required>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="visit-date">Date souhaitée</label>
+        <input id="visit-date" class="form-input" type="date" required>
+      </div>
+      <button type="submit" class="cta-btn" style="margin:16px 0 0;border:none;cursor:pointer;max-width:none;width:100%">Envoyer la demande de visite</button>
+    </form>
+  </section>
+
+  <footer class="footer" style="margin-top:32px">
+    <div>
+      <span class="footer-logo">GI Immobilier</span>
+      <p style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">La meilleure plateforme immobilière de Tunisie</p>
+    </div>
+    <nav class="footer-links">
+      <a href="contact.html" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Conditions d'utilisation</a>
+      <a href="#" class="footer-link">Politique de confidentialité</a>
+    </nav>
+  </footer>
+  <script src="auth-helper.js"></script>
+  <script src="detail.js"></script>
+</body>
+</html>

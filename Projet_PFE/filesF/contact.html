@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contactez-nous pour toute question - GI Immobilier">
+  <title>GI Immobilier — Nous Contacter</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <h1 class="nav-logo">GI Immobilier</h1>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="annonces.html" class="nav-link">Annonces</a>
+      <a href="apropos.html" class="nav-link">À propos</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <a href="login.html" class="nav-btn">Connexion</a>
+  </nav>
+
+  <section class="section" style="text-align:center;padding:40px 24px">
+    <h2 style="font-size:28px;font-weight:700;color:var(--gray-900);margin-bottom:12px">Nous Contacter</h2>
+    <p style="font-size:15px;color:var(--gray-600);max-width:500px;margin:0 auto">Vous avez une question ? Notre équipe est là pour vous aider. N'hésitez pas à nous contacter.</p>
+  </section>
+
+  <form class="contact-form">
+    <h3 style="font-size:16px;font-weight:700;color:var(--gray-900);margin-bottom:20px">Envoyez-nous un message</h3>
+
+    <div class="form-row">
+      <div>
+        <label class="form-label" for="name">Nom</label>
+        <input id="name" class="form-input" type="text" placeholder="Votre nom" required>
+      </div>
+      <div>
+        <label class="form-label" for="contact-email">Email</label>
+        <input id="contact-email" class="form-input" type="email" placeholder="email@exemple.com" required>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="phone">Téléphone</label>
+      <input id="phone" class="form-input" type="tel" placeholder="+216 XX XXX XXX">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="message">Message</label>
+      <textarea id="message" class="form-input form-textarea" placeholder="Votre message..." required></textarea>
+    </div>
+
+    <button type="submit" class="form-submit">Envoyer le message</button>
+  </form>
+
+  <section class="contact-info">
+    <article class="contact-item">
+      <div class="contact-item-label">📍 Adresse</div>
+      <div class="contact-item-val">Tunis, Tunisie</div>
+    </article>
+    <article class="contact-item">
+      <div class="contact-item-label">📞 Téléphone</div>
+      <div class="contact-item-val">+216 29 905 835</div>
+    </article>
+    <article class="contact-item">
+      <div class="contact-item-label">✉️ Email</div>
+      <div class="contact-item-val">contact@giimmobilier.tn</div>
+    </article>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <span class="footer-logo">GI Immobilier</span>
+      <p style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">La meilleure plateforme immobilière de Tunisie</p>
+    </div>
+    <nav class="footer-links">
+      <a href="contact.html" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Conditions d'utilisation</a>
+      <a href="#" class="footer-link">Politique de confidentialité</a>
+    </nav>
+  </footer>
+
+</body>
+</html>

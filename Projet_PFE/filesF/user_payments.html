@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Mes paiements</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--color-background-tertiary,#f5f5f5);color:var(--color-text-primary,#2D2D2D)}
+.mk{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg,12px);overflow:hidden;background:var(--color-background-primary,#fff)}
+.nav{padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.nav-u{background:#2E86AB}
+.nl{color:#fff;font-size:12px;font-weight:500}
+.nr{display:flex;gap:8px;align-items:center}
+.nlink{color:rgba(255,255,255,0.8);font-size:10px;text-decoration:none}
+.sec{padding:12px 14px}
+.stitle{font-size:12px;font-weight:500;color:var(--color-text-primary,#2D2D2D);margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{background:var(--color-background-secondary,#f0f0f0);border-radius:var(--border-radius-md,8px);padding:10px;text-align:center}
+.mnum{font-size:16px;font-weight:500}
+.mnum-u{color:#2E86AB}
+.mlabel{font-size:9px;color:var(--color-text-secondary,#888);margin-top:2px}
+.pay-card{border:0.5px solid var(--color-border-tertiary,#ddd);border-radius:var(--border-radius-md,8px);padding:10px;margin-bottom:8px;background:var(--color-background-primary,#fff)}
+.pay-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pay-title{font-size:11px;font-weight:500;color:var(--color-text-primary,#2D2D2D)}
+.pay-amount{font-size:13px;font-weight:500;color:#2E86AB}
+.pay-detail{font-size:9px;color:var(--color-text-secondary,#888)}
+.status{display:inline-block;font-size:9px;padding:2px 6px;border-radius:3px}
+.s-conf{background:#EAF3DE;color:#3B6D11}
+.s-pend{background:#FAEEDA;color:#633806}
+.s-paid{background:#EAF3DE;color:#3B6D11}
+.btn{display:inline-block;font-size:10px;padding:5px 10px;border-radius:var(--border-radius-md,8px);font-weight:500;cursor:pointer;border:none}
+.btn-u{background:#2E86AB;color:#fff}
+.footer{background:#2D2D2D;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.footer-logo{color:#fff;font-size:12px;font-weight:500}
+.footer-links{display:flex;gap:10px}
+.footer-link{color:rgba(255,255,255,0.6);font-size:10px;text-decoration:none}
+.divider{height:0.5px;background:var(--color-border-tertiary,#ddd);margin:0 14px}
+</style>
+</head>
+<body>
+  <div class="mk">
+    <div class="nav nav-u">
+      <span class="nl">Mes paiements</span>
+      <div class="nr">
+        <a href="user_dashboard.html" class="nlink">← Tableau de bord</a>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="grid2" style="margin-bottom:12px">
+        <div class="metric"><div class="mnum mnum-u">450 DT</div><div class="mlabel">Total payé</div></div>
+        <div class="metric"><div class="mnum" style="color:#854F0B">200 DT</div><div class="mlabel">En attente</div></div>
+      </div>
+
+      <div class="stitle">Historique des paiements</div>
+
+      <div class="pay-card">
+        <div class="pay-top">
+          <span class="pay-title">Loyer Mars — Appartement Lac</span>
+          <span class="pay-amount">1 200 DT</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="pay-detail">Contrat #001 — 01/03/2026</div>
+          <span class="status s-paid">Payé</span>
+        </div>
+      </div>
+
+      <div class="pay-card">
+        <div class="pay-top">
+          <span class="pay-title">Acompte — Studio Sousse</span>
+          <span class="pay-amount">400 DT</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="pay-detail">Contrat #002 — 15/04/2026</div>
+          <span class="status s-pend">En attente</span>
+        </div>
+        <div style="margin-top:8px">
+          <button class="btn btn-u">Payer maintenant</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-logo">GI Immobilier</span>
+      <div class="footer-links">
+        <a href="contact.html" class="footer-link">Contact</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

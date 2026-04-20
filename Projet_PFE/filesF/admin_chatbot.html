@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Admin — Supervision Chatbot</title>
+  <link rel="stylesheet" href="styles_admin.css">
+</head>
+<body>
+
+  <div class="nav">
+    <span class="nl">Supervision du chatbot Nexia</span>
+    <div class="nr"><a href="admin_dashboard.html" class="nlink">← Dashboard</a></div>
+  </div>
+
+  <div class="sec">
+    <div class="grid4" style="margin-bottom:12px">
+      <div class="metric"><div class="mnum">1 247</div><div class="mlabel">Conversations</div></div>
+      <div class="metric"><div class="mnum">87%</div><div class="mlabel">Précision NLP</div></div>
+      <div class="metric"><div class="mnum" style="color:#854F0B">13%</div><div class="mlabel">Non compris</div></div>
+      <div class="metric"><div class="mnum">2.3s</div><div class="mlabel">Temps réponse</div></div>
+    </div>
+    <div class="grid2">
+      <div>
+        <div class="stitle">Dernières conversations</div>
+        <div class="chat-bubble">Show me available properties</div>
+        <div class="chat-bubble chat-bubble-bot">Here are 3 available properties...</div>
+        <div class="chat-bubble" style="margin-top:6px">Quels biens sont disponibles à Tunis?</div>
+        <div class="chat-bubble chat-bubble-bot">Voici 2 biens disponibles à Tunis...</div>
+      </div>
+      <div>
+        <div class="stitle">Intentions non comprises</div>
+        <table class="table">
+          <tr><th>Message</th><th>Fréquence</th></tr>
+          <tr><td>"prix négociable?"</td><td>12x</td></tr>
+          <tr><td>"visite virtuelle"</td><td>8x</td></tr>
+          <tr><td>"garanties locatives"</td><td>5x</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Admin</span>
+    <div class="footer-links"><a href="admin_dashboard.html" class="footer-link">Dashboard</a></div>
+  </div>
+
+</body>
+</html>

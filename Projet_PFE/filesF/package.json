@@ -1,0 +1,19 @@
+{
+  "name": "filesf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api-proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "form-data": "^4.0.5",
+    "node-fetch": "^2.7.0"
+  }
+}

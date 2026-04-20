@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Tableau de bord</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- NAV UNIFIÉE -->
+  <div class="nav-unified">
+    <span class="nl">GI Immobilier</span>
+    <div class="nr">
+      <a href="index.html" class="nlink">Accueil</a>
+      <a href="annonces.html" class="nlink">Annonces</a>
+      <a href="user_reservations.html" class="nlink">Mes réservations</a>
+      <a href="user_payments.html" class="nlink">Mes achats</a>
+      <a href="user_reservations.html" class="nlink">Réservations propriétaire</a>
+      <a href="user_payments.html" class="nlink">Revenus</a>
+      <div class="avatar-u">GI</div>
+    </div>
+  </div>
+
+  <div class="db-wrapper">
+
+    <!-- ── MÉTRIQUES UNIFIÉES ── -->
+    <div class="db-section">
+      <div class="db-section-title">Vue d'ensemble</div>
+      <div class="db-metrics">
+        <!-- Côté utilisateur -->
+        <div class="metric-u">
+          <div class="mnum">2</div>
+          <div class="mlabel">Mes réservations</div>
+        </div>
+        <div class="metric-u">
+          <div class="mnum">1</div>
+          <div class="mlabel">Mes achats</div>
+        </div>
+        <div class="metric-u">
+          <div class="mnum">3</div>
+          <div class="mlabel">Mes contrats</div>
+        </div>
+        <div class="metric-u">
+          <div class="mnum">450 DT</div>
+          <div class="mlabel">Montant payé</div>
+        </div>
+        <!-- Côté propriétaire -->
+        <div class="metric-o">
+          <div class="mnum" id="count-biens">4</div>
+          <div class="mlabel">Mes biens</div>
+        </div>
+        <div class="metric-o">
+          <div class="mnum">6</div>
+          <div class="mlabel">Réservations reçues</div>
+        </div>
+        <div class="metric-o">
+          <div class="mnum">2 450 DT</div>
+          <div class="mlabel">Revenus ce mois</div>
+        </div>
+        <div class="metric-o">
+          <div class="mnum">92%</div>
+          <div class="mlabel">Taux d'occupation</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DEUX COLONNES : RÉSERVATIONS + BIENS ── -->
+    <div class="db-cols">
+
+      <!-- COLONNE GAUCHE : réservations & contrats utilisateur -->
+      <div class="db-col">
+        <div class="db-section-title">
+          Mes réservations
+          <span class="role-badge role-badge-u">Locataire</span>
+        </div>
+        <table class="table">
+          <tr><th>Bien</th><th>Début</th><th>Fin</th><th>Statut</th><th></th></tr>
+          <tr>
+            <td>Appartement Lac</td><td>01/03/2026</td><td>31/03/2026</td>
+            <td><span class="status s-conf">Confirmée</span></td>
+            <td><button class="btn btn-u btn-sm">Voir</button></td>
+          </tr>
+          <tr>
+            <td>Studio Sousse</td><td>15/04/2026</td><td>30/04/2026</td>
+            <td><span class="status s-pend">En attente</span></td>
+            <td><button class="btn btn-out btn-sm">Annuler</button></td>
+          </tr>
+        </table>
+
+        <div class="stitle" style="margin-top:14px">
+          Mes contrats
+          <span class="role-badge role-badge-u">Locataire</span>
+        </div>
+        <table class="table">
+          <tr><th>Contrat</th><th>Type</th><th>Bien</th><th>Date</th><th>Statut</th></tr>
+          <tr><td>#001</td><td>Location</td><td>Appart. Lac</td><td>01/03/2026</td><td><span class="status s-conf">Actif</span></td></tr>
+          <tr><td>#002</td><td>Location</td><td>Studio Sousse</td><td>15/04/2026</td><td><span class="status s-pend">En attente</span></td></tr>
+        </table>
+      </div>
+
+      <!-- COLONNE DROITE : biens propriétaire -->
+      <div class="db-col">
+        <div class="stitle-row">
+          <div class="db-section-title" style="margin-bottom:0">
+            Mes biens
+            <span class="role-badge role-badge-o">Propriétaire</span>
+          </div>
+          <a class="btn-add" href="owner_add_property.html">+ Ajouter un bien</a>
+        </div>
+
+        <div class="grid2" id="biens-grid" style="margin-top:10px">
+          <div class="card">
+            <div class="cimg">Photo</div>
+            <div class="cbody">
+              <div class="ctitle">Appartement Lac</div>
+              <div class="cloc">Tunis — 1 200 DT/mois</div>
+              <span class="cbadge bav">Disponible</span>
+              <div class="card-actions">
+                <button class="btn btn-o btn-xs">Modifier</button>
+                <button class="btn btn-out btn-xs">Voir résas</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="cimg">Photo</div>
+            <div class="cbody">
+              <div class="ctitle">Villa Marsa</div>
+              <div class="cloc">La Marsa — 350 000 DT</div>
+              <span class="cbadge brent">Réservé</span>
+              <div class="card-actions">
+                <button class="btn btn-o btn-xs">Modifier</button>
+                <button class="btn btn-out btn-xs">Voir résas</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /db-cols -->
+
+  </div><!-- /db-wrapper -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span class="footer-logo">GI Immobilier</span>
+    <div class="footer-links">
+      <a href="contact.html" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">CGU</a>
+    </div>
+  </div>
+
+  <!-- MODAL AJOUTER UN BIEN -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Ajouter un bien</span>
+        <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+      </div>
+
+      <div class="frow">
+        <div class="form-field">
+          <label class="flabel">Titre du bien</label>
+          <input class="finput" type="text" id="f-titre" placeholder="Ex : Appartement Lac">
+        </div>
+        <div class="form-field">
+          <label class="flabel">Type</label>
+          <select class="fselect" id="f-type">
+            <option value="">-- Choisir --</option>
+            <option>Appartement</option>
+            <option>Villa</option>
+            <option>Studio</option>
+            <option>Bureau</option>
+            <option>Terrain</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="frow">
+        <div class="form-field">
+          <label class="flabel">Ville</label>
+          <input class="finput" type="text" id="f-ville" placeholder="Ex : Tunis">
+        </div>
+        <div class="form-field">
+          <label class="flabel">Prix</label>
+          <input class="finput" type="text" id="f-prix" placeholder="Ex : 1 200 DT/mois">
+        </div>
+      </div>
+
+      <div class="frow">
+        <div class="form-field">
+          <label class="flabel">Statut</label>
+          <select class="fselect" id="f-statut">
+            <option value="bav">Disponible</option>
+            <option value="brent">Réservé</option>
+            <option value="bpend">En attente</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="flabel">Surface (m²)</label>
+          <input class="finput" type="text" id="f-surface" placeholder="Ex : 85">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-out" onclick="closeModal()">Annuler</button>
+        <button class="btn btn-o" onclick="ajouterBien()">Ajouter</button>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <script src="auth-helper.js"></script>
+  <script>
+    // ✅ Protéger cette page - vérifier l'authentification
+    document.addEventListener("DOMContentLoaded", async () => {
+      const authStatus = await requireAuth();
+      if (authStatus.loggedIn) {
+        console.log(`✅ Bienvenue ${authStatus.user.name || authStatus.user.email}`);
+        // Mise à jour du navbar avec infos utilisateur
+        updateNavbarAuth();
+      }
+    });
+  </script>
+</body>
+</html>

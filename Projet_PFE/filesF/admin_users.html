@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Admin — Gestion des utilisateurs</title>
+  <link rel="stylesheet" href="styles_admin.css">
+</head>
+<body>
+
+  <div class="nav">
+    <span class="nl">Gestion des utilisateurs</span>
+    <div class="nr"><a href="admin_dashboard.html" class="nlink">← Dashboard</a></div>
+  </div>
+
+  <div class="sec">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <input class="finput" style="width:200px" type="text" placeholder="Rechercher un utilisateur...">
+      <select class="finput" style="width:130px"><option>Tous les rôles</option><option>User</option><option>Agent</option><option>Admin</option></select>
+    </div>
+    <table class="table">
+      <tr><th>Nom</th><th>Email</th><th>Rôle actuel</th><th>Actions effectuées</th><th>Actions</th></tr>
+      <tr><td>Ahmed Ben Ali</td><td>ahmed@gmail.com</td><td><span class="cbadge rb-user" style="font-size:9px">Tenant</span></td><td>2 résas / 1 achat</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Modifier rôle</button></td></tr>
+      <tr><td>Sara Mansour</td><td>sara@gmail.com</td><td><span class="cbadge rb-owner" style="font-size:9px">Owner</span></td><td>3 biens</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Modifier rôle</button></td></tr>
+      <tr><td>Karim Trabelsi</td><td>karim@gmail.com</td><td><span class="cbadge rb-agent" style="font-size:9px">Agent</span></td><td>12 biens gérés</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Modifier rôle</button></td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Admin</span>
+    <div class="footer-links"><a href="admin_dashboard.html" class="footer-link">Dashboard</a></div>
+  </div>
+
+</body>
+</html>
