@@ -3,54 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GI Immobilier — Valider un bien</title>
+  <title>GI Immobilier — Validation des Biens</title>
   <link rel="stylesheet" href="styles_agent.css">
 </head>
 <body>
 
   <div class="nav">
-    <span class="nl">Valider un bien</span>
-    <div class="nr"><a href="agent_dashboard.html" class="nlink">← Tableau de bord</a></div>
+    <span class="nl">GI Immobilier</span>
+    <div class="nr">
+      <a href="agent_dashboard.html" class="nlink">Tableau de bord</a>
+      <a href="agent_validation.html" class="nlink active-link">Valider Biens</a>
+      <a href="agent_reservations.html" class="nlink">Réservations</a>
+      <a href="agent_purchases.html" class="nlink">Achats</a>
+      <a href="agent_contracts.html" class="nlink">Contrats</a>
+      <a href="agent_profile.html" class="nav-avatar">A</a>
+    </div>
   </div>
 
   <div class="sec">
-    <div class="stitle">Biens en attente de validation</div>
-    <div class="card" style="margin-bottom:8px;padding:10px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div class="ctitle">Villa avec jardin — Tunis</div>
-          <div class="cloc">Soumis par: Sara M. (Propriétaire) — 05/03/2026</div>
-          <div style="margin-top:6px;font-size:10px;color:#888">4 ch. / 150 m² / 2 500 DT/mois</div>
-        </div>
-        <span class="cbadge bpend">En attente</span>
+    <div class="page-header">
+      <div>
+        <div class="page-title">Validation des Biens</div>
+        <div class="page-sub">Examinez et validez les propriétés soumises par les propriétaires</div>
       </div>
-      <div style="margin-top:10px;display:flex;gap:6px">
-        <button class="btn btn-a">Valider</button>
-        <button class="btn btn-out">Rejeter</button>
-        <button class="btn btn-out">Voir détails</button>
+      <div style="display:flex;gap:6px;align-items:center">
+        <select class="finput" style="width:auto;font-size:10px">
+          <option>Tous les statuts</option>
+          <option selected>En attente</option>
+          <option>Validé</option>
+          <option>Rejeté</option>
+        </select>
       </div>
     </div>
-    <div class="card" style="padding:10px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div class="ctitle">Appartement Sfax Centre</div>
-          <div class="cloc">Soumis par: Mohamed K. — 03/03/2026</div>
-          <div style="margin-top:6px;font-size:10px;color:#888">2 ch. / 75 m² / 1 000 DT/mois</div>
+
+    <!-- STATS ROW -->
+    <div class="grid3" style="margin-bottom:14px">
+      <div class="metric"><div class="mnum" style="color:#633806">4</div><div class="mlabel">En attente</div></div>
+      <div class="metric"><div class="mnum" style="color:#3B6D11">18</div><div class="mlabel">Validés ce mois</div></div>
+      <div class="metric"><div class="mnum" style="color:#791F1F">2</div><div class="mlabel">Rejetés ce mois</div></div>
+    </div>
+
+    <!-- PROPERTY CARDS -->
+    <div class="val-card" id="prop-1">
+      <div class="val-img">🏡 Villa · Tunis Nord</div>
+      <div class="val-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="ctitle">Villa avec jardin — Ennasr, Tunis</div>
+            <div class="cloc">Soumis par: Sara M. (Propriétaire) — 15/04/2026</div>
+          </div>
+          <span class="cbadge bpend">En attente</span>
         </div>
-        <span class="cbadge bpend">En attente</span>
+        <div class="val-meta">
+          <span>🛏 4 chambres</span>
+          <span>📐 150 m²</span>
+          <span>💰 2 500 DT/mois</span>
+          <span>🏷 Location</span>
+        </div>
+        <div class="val-desc">
+          Grande villa avec jardin et piscine. Cuisine équipée, 2 salles de bain, parking privé. Proche de toutes commodités.
+        </div>
+        <div class="val-actions">
+          <button class="btn btn-a" onclick="validateProp('prop-1','validated')">✓ Valider</button>
+          <button class="btn btn-danger" onclick="validateProp('prop-1','rejected')">✗ Rejeter</button>
+          <a href="detail.html" class="btn btn-out">Voir détails complets</a>
+        </div>
+        <div class="val-note" id="note-prop-1" style="display:none"></div>
       </div>
-      <div style="margin-top:10px;display:flex;gap:6px">
-        <button class="btn btn-a">Valider</button>
-        <button class="btn btn-out">Rejeter</button>
-        <button class="btn btn-out">Voir détails</button>
+    </div>
+
+    <div class="val-card" id="prop-2">
+      <div class="val-img">🏢 Appart · Sfax</div>
+      <div class="val-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="ctitle">Appartement Sfax Centre</div>
+            <div class="cloc">Soumis par: Mohamed K. — 18/04/2026</div>
+          </div>
+          <span class="cbadge bpend">En attente</span>
+        </div>
+        <div class="val-meta">
+          <span>🛏 2 chambres</span>
+          <span>📐 75 m²</span>
+          <span>💰 1 000 DT/mois</span>
+          <span>🏷 Location</span>
+        </div>
+        <div class="val-desc">
+          Appartement rénové au centre-ville de Sfax. Lumineux, bien entretenu, ascenseur, gardien.
+        </div>
+        <div class="val-actions">
+          <button class="btn btn-a" onclick="validateProp('prop-2','validated')">✓ Valider</button>
+          <button class="btn btn-danger" onclick="validateProp('prop-2','rejected')">✗ Rejeter</button>
+          <a href="detail.html" class="btn btn-out">Voir détails complets</a>
+        </div>
+        <div class="val-note" id="note-prop-2" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="val-card" id="prop-3">
+      <div class="val-img" style="background:#B5D4F4;color:#185FA5">🏠 Duplex · Sousse</div>
+      <div class="val-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="ctitle">Duplex vue mer — Sousse corniche</div>
+            <div class="cloc">Soumis par: Amira B. — 19/04/2026</div>
+          </div>
+          <span class="cbadge bpend">En attente</span>
+        </div>
+        <div class="val-meta">
+          <span>🛏 3 chambres</span>
+          <span>📐 120 m²</span>
+          <span>💰 350 000 DT</span>
+          <span>🏷 Vente</span>
+        </div>
+        <div class="val-desc">
+          Duplex avec terrasse vue mer, 2 étages, cuisine ouverte, parquet, climatisation.
+        </div>
+        <div class="val-actions">
+          <button class="btn btn-a" onclick="validateProp('prop-3','validated')">✓ Valider</button>
+          <button class="btn btn-danger" onclick="validateProp('prop-3','rejected')">✗ Rejeter</button>
+          <a href="detail.html" class="btn btn-out">Voir détails complets</a>
+        </div>
+        <div class="val-note" id="note-prop-3" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- REJECTION MODAL -->
+    <div class="modal-overlay" id="rejectModal" style="display:none" onclick="closeModal()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-title">Motif de rejet</div>
+        <div class="form-field" style="margin-top:10px">
+          <div class="flabel">Veuillez indiquer la raison du rejet :</div>
+          <textarea class="finput ftextarea" id="rejectReason" placeholder="Ex: Photos non conformes, description incomplète..."></textarea>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn btn-danger" onclick="confirmReject()">Confirmer le rejet</button>
+          <button class="btn btn-out" onclick="closeModal()">Annuler</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="footer">
     <span class="footer-logo">GI Immobilier</span>
-    <div class="footer-links"><a href="#" class="footer-link">Contact</a></div>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Accueil public</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
   </div>
+
+  <script>
+    let currentPropId = null;
+    function validateProp(id, action) {
+      if (action === 'rejected') {
+        currentPropId = id;
+        document.getElementById('rejectModal').style.display = 'flex';
+        return;
+      }
+      const note = document.getElementById('note-' + id);
+      note.textContent = '✓ Bien validé avec succès le 20/04/2026.';
+      note.style.display = 'block';
+      note.style.background = '#EAF3DE';
+      note.style.color = '#3B6D11';
+      const card = document.getElementById(id);
+      card.querySelector('.cbadge').textContent = 'Validé';
+      card.querySelector('.cbadge').className = 'cbadge bav';
+      card.querySelector('.val-actions').innerHTML = '<span style="font-size:10px;color:#3B6D11">✓ Validé</span>';
+    }
+    function closeModal() {
+      document.getElementById('rejectModal').style.display = 'none';
+      currentPropId = null;
+    }
+    function confirmReject() {
+      const reason = document.getElementById('rejectReason').value || 'Aucun motif fourni';
+      if (!currentPropId) return;
+      const note = document.getElementById('note-' + currentPropId);
+      note.textContent = '✗ Rejeté : ' + reason;
+      note.style.display = 'block';
+      note.style.background = '#FCEBEB';
+      note.style.color = '#791F1F';
+      const card = document.getElementById(currentPropId);
+      card.querySelector('.cbadge').textContent = 'Rejeté';
+      card.querySelector('.cbadge').className = 'cbadge'; 
+      card.querySelector('.cbadge').style.background = '#FCEBEB';
+      card.querySelector('.cbadge').style.color = '#791F1F';
+      card.querySelector('.val-actions').innerHTML = '<span style="font-size:10px;color:#791F1F">✗ Rejeté</span>';
+      closeModal();
+    }
+  </script>
 
 </body>
 </html>

@@ -1,35 +1,761 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GI Admin — Gestion des utilisateurs</title>
-  <link rel="stylesheet" href="styles_admin.css">
+  <title>GI Admin | Gestion Users</title>
+  <style>
+    :root {
+      --sidebar: #101828;
+      --sidebar-soft: #1d2939;
+      --sidebar-text: #f8fafc;
+      --sidebar-muted: #98a2b3;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e4e7ec;
+      --text: #101828;
+      --muted: #667085;
+      --danger: #d92d20;
+      --danger-soft: #fee4e2;
+      --success: #079455;
+      --success-soft: #dcfae6;
+      --accent: #175cd3;
+      --accent-soft: #d1e9ff;
+      --shadow: 0 20px 50px rgba(16, 24, 40, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(23, 92, 211, 0.10), transparent 26%),
+        linear-gradient(180deg, #eef2f6 0%, #f7f9fc 100%);
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 20%),
+        linear-gradient(180deg, #0b1220 0%, #101828 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .brand { display: flex; flex-direction: column; gap: 8px; }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #175cd3, #0ba5ec);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .brand h1 { margin: 0; font-size: 22px; }
+    .brand p, .side-card p, .menu-link small { margin: 0; color: var(--sidebar-muted); line-height: 1.5; }
+
+    .menu { display: flex; flex-direction: column; gap: 10px; }
+
+    .menu-link {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: var(--sidebar-text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .menu-link.active {
+      background: rgba(23, 92, 211, 0.22);
+      border-color: rgba(49, 130, 206, 0.45);
+    }
+
+    .menu-link strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+    .side-card {
+      margin-top: auto;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .side-card h2 { margin: 0 0 8px; font-size: 16px; }
+    .side-card code {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #d1e9ff;
+    }
+
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+
+    .hero, .panel {
+      background: var(--surface);
+      border: 1px solid rgba(16, 24, 40, 0.06);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .hero h2 { margin: 0 0 8px; font-size: 30px; }
+    .hero p { margin: 0; color: var(--muted); max-width: 760px; line-height: 1.6; }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .btn-primary { background: linear-gradient(135deg, #175cd3, #1570ef); color: #fff; }
+    .btn-secondary { background: #f2f4f7; color: var(--text); border: 1px solid var(--border); }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); border: 1px solid #fecdca; }
+
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+
+    .metric {
+      padding: 20px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid rgba(16, 24, 40, 0.06);
+      box-shadow: var(--shadow);
+    }
+
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .metric strong { font-size: 28px; }
+    .metric small { display: block; margin-top: 8px; color: var(--muted); }
+
+    .panel { padding: 24px; }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h3 { margin: 0 0 6px; font-size: 20px; }
+    .panel-head p { margin: 0; color: var(--muted); }
+
+    .toolbar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+
+    .control, .field input, .field select {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 12px 14px;
+      font: inherit;
+      color: var(--text);
+    }
+
+    .toolbar .control { max-width: 320px; }
+
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .pill.info { background: #f2f4f7; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    .table-wrap {
+      overflow: auto;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    thead { background: #f8fafc; }
+
+    th, td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    td { font-size: 14px; }
+    tbody tr:hover { background: #fcfcfd; }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .empty { padding: 48px 20px; text-align: center; color: var(--muted); }
+
+    .modal-shell {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 24, 40, 0.58);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 20;
+    }
+
+    .modal-shell.open { display: flex; }
+
+    .modal {
+      width: min(700px, 100%);
+      background: #fff;
+      border-radius: 26px;
+      box-shadow: 0 30px 80px rgba(16, 24, 40, 0.28);
+      overflow: hidden;
+    }
+
+    .modal-head, .modal-body, .modal-foot { padding: 22px 24px; }
+
+    .modal-head {
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .modal-head h3 { margin: 0 0 6px; font-size: 22px; }
+    .modal-head p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-size: 13px; font-weight: 600; }
+    .helper { font-size: 12px; color: var(--muted); }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-foot {
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { padding-bottom: 18px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .content { padding: 16px; }
+      .hero, .panel, .metric { border-radius: 18px; }
+      .hero, .panel-head { flex-direction: column; }
+      .modal-body { grid-template-columns: 1fr; }
+      .toolbar .control { max-width: none; }
+    }
+  </style>
 </head>
 <body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <div>
+          <h1>Admin Console</h1>
+          <p>Gestion des utilisateurs via workflows Zoho Creator.</p>
+        </div>
+      </div>
 
-  <div class="nav">
-    <span class="nl">Gestion des utilisateurs</span>
-    <div class="nr"><a href="admin_dashboard.html" class="nlink">← Dashboard</a></div>
+      <nav class="menu">
+        <a class="menu-link" href="admin_dashboard.html">
+          <div>
+            <strong>Dashboard</strong>
+            <small>Retour au tableau de bord</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link active" href="admin_users.html">
+          <div>
+            <strong>Users</strong>
+            <small>Afficher, ajouter, supprimer</small>
+          </div>
+          <span>&bull;</span>
+        </a>
+      </nav>
+
+      <div class="side-card">
+        <h2>Zoho App</h2>
+        <p>Compte <strong>2demonexflow</strong> - app <strong>gestion-immobili-re</strong>.</p>
+        <code>Report: All_Users</code>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <div>
+          <h2>Gestion des utilisateurs</h2>
+          <p>
+            La liste est chargée automatiquement depuis <strong>All_Users</strong>. Les actions utilisent vos workflows <strong>Add_User</strong> et <strong>Delete_User</strong>.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" id="refreshUsersBtn" type="button">Actualiser</button>
+          <button class="btn btn-primary" id="openAddUserBtn" type="button">Ajouter un user</button>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="metric">
+          <span>Total users</span>
+          <strong id="metricTotal">0</strong>
+          <small>Nombre d'utilisateurs visibles.</small>
+        </article>
+        <article class="metric">
+          <span>Source</span>
+          <strong id="metricSource">-</strong>
+          <small>Zoho direct ou cache backend.</small>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Liste des users</h3>
+            <p>Vous pouvez chercher dans la liste et supprimer un utilisateur.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input class="control" id="searchInput" type="search" placeholder="Rechercher par nom, email, téléphone ou rôle">
+        </div>
+
+        <div class="status-bar">
+          <div class="pill info" id="loadStatus">Chargement des users...</div>
+          <div class="pill info" id="lastActionStatus">Aucune action pour le moment.</div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Rôle</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr>
+                <td class="empty" colspan="6">Chargement en cours...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
   </div>
 
-  <div class="sec">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <input class="finput" style="width:200px" type="text" placeholder="Rechercher un utilisateur...">
-      <select class="finput" style="width:130px"><option>Tous les rôles</option><option>User</option><option>Agent</option><option>Admin</option></select>
+  <div class="modal-shell" id="addUserModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="addUserTitle">
+      <div class="modal-head">
+        <div>
+          <h3 id="addUserTitle">Ajouter un user</h3>
+          <p>Cette action envoie une création vers le workflow <strong>Add_User</strong>.</p>
+        </div>
+        <button class="close-btn" id="closeAddUserBtn" type="button" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="addUserForm">
+        <div class="modal-body">
+          <div class="field">
+            <label for="userIdInput">ID (optionnel)</label>
+            <input id="userIdInput" name="ID1" type="text" placeholder="Laisser vide si auto">
+          </div>
+
+          <div class="field">
+            <label for="userRoleInput">Rôle</label>
+            <select id="userRoleInput" name="Role">
+              <option value="Administrator">Administrator</option>
+              <option value="Agent">Agent</option>
+              <option value="User" selected>User</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="fullNameInput">Nom complet *</label>
+            <input id="fullNameInput" name="full_name" type="text" required placeholder="Ex: Ahmed Ben Ali">
+          </div>
+
+          <div class="field">
+            <label for="emailInput">Email *</label>
+            <input id="emailInput" name="Email" type="email" required placeholder="email@exemple.com">
+          </div>
+
+          <div class="field">
+            <label for="phoneInput">Téléphone *</label>
+            <input id="phoneInput" name="Phone_Number" type="tel" required placeholder="+21655123456">
+          </div>
+
+          <div class="field">
+            <label for="passwordInput">Password *</label>
+            <input id="passwordInput" name="Password" type="password" required placeholder="********">
+          </div>
+
+          <div class="field">
+            <label for="confirmPasswordInput">Confirm Password *</label>
+            <input id="confirmPasswordInput" name="Confirm_password" type="password" required placeholder="********">
+          </div>
+
+          <div class="field full">
+            <p class="helper" id="passwordMatchStatus">Les deux mots de passe doivent être identiques.</p>
+          </div>
+        </div>
+
+        <div class="modal-foot">
+          <span class="helper">Création via backend: /api/admin/users/add</span>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn btn-secondary" id="cancelAddUserBtn" type="button">Annuler</button>
+            <button class="btn btn-primary" id="submitAddUserBtn" type="submit">Créer</button>
+          </div>
+        </div>
+      </form>
     </div>
-    <table class="table">
-      <tr><th>Nom</th><th>Email</th><th>Rôle actuel</th><th>Actions effectuées</th><th>Actions</th></tr>
-      <tr><td>Ahmed Ben Ali</td><td>ahmed@gmail.com</td><td><span class="cbadge rb-user" style="font-size:9px">Tenant</span></td><td>2 résas / 1 achat</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Modifier rôle</button></td></tr>
-      <tr><td>Sara Mansour</td><td>sara@gmail.com</td><td><span class="cbadge rb-owner" style="font-size:9px">Owner</span></td><td>3 biens</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Modifier rôle</button></td></tr>
-      <tr><td>Karim Trabelsi</td><td>karim@gmail.com</td><td><span class="cbadge rb-agent" style="font-size:9px">Agent</span></td><td>12 biens gérés</td><td><button class="btn btn-admin" style="font-size:9px;padding:2px 5px">Modifier rôle</button></td></tr>
-    </table>
   </div>
 
-  <div class="footer">
-    <span class="footer-logo">GI Admin</span>
-    <div class="footer-links"><a href="admin_dashboard.html" class="footer-link">Dashboard</a></div>
-  </div>
+  <script>
+    const state = {
+      users: [],
+      filteredUsers: [],
+      source: '-'
+    };
 
+    const els = {
+      tableBody: document.getElementById('usersTableBody'),
+      searchInput: document.getElementById('searchInput'),
+      openAddUserBtn: document.getElementById('openAddUserBtn'),
+      closeAddUserBtn: document.getElementById('closeAddUserBtn'),
+      cancelAddUserBtn: document.getElementById('cancelAddUserBtn'),
+      addUserModal: document.getElementById('addUserModal'),
+      addUserForm: document.getElementById('addUserForm'),
+      refreshUsersBtn: document.getElementById('refreshUsersBtn'),
+      loadStatus: document.getElementById('loadStatus'),
+      lastActionStatus: document.getElementById('lastActionStatus'),
+      metricTotal: document.getElementById('metricTotal'),
+      metricSource: document.getElementById('metricSource'),
+      passwordInput: document.getElementById('passwordInput'),
+      confirmPasswordInput: document.getElementById('confirmPasswordInput'),
+      passwordMatchStatus: document.getElementById('passwordMatchStatus')
+    };
+
+    function setStatus(target, message, type = 'info') {
+      target.textContent = message;
+      target.className = `pill ${type}`;
+    }
+
+    function normalizeValue(value) {
+      if (value == null) return '';
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value);
+      if (Array.isArray(value)) return value.map(normalizeValue).filter(Boolean).join(', ');
+      if (typeof value === 'object') {
+        if (typeof value.display_value === 'string') return value.display_value;
+        if (typeof value.first_name === 'string') {
+          return `${value.first_name} ${value.last_name || ''}`.trim();
+        }
+        return Object.values(value).map(normalizeValue).filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+      }
+      return '';
+    }
+
+    function mapUserRecord(record) {
+      const id = normalizeValue(record.ID1 || record.ID || record.User_ID || record.id);
+      const fullName = normalizeValue(record.full_name || record.Full_Name || record.Name || record.name);
+      const email = normalizeValue(record.Email || record.email);
+      const phone = normalizeValue(record.Phone_Number || record.Phone || record.phone || record.phone_number);
+      const rawRole = normalizeValue(record.Role || record.User_Role || record.role);
+      const role = ['owner', 'tenant', 'buyer'].includes(rawRole.toLowerCase()) ? 'User' : (rawRole || 'User');
+
+      return { id, fullName, email, phone, role };
+    }
+
+    function updateMetrics() {
+      els.metricTotal.textContent = String(state.filteredUsers.length);
+      els.metricSource.textContent = state.source;
+    }
+
+    function renderUsers() {
+      const query = els.searchInput.value.trim().toLowerCase();
+
+      state.filteredUsers = state.users.filter((user) => {
+        const haystack = [user.id, user.fullName, user.email, user.phone, user.role].join(' ').toLowerCase();
+        return !query || haystack.includes(query);
+      });
+
+      updateMetrics();
+
+      if (!state.filteredUsers.length) {
+        els.tableBody.innerHTML = '<tr><td class="empty" colspan="6">Aucun user trouvé.</td></tr>';
+        return;
+      }
+
+      els.tableBody.innerHTML = state.filteredUsers.map((user) => `
+        <tr>
+          <td>${escapeHtml(user.id || '-')}</td>
+          <td>${escapeHtml(user.fullName || '-')}</td>
+          <td>${escapeHtml(user.email || '-')}</td>
+          <td>${escapeHtml(user.phone || '-')}</td>
+          <td><span class="role-badge">${escapeHtml(user.role || 'User')}</span></td>
+          <td>
+            <button
+              class="btn btn-danger delete-user-btn"
+              type="button"
+              data-record-id="${escapeHtmlAttr(user.id)}"
+              data-user-name="${escapeHtmlAttr(user.fullName || user.email || user.id)}"
+            >
+              Supprimer
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadUsers() {
+      setStatus(els.loadStatus, 'Chargement des users depuis Zoho...', 'info');
+
+      try {
+        const response = await fetch('/api/admin/users');
+        const payload = await response.json();
+
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Impossible de charger les users.');
+        }
+
+        const records = Array.isArray(payload.users) ? payload.users : [];
+        state.users = records.map(mapUserRecord).filter((u) => u.id || u.email || u.fullName);
+        state.source = payload.source || 'zoho';
+        renderUsers();
+        setStatus(els.loadStatus, `Users chargés: ${state.users.length}`, 'success');
+      } catch (error) {
+        state.users = [];
+        state.source = 'error';
+        renderUsers();
+        setStatus(els.loadStatus, error.message, 'error');
+      }
+    }
+
+    function validatePasswords() {
+      const password = els.passwordInput.value;
+      const confirmPassword = els.confirmPasswordInput.value;
+
+      if (!password && !confirmPassword) {
+        els.passwordMatchStatus.textContent = 'Les deux mots de passe doivent être identiques.';
+        els.passwordMatchStatus.style.color = 'var(--muted)';
+        return true;
+      }
+
+      if (password === confirmPassword) {
+        els.passwordMatchStatus.textContent = 'Mots de passe identiques.';
+        els.passwordMatchStatus.style.color = 'var(--success)';
+        return true;
+      }
+
+      els.passwordMatchStatus.textContent = 'Les mots de passe ne correspondent pas.';
+      els.passwordMatchStatus.style.color = 'var(--danger)';
+      return false;
+    }
+
+    async function createUser(event) {
+      event.preventDefault();
+
+      if (!validatePasswords()) {
+        setStatus(els.lastActionStatus, 'Création bloquée: mots de passe différents.', 'error');
+        return;
+      }
+
+      const formData = new FormData(els.addUserForm);
+      const payloadData = {};
+
+      for (const [key, value] of formData.entries()) {
+        const trimmed = String(value || '').trim();
+        if (trimmed) payloadData[key] = trimmed;
+      }
+
+      setStatus(els.lastActionStatus, 'Envoi vers le workflow Add_User...', 'info');
+
+      try {
+        const response = await fetch('/api/admin/users/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payloadData)
+        });
+
+        const payload = await response.json();
+
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Création user échouée.');
+        }
+
+        setStatus(els.lastActionStatus, payload.message || 'User créé avec succès.', 'success');
+        closeModal();
+        els.addUserForm.reset();
+        validatePasswords();
+        await loadUsers();
+      } catch (error) {
+        setStatus(els.lastActionStatus, error.message, 'error');
+      }
+    }
+
+    async function deleteUser(recordId, userName) {
+      if (!recordId) {
+        setStatus(els.lastActionStatus, 'Suppression impossible: ID user manquant.', 'error');
+        return;
+      }
+
+      const confirmed = window.confirm(`Supprimer ${userName || 'cet utilisateur'} ?`);
+      if (!confirmed) return;
+
+      setStatus(els.lastActionStatus, `Envoi suppression pour ${userName || recordId}...`, 'info');
+
+      try {
+        const response = await fetch('/api/admin/users/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ID1: recordId })
+        });
+
+        const payload = await response.json();
+
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Suppression user échouée.');
+        }
+
+        setStatus(els.lastActionStatus, payload.message || 'Suppression envoyée.', 'success');
+        await loadUsers();
+      } catch (error) {
+        setStatus(els.lastActionStatus, error.message, 'error');
+      }
+    }
+
+    function openModal() {
+      els.addUserModal.classList.add('open');
+      els.addUserModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      els.addUserModal.classList.remove('open');
+      els.addUserModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function escapeHtmlAttr(value) {
+      return escapeHtml(value).replace(/`/g, '&#96;');
+    }
+
+    els.searchInput.addEventListener('input', renderUsers);
+    els.openAddUserBtn.addEventListener('click', openModal);
+    els.closeAddUserBtn.addEventListener('click', closeModal);
+    els.cancelAddUserBtn.addEventListener('click', closeModal);
+    els.refreshUsersBtn.addEventListener('click', loadUsers);
+    els.addUserForm.addEventListener('submit', createUser);
+    els.passwordInput.addEventListener('input', validatePasswords);
+    els.confirmPasswordInput.addEventListener('input', validatePasswords);
+
+    els.addUserModal.addEventListener('click', (event) => {
+      if (event.target === els.addUserModal) closeModal();
+    });
+
+    els.tableBody.addEventListener('click', (event) => {
+      const button = event.target.closest('.delete-user-btn');
+      if (!button) return;
+      deleteUser(button.dataset.recordId, button.dataset.userName);
+    });
+
+    validatePasswords();
+    loadUsers();
+  </script>
 </body>
 </html>

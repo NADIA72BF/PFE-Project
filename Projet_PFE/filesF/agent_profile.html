@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Profil Agent</title>
+  <link rel="stylesheet" href="styles_agent.css">
+</head>
+<body>
+
+  <div class="nav">
+    <span class="nl">GI Immobilier</span>
+    <div class="nr">
+      <a href="agent_dashboard.html" class="nlink">Tableau de bord</a>
+      <a href="agent_validation.html" class="nlink">Valider Biens</a>
+      <a href="agent_reservations.html" class="nlink">Réservations</a>
+      <a href="agent_purchases.html" class="nlink">Achats</a>
+      <a href="agent_contracts.html" class="nlink">Contrats</a>
+      <a href="agent_profile.html" class="nav-avatar active-avatar">A</a>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Mon Profil</div>
+        <div class="page-sub">Gérez vos informations personnelles et paramètres de compte</div>
+      </div>
+    </div>
+
+    <div class="grid2" style="align-items:start">
+      <!-- LEFT: Profile Info -->
+      <div>
+        <!-- Avatar Card -->
+        <div class="panel" style="text-align:center;padding:20px 14px;margin-bottom:12px">
+          <div class="profile-avatar">A</div>
+          <div style="font-size:13px;font-weight:600;color:#2D2D2D;margin-top:8px">Agent Rachid Hamdi</div>
+          <div style="font-size:10px;color:#888;margin-top:2px">Agent Immobilier — GI Immobilier</div>
+          <div style="margin-top:8px">
+            <span class="status s-conf">Compte actif</span>
+          </div>
+          <div style="display:flex;justify-content:center;gap:16px;margin-top:12px">
+            <div style="text-align:center">
+              <div style="font-size:14px;font-weight:600;color:#854F0B">42</div>
+              <div style="font-size:9px;color:#888">Biens traités</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:14px;font-weight:600;color:#854F0B">18</div>
+              <div style="font-size:9px;color:#888">Contrats</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-size:14px;font-weight:600;color:#854F0B">4.8</div>
+              <div style="font-size:9px;color:#888">Note</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Préférences de notifications</span>
+          </div>
+          <div style="padding:4px 0">
+            <div class="notif-row">
+              <span style="font-size:10px">Nouvelles réservations</span>
+              <label class="toggle"><input type="checkbox" checked><span class="toggleslider"></span></label>
+            </div>
+            <div class="notif-row">
+              <span style="font-size:10px">Demandes d'achat</span>
+              <label class="toggle"><input type="checkbox" checked><span class="toggleslider"></span></label>
+            </div>
+            <div class="notif-row">
+              <span style="font-size:10px">Biens à valider</span>
+              <label class="toggle"><input type="checkbox" checked><span class="toggleslider"></span></label>
+            </div>
+            <div class="notif-row">
+              <span style="font-size:10px">Rappels de contrats</span>
+              <label class="toggle"><input type="checkbox"><span class="toggleslider"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Edit Forms -->
+      <div>
+        <!-- Personal Info Form -->
+        <div class="panel" style="margin-bottom:12px">
+          <div class="panel-header">
+            <span class="panel-title">Informations personnelles</span>
+          </div>
+          <form onsubmit="saveProfile(event)" style="margin-top:4px">
+            <div class="grid2" style="gap:8px">
+              <div class="form-field">
+                <div class="flabel">Prénom</div>
+                <input class="finput" type="text" value="Rachid">
+              </div>
+              <div class="form-field">
+                <div class="flabel">Nom</div>
+                <input class="finput" type="text" value="Hamdi">
+              </div>
+            </div>
+            <div class="form-field">
+              <div class="flabel">Email</div>
+              <input class="finput" type="email" value="rachid.hamdi@gi-immobilier.tn">
+            </div>
+            <div class="form-field">
+              <div class="flabel">Téléphone</div>
+              <input class="finput" type="tel" value="+216 55 123 456">
+            </div>
+            <div class="form-field">
+              <div class="flabel">Zone d'activité</div>
+              <input class="finput" type="text" value="Tunis, Sfax, Sousse">
+            </div>
+            <div class="form-field">
+              <div class="flabel">Bio / Présentation</div>
+              <textarea class="finput ftextarea" style="height:60px">Agent spécialisé dans la location et vente résidentielle en Tunisie. 5 ans d'expérience.</textarea>
+            </div>
+            <button type="submit" class="btn btn-a" style="margin-top:4px">Enregistrer les modifications</button>
+            <div class="save-msg" id="saveMsg" style="display:none">✓ Profil mis à jour avec succès</div>
+          </form>
+        </div>
+
+        <!-- Password Change -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Changer le mot de passe</span>
+          </div>
+          <form onsubmit="changePassword(event)" style="margin-top:4px">
+            <div class="form-field">
+              <div class="flabel">Mot de passe actuel</div>
+              <input class="finput" type="password" placeholder="••••••••">
+            </div>
+            <div class="form-field">
+              <div class="flabel">Nouveau mot de passe</div>
+              <input class="finput" type="password" placeholder="••••••••">
+            </div>
+            <div class="form-field">
+              <div class="flabel">Confirmer le nouveau mot de passe</div>
+              <input class="finput" type="password" placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-a" style="margin-top:4px">Modifier le mot de passe</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Immobilier</span>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Accueil public</a>
+      <a href="login.html" class="footer-link">Déconnexion</a>
+    </div>
+  </div>
+
+  <script>
+    function saveProfile(e) {
+      e.preventDefault();
+      const msg = document.getElementById('saveMsg');
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 3000);
+    }
+    function changePassword(e) {
+      e.preventDefault();
+      alert('Mot de passe modifié avec succès.');
+    }
+  </script>
+
+</body>
+</html>

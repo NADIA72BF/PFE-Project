@@ -75,10 +75,10 @@ const BASE_CREATORAPP = 'https://creatorapp.zoho.com/api/v2/2demonexflow/gestion
 const BASE_V21        = `https://${ZOHO_API_DOMAIN}/creator/v2.1/data/2demonexflow/gestion-immobili-re`;
 
 // ─── Cache / timing constants ─────────────────────────────────────────────────
-const PROPERTIES_TTL_MS      = Math.max(1000, Number(process.env.PROPERTIES_CACHE_TTL_MS    || 3600000));  // 1 hour
-const PROPERTY_DETAIL_TTL_MS = Math.max(1000, Number(process.env.PROPERTY_DETAIL_CACHE_TTL_MS || 1800000)); // 30 min
-const USERS_CACHE_TTL_MS     = Math.max(1000, Number(process.env.USERS_CACHE_TTL_MS          || 1800000)); // 30 min
-const IMAGE_FIELDS_TTL_MS    = Math.max(1000, Number(process.env.IMAGE_FIELDS_TTL_MS          || 3600000)); // 1 hour
+const PROPERTIES_TTL_MS      = Math.max(1000, Number(process.env.PROPERTIES_CACHE_TTL_MS    || 120000));
+const PROPERTY_DETAIL_TTL_MS = Math.max(1000, Number(process.env.PROPERTY_DETAIL_CACHE_TTL_MS || 300000));
+const USERS_CACHE_TTL_MS     = Math.max(1000, Number(process.env.USERS_CACHE_TTL_MS          || 600000));
+const IMAGE_FIELDS_TTL_MS    = Math.max(1000, Number(process.env.IMAGE_FIELDS_TTL_MS          || 3600000));
 
 const LOCAL_UPLOADS_DIR           = path.join(__dirname, 'uploads');
 const PROPERTIES_CACHE_PATH       = path.join(__dirname, 'zoho_properties_sample.json');
@@ -112,49 +112,49 @@ async function refreshAccessToken() {
   if (refreshInFlight) return refreshInFlight;
 
   refreshInFlight = (async () => {
-    // Skip if already refreshed recently (30 seconds)
-    if (Date.now() - lastSuccessfulRefreshAt < 30000) return true;
+    if (Date.now() - lastSuccessfulRefreshAt < 10000) return true;
 
-    // Only 1 attempt, fail fast to preserve API quota
-    try {
-      console.log(`🔄 Token refresh`);
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
-      const response = await fetch(ZOHO_OAUTH_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          grant_type: 'refresh_token',
-          client_id: ZOHO_CLIENT_ID,
-          client_secret: ZOHO_CLIENT_SECRET,
-          refresh_token: ZOHO_REFRESH_TOKEN
-        }),
-        signal: controller.signal
-      });
-      clearTimeout(timeout);
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        console.log(`🔄 Token refresh — attempt ${attempt}/3`);
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 30000);
+        const response = await fetch(ZOHO_OAUTH_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            grant_type: 'refresh_token',
+            client_id: ZOHO_CLIENT_ID,
+            client_secret: ZOHO_CLIENT_SECRET,
+            refresh_token: ZOHO_REFRESH_TOKEN
+          }),
+          signal: controller.signal
+        });
+        clearTimeout(timeout);
 
-      if (!response.ok) {
-        const text = await response.text();
-        if (response.status === 400 && /too many requests/i.test(text)) {
-          oauthCooldownUntil = Date.now() + 5 * 60 * 1000;
+        if (!response.ok) {
+          const text = await response.text();
+          if (response.status === 400 && /too many requests/i.test(text)) {
+            oauthCooldownUntil = Date.now() + 2 * 60 * 1000;
+          }
+          throw new Error(`OAuth ${response.status}: ${text}`);
         }
-        throw new Error(`OAuth ${response.status}: ${text}`);
+
+        const data = await response.json();
+        if (!data.access_token) throw new Error('No access_token in response');
+
+        ZOHO_ACCESS_TOKEN = data.access_token;
+        const expiresIn = Number(data.expires_in || 3600);
+        tokenExpiresAt = new Date(Date.now() + expiresIn * 1000);
+        lastSuccessfulRefreshAt = Date.now();
+        console.log(`✅ Token refreshed — expires ${tokenExpiresAt.toLocaleTimeString()}`);
+        return true;
+      } catch (err) {
+        console.error(`❌ Refresh attempt ${attempt}/3:`, err.message);
+        if (attempt < 3) await delay(2000);
       }
-
-      const data = await response.json();
-      if (!data.access_token) throw new Error('No access_token in response');
-
-      ZOHO_ACCESS_TOKEN = data.access_token;
-      const expiresIn = Number(data.expires_in || 3600);
-      tokenExpiresAt = new Date(Date.now() + expiresIn * 1000);
-      lastSuccessfulRefreshAt = Date.now();
-      console.log(`✅ Token refreshed`);
-      return true;
-    } catch (err) {
-      console.error(`❌ Token refresh failed:`, err.message);
-      oauthCooldownUntil = Date.now() + 60 * 1000; // 1 min cooldown on failure
-      return false;
     }
+    return false;
   })();
 
   try { return await refreshInFlight; } finally { refreshInFlight = null; }
@@ -187,7 +187,7 @@ function isOfflineError(err) {
 }
 
 /**
- * Generic Zoho fetch with minimal retries to preserve API quota.
+ * Generic Zoho fetch with retry + auto token refresh.
  * Returns { response, payload }.
  */
 async function fetchZohoJson(url, {
@@ -195,7 +195,7 @@ async function fetchZohoJson(url, {
   authType = 'bearer',
   body,
   timeoutMs = 30000,
-  retries = 1,
+  retries = 3,
   extraHeaders = {},
   requireSuccessCode = false,
   fallbackMessage = 'Erreur Zoho'
@@ -237,7 +237,7 @@ async function fetchZohoJson(url, {
     } catch (err) {
       lastError = err;
       if (attempt < retries && !isOfflineError(err)) {
-        await delay(Math.pow(2, attempt - 1) * 500); // Shorter delay
+        await delay(Math.pow(2, attempt - 1) * 1000);
         continue;
       }
       break;
@@ -565,7 +565,7 @@ async function uploadPropertyImageToZoho(recordId, imageDataUrl) {
 async function fetchZohoPropertyRecord(recordId) {
   await ensureValidToken();
   const urls = [
-    `${BASE_V21}/report/${ZOHO_REPORT_LINK_NAME}/${encodeURIComponent(recordId)}`,
+    `${BASE_V21}/report/${ZOHO_REPORT_LINK_NAME}/${encodeURIComponent(recordId)}?field_config=all`,
     `${BASE_CREATOR}/report/${ZOHO_REPORT_LINK_NAME}/${encodeURIComponent(recordId)}`,
     `${BASE_CREATORAPP}/report/${ZOHO_REPORT_LINK_NAME}/${encodeURIComponent(recordId)}`
   ];
@@ -693,7 +693,7 @@ app.post('/api/login', async (req, res) => {
 
     // Fetch from Zoho
     try {
-      const { payload } = await fetchZohoJson(buildUsersReportUrl(), { retries: 1, fallbackMessage: 'Erreur Zoho users' });
+      const { payload } = await fetchZohoJson(buildUsersReportUrl(), { retries: 3, fallbackMessage: 'Erreur Zoho users' });
       const users = payload.data || [];
       if (users.length > 0) persistUsersCache(users);
 
@@ -778,7 +778,7 @@ app.post('/api/signup', async (req, res) => {
         method: 'POST',
         authType: 'bearer',
         body: requestBody,
-        retries: 1,
+        retries: 3,
         fallbackMessage: 'Erreur création compte'
       });
       createData = payload;
@@ -828,7 +828,7 @@ app.get('/api/properties', async (req, res) => {
 
     await ensureValidToken();
 
-    const zohoUrl = `${BASE_V21}/report/${ZOHO_REPORT_LINK_NAME}?max_records=${maxRecords}`;
+    const zohoUrl = `${BASE_V21}/report/${ZOHO_REPORT_LINK_NAME}?field_config=all&max_records=${maxRecords}`;
 
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
@@ -941,7 +941,7 @@ app.post('/api/properties/create', requireAuth, async (req, res) => {
         method: 'POST',
         authType: 'bearer',
         body: requestBody,
-        retries: 1,
+        retries: 3,
         requireSuccessCode: true,
         fallbackMessage: 'Erreur création propriété'
       });
@@ -1025,7 +1025,7 @@ app.post('/api/reservations/create', requireAuth, async (req, res) => {
         method: 'POST',
         authType: 'bearer',
         body: requestBody,
-        retries: 1,
+        retries: 3,
         fallbackMessage: 'Erreur création réservation'
       });
       createData = payload;
@@ -1089,7 +1089,7 @@ app.post('/api/purchases/create', requireAuth, async (req, res) => {
       const result = await fetchZohoJson(`${BASE_CREATORAPP}/form/Purchase`, {
         method: 'POST',
         body: requestBody,
-        retries: 1,
+        retries: 3,
         fallbackMessage: "Erreur création demande d'achat"
       });
       payload = result.payload;

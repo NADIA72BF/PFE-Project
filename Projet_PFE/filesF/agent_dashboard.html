@@ -11,44 +11,148 @@
   <div class="nav">
     <span class="nl">GI Immobilier</span>
     <div class="nr">
-      <a href="agent_dashboard.html" class="nlink">Biens</a>
-      <a href="agent_validation.html" class="nlink">Réservations</a>
-      <a href="user_contracts.html" class="nlink">Contrats</a>
-      <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">A</div>
+      <a href="agent_dashboard.html" class="nlink active-link">Tableau de bord</a>
+      <a href="agent_validation.html" class="nlink">Valider Biens</a>
+      <a href="agent_reservations.html" class="nlink">Réservations</a>
+      <a href="agent_purchases.html" class="nlink">Achats</a>
+      <a href="agent_contracts.html" class="nlink">Contrats</a>
+      <a href="agent_profile.html" class="nav-avatar">A</a>
     </div>
   </div>
 
   <div class="sec">
-    <div class="stitle">Tableau de bord — Agent</div>
-    <div class="grid4" style="margin-bottom:12px">
-      <div class="metric"><div class="mnum">12</div><div class="mlabel">Biens gérés</div></div>
-      <div class="metric"><div class="mnum">8</div><div class="mlabel">Résas actives</div></div>
-      <div class="metric"><div class="mnum">3</div><div class="mlabel">Achats en cours</div></div>
-      <div class="metric"><div class="mnum">5</div><div class="mlabel">Contrats signés</div></div>
-    </div>
-    <div class="grid2">
+    <div class="page-header">
       <div>
-        <div class="stitle">Réservations à traiter</div>
+        <div class="page-title">Tableau de bord</div>
+        <div class="page-sub">Bienvenue, Agent — 20 Avril 2026</div>
+      </div>
+    </div>
+
+    <!-- KPI METRICS -->
+    <div class="grid4" style="margin-bottom:16px">
+      <div class="metric">
+        <div class="metric-icon">🏠</div>
+        <div class="mnum">12</div>
+        <div class="mlabel">Biens gérés</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📅</div>
+        <div class="mnum">8</div>
+        <div class="mlabel">Réservations actives</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">🛒</div>
+        <div class="mnum">3</div>
+        <div class="mlabel">Achats en cours</div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon">📋</div>
+        <div class="mnum">5</div>
+        <div class="mlabel">Contrats signés</div>
+      </div>
+    </div>
+
+    <!-- ALERTS -->
+    <div class="alert-bar" style="margin-bottom:14px">
+      <span class="alert-dot"></span>
+      <span style="font-size:10px;color:#633806">2 biens en attente de validation · 1 réservation urgente à traiter</span>
+      <a href="agent_validation.html" class="alert-link">Voir →</a>
+    </div>
+
+    <div class="grid2">
+      <!-- RECENT RESERVATIONS -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Réservations récentes</span>
+          <a href="agent_reservations.html" class="panel-more">Voir tout →</a>
+        </div>
         <table class="table">
-          <tr><th>Bien</th><th>Client</th><th>Statut</th></tr>
-          <tr><td>Appart. Lac</td><td>Ahmed B.</td><td><span class="status s-pend">En attente</span></td></tr>
-          <tr><td>Villa Marsa</td><td>Sara M.</td><td><span class="status s-conf">Confirmée</span></td></tr>
+          <tr><th>Bien</th><th>Client</th><th>Dates</th><th>Statut</th></tr>
+          <tr>
+            <td>Appart. Lac</td><td>Ahmed B.</td><td>01–08 Mai</td>
+            <td><span class="status s-pend">En attente</span></td>
+          </tr>
+          <tr>
+            <td>Villa Marsa</td><td>Sara M.</td><td>10–20 Mai</td>
+            <td><span class="status s-conf">Confirmée</span></td>
+          </tr>
+          <tr>
+            <td>Studio Tunis</td><td>Ines K.</td><td>15–30 Avr</td>
+            <td><span class="status s-canc">Annulée</span></td>
+          </tr>
         </table>
       </div>
-      <div>
-        <div class="stitle">Achats à traiter</div>
+
+      <!-- RECENT PURCHASES -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Achats récents</span>
+          <a href="agent_purchases.html" class="panel-more">Voir tout →</a>
+        </div>
         <table class="table">
-          <tr><th>Bien</th><th>Acheteur</th><th>Statut</th></tr>
-          <tr><td>Villa Marsa</td><td>Karim T.</td><td><span class="status s-pend">En cours</span></td></tr>
-          <tr><td>Duplex Sfax</td><td>Leila M.</td><td><span class="status s-conf">Finalisé</span></td></tr>
+          <tr><th>Bien</th><th>Acheteur</th><th>Date demande</th><th>Statut</th></tr>
+          <tr>
+            <td>Villa Marsa</td><td>Karim T.</td><td>12 Avr</td>
+            <td><span class="status s-pend">En cours</span></td>
+          </tr>
+          <tr>
+            <td>Duplex Sfax</td><td>Leila M.</td><td>05 Avr</td>
+            <td><span class="status s-conf">Finalisé</span></td>
+          </tr>
         </table>
+      </div>
+    </div>
+
+    <!-- PENDING VALIDATIONS -->
+    <div class="panel" style="margin-top:12px">
+      <div class="panel-header">
+        <span class="panel-title">Biens en attente de validation</span>
+        <a href="agent_validation.html" class="panel-more">Voir tout →</a>
+      </div>
+      <div class="grid3">
+        <div class="prop-card">
+          <div class="prop-img">Villa · Tunis</div>
+          <div class="cbody">
+            <div class="ctitle">Villa avec jardin — Tunis Nord</div>
+            <div class="cloc">📍 Ennasr · Soumis 15 Avr</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+              <span class="cbadge bpend">En attente</span>
+              <a href="agent_validation.html" class="btn btn-a" style="font-size:9px;padding:3px 7px">Valider</a>
+            </div>
+          </div>
+        </div>
+        <div class="prop-card">
+          <div class="prop-img">Appart · Sfax</div>
+          <div class="cbody">
+            <div class="ctitle">Appartement Sfax Centre</div>
+            <div class="cloc">📍 Sfax Ville · Soumis 18 Avr</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+              <span class="cbadge bpend">En attente</span>
+              <a href="agent_validation.html" class="btn btn-a" style="font-size:9px;padding:3px 7px">Valider</a>
+            </div>
+          </div>
+        </div>
+        <div class="prop-card">
+          <div class="prop-img">Studio · Sousse</div>
+          <div class="cbody">
+            <div class="ctitle">Studio moderne — Sousse</div>
+            <div class="cloc">📍 Sousse Corniche · Soumis 19 Avr</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+              <span class="cbadge bav">Validé</span>
+              <a href="agent_validation.html" class="btn btn-out" style="font-size:9px;padding:3px 7px">Détails</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="footer">
     <span class="footer-logo">GI Immobilier</span>
-    <div class="footer-links"><a href="#" class="footer-link">Contact</a></div>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Accueil public</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
   </div>
 
 </body>

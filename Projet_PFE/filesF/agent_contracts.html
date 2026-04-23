@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Contrats et Finances</title>
+  <link rel="stylesheet" href="styles_agent.css">
+</head>
+<body>
+
+  <div class="nav">
+    <span class="nl">GI Immobilier</span>
+    <div class="nr">
+      <a href="agent_dashboard.html" class="nlink">Tableau de bord</a>
+      <a href="agent_validation.html" class="nlink">Valider Biens</a>
+      <a href="agent_reservations.html" class="nlink">Réservations</a>
+      <a href="agent_purchases.html" class="nlink">Achats</a>
+      <a href="agent_contracts.html" class="nlink active-link">Contrats</a>
+      <a href="agent_profile.html" class="nav-avatar">A</a>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Contrats & Finances</div>
+        <div class="page-sub">Gérez les contrats générés et suivez les transactions financières</div>
+      </div>
+      <button class="btn btn-a" onclick="openNewContract()">+ Nouveau contrat</button>
+    </div>
+
+    <!-- FINANCIAL KPI -->
+    <div class="grid4" style="margin-bottom:14px">
+      <div class="metric"><div class="mnum">13</div><div class="mlabel">Contrats actifs</div></div>
+      <div class="metric"><div class="mnum" style="color:#3B6D11">5</div><div class="mlabel">Payés ce mois</div></div>
+      <div class="metric"><div class="mnum" style="color:#633806">3</div><div class="mlabel">En attente paiement</div></div>
+      <div class="metric"><div class="mnum">84 500 DT</div><div class="mlabel">Revenus ce mois</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-bar" style="margin-bottom:12px">
+      <button class="tab-btn tab-active" onclick="switchTab('contracts', this)">Contrats</button>
+      <button class="tab-btn" onclick="switchTab('payments', this)">Paiements</button>
+    </div>
+
+    <!-- CONTRACTS TABLE -->
+    <div id="tab-contracts" class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Liste des contrats</span>
+        <select class="finput" style="width:auto;font-size:10px" onchange="filterContracts(this.value)">
+          <option value="">Tous les types</option>
+          <option value="location">Location</option>
+          <option value="vente">Vente</option>
+        </select>
+      </div>
+      <table class="table" id="contractTable">
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Bien</th>
+          <th>Parties</th>
+          <th>Créé le</th>
+          <th>Montant</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+        <tr data-type="location">
+          <td>C-2201</td>
+          <td><span class="type-badge type-loc">Location</span></td>
+          <td>Villa Marsa</td>
+          <td>Sara M. / Karim T.</td>
+          <td>12/04/2026</td>
+          <td>5 500 DT</td>
+          <td><span class="status s-conf">Actif</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="viewContract('C-2201')">Voir</button>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="activateContract('C-2201')">Activer</button>
+          </td>
+        </tr>
+        <tr data-type="vente">
+          <td>C-2198</td>
+          <td><span class="type-badge type-sale">Vente</span></td>
+          <td>Duplex Sfax</td>
+          <td>Leila M. / Hassan K.</td>
+          <td>06/04/2026</td>
+          <td>220 000 DT</td>
+          <td><span class="status s-conf">Actif</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="viewContract('C-2198')">Voir</button>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="generatePDF('C-2198')">PDF</button>
+          </td>
+        </tr>
+        <tr data-type="location">
+          <td>C-2185</td>
+          <td><span class="type-badge type-loc">Location</span></td>
+          <td>Appart. Tunis Centre</td>
+          <td>Ines K. / Mohamed B.</td>
+          <td>20/03/2026</td>
+          <td>1 200 DT/mois</td>
+          <td><span class="status s-pend">En attente</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="viewContract('C-2185')">Voir</button>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="activateContract('C-2185')">Activer</button>
+          </td>
+        </tr>
+        <tr data-type="vente">
+          <td>C-2170</td>
+          <td><span class="type-badge type-sale">Vente</span></td>
+          <td>Maison Hammamet</td>
+          <td>Omar T. / Nadia B.</td>
+          <td>10/03/2026</td>
+          <td>380 000 DT</td>
+          <td><span class="status s-conf">Actif</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="viewContract('C-2170')">Voir</button>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="generatePDF('C-2170')">PDF</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- PAYMENTS TABLE -->
+    <div id="tab-payments" class="panel" style="display:none">
+      <div class="panel-header">
+        <span class="panel-title">Suivi des paiements</span>
+      </div>
+      <table class="table">
+        <tr>
+          <th>#Paiement</th>
+          <th>Contrat</th>
+          <th>Client</th>
+          <th>Montant</th>
+          <th>Date</th>
+          <th>Méthode</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <td>P-5501</td>
+          <td>C-2201</td>
+          <td>Karim Trabelsi</td>
+          <td>5 500 DT</td>
+          <td>13/04/2026</td>
+          <td>Virement</td>
+          <td><span class="status s-paid">Payé</span></td>
+          <td><button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="validatePayment('P-5501')">Valider</button></td>
+        </tr>
+        <tr>
+          <td>P-5498</td>
+          <td>C-2185</td>
+          <td>Ines Karray</td>
+          <td>1 200 DT</td>
+          <td>01/04/2026</td>
+          <td>Chèque</td>
+          <td><span class="status s-pend">En attente</span></td>
+          <td><button class="btn btn-a" style="font-size:9px;padding:2px 6px" onclick="validatePayment('P-5498')">Valider</button></td>
+        </tr>
+        <tr>
+          <td>P-5490</td>
+          <td>C-2198</td>
+          <td>Leila Mrad</td>
+          <td>220 000 DT</td>
+          <td>07/04/2026</td>
+          <td>Virement</td>
+          <td><span class="status s-paid">Payé</span></td>
+          <td><button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="validatePayment('P-5490')">Valider</button></td>
+        </tr>
+        <tr>
+          <td>P-5480</td>
+          <td>C-2170</td>
+          <td>Omar Trabelsi</td>
+          <td>380 000 DT</td>
+          <td>12/03/2026</td>
+          <td>Virement</td>
+          <td><span class="status s-pend">En attente</span></td>
+          <td><button class="btn btn-a" style="font-size:9px;padding:2px 6px" onclick="validatePayment('P-5480')">Valider</button></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- NEW CONTRACT FORM -->
+    <div class="modal-overlay" id="newContractModal" style="display:none" onclick="closeNewContract()">
+      <div class="modal" style="width:380px" onclick="event.stopPropagation()">
+        <div class="modal-title">Nouveau contrat</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+          <div class="form-field">
+            <div class="flabel">Type de contrat</div>
+            <select class="finput">
+              <option>Location</option>
+              <option>Vente</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <div class="flabel">Référence réservation/achat</div>
+            <input class="finput" type="text" placeholder="R-XXXX ou ACH-XXX">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Bien concerné</div>
+            <input class="finput" type="text" placeholder="Nom du bien">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Montant (DT)</div>
+            <input class="finput" type="number" placeholder="0">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Date de création</div>
+            <input class="finput" type="date" value="2026-04-20">
+          </div>
+          <div class="form-field">
+            <div class="flabel">Statut initial</div>
+            <select class="finput">
+              <option>En attente</option>
+              <option>Actif</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field" style="margin-top:6px">
+          <div class="flabel">Clauses particulières</div>
+          <textarea class="finput ftextarea" placeholder="Ajouter des clauses spécifiques..."></textarea>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:12px">
+          <button class="btn btn-a" onclick="saveContract()">Créer le contrat</button>
+          <button class="btn btn-out" onclick="closeNewContract()">Annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRACT VIEW MODAL -->
+    <div class="modal-overlay" id="viewContractModal" style="display:none" onclick="closeViewContract()">
+      <div class="modal" style="width:420px" onclick="event.stopPropagation()">
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="font-size:16px;font-weight:600;color:#854F0B">GI Immobilier</div>
+          <div style="font-size:11px;color:#888;margin-top:2px">CONTRAT DE LOCATION / VENTE</div>
+        </div>
+        <div class="detail-row"><span class="detail-label">Référence :</span><span id="vc-ref"></span></div>
+        <div class="detail-row"><span class="detail-label">Bien :</span><span id="vc-bien"></span></div>
+        <div class="detail-row"><span class="detail-label">Parties :</span><span id="vc-parties"></span></div>
+        <div class="detail-row"><span class="detail-label">Montant :</span><span id="vc-amount"></span></div>
+        <div class="detail-row"><span class="detail-label">Date :</span><span id="vc-date"></span></div>
+        <div class="detail-row"><span class="detail-label">Statut :</span><span id="vc-status"></span></div>
+        <div style="border-top:0.5px solid #ddd;margin:12px 0;padding-top:10px;font-size:9px;color:#888">
+          Ce contrat a été généré par GI Immobilier et engage les deux parties conformément aux lois en vigueur.
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-a" onclick="generatePDF('view')">Télécharger PDF</button>
+          <button class="btn btn-out" onclick="closeViewContract()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Immobilier</span>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Accueil public</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
+  </div>
+
+  <script>
+    const contracts = {
+      'C-2201': { bien: 'Villa Marsa', parties: 'Sara M. / Karim T.', amount: '5 500 DT', date: '12/04/2026', status: 'Actif' },
+      'C-2198': { bien: 'Duplex Sfax', parties: 'Leila M. / Hassan K.', amount: '220 000 DT', date: '06/04/2026', status: 'Actif' },
+      'C-2185': { bien: 'Appart. Tunis Centre', parties: 'Ines K. / Mohamed B.', amount: '1 200 DT/mois', date: '20/03/2026', status: 'En attente' },
+      'C-2170': { bien: 'Maison Hammamet', parties: 'Omar T. / Nadia B.', amount: '380 000 DT', date: '10/03/2026', status: 'Actif' }
+    };
+
+    function switchTab(tab, btn) {
+      document.getElementById('tab-contracts').style.display = tab === 'contracts' ? 'block' : 'none';
+      document.getElementById('tab-payments').style.display = tab === 'payments' ? 'block' : 'none';
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+      btn.classList.add('tab-active');
+    }
+
+    function viewContract(id) {
+      const c = contracts[id];
+      document.getElementById('vc-ref').textContent = id;
+      document.getElementById('vc-bien').textContent = c.bien;
+      document.getElementById('vc-parties').textContent = c.parties;
+      document.getElementById('vc-amount').textContent = c.amount;
+      document.getElementById('vc-date').textContent = c.date;
+      document.getElementById('vc-status').textContent = c.status;
+      document.getElementById('viewContractModal').style.display = 'flex';
+    }
+
+    function closeViewContract() { document.getElementById('viewContractModal').style.display = 'none'; }
+
+    function openNewContract() { document.getElementById('newContractModal').style.display = 'flex'; }
+    function closeNewContract() { document.getElementById('newContractModal').style.display = 'none'; }
+    function saveContract() { alert('Contrat créé avec succès.'); closeNewContract(); }
+
+    function activateContract(id) { alert('Contrat ' + id + ' activé.'); }
+    function generatePDF(id) { alert('Génération PDF du contrat ' + id + '...'); }
+    function validatePayment(id) { alert('Paiement ' + id + ' validé.'); }
+
+    function filterContracts(type) {
+      document.querySelectorAll('#contractTable tr[data-type]').forEach(row => {
+        row.style.display = (!type || row.dataset.type === type) ? '' : 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>
