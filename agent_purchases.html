@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Gestion des Achats</title>
+  <link rel="stylesheet" href="styles_agent.css">
+</head>
+<body>
+
+  <div class="nav">
+    <span class="nl">GI Immobilier</span>
+    <div class="nr">
+      <a href="agent_dashboard.html" class="nlink">Tableau de bord</a>
+      <a href="agent_validation.html" class="nlink">Valider Biens</a>
+      <a href="agent_reservations.html" class="nlink">Réservations</a>
+      <a href="agent_purchases.html" class="nlink active-link">Achats</a>
+      <a href="agent_contracts.html" class="nlink">Contrats</a>
+      <a href="agent_profile.html" class="nav-avatar">A</a>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Gestion des Achats</div>
+        <div class="page-sub">Assistez le processus d'achat entre acheteurs et vendeurs</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <select class="finput" style="width:auto;font-size:10px" id="filterStatus" onchange="filterTable()">
+          <option value="">Tous les statuts</option>
+          <option value="en-cours">En cours</option>
+          <option value="finalise">Finalisé</option>
+          <option value="annule">Annulé</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="grid4" style="margin-bottom:14px">
+      <div class="metric"><div class="mnum" style="color:#633806">3</div><div class="mlabel">En cours</div></div>
+      <div class="metric"><div class="mnum" style="color:#3B6D11">7</div><div class="mlabel">Finalisés</div></div>
+      <div class="metric"><div class="mnum" style="color:#791F1F">1</div><div class="mlabel">Annulés</div></div>
+      <div class="metric"><div class="mnum">1 240 000 DT</div><div class="mlabel">Volume total</div></div>
+    </div>
+
+    <!-- PURCHASE CARDS -->
+    <div class="panel" style="margin-bottom:12px">
+      <div class="panel-header">
+        <span class="panel-title">Demandes d'achat actives</span>
+      </div>
+      <table class="table" id="purchaseTable">
+        <tr>
+          <th>#</th>
+          <th>Bien</th>
+          <th>Acheteur</th>
+          <th>Vendeur</th>
+          <th>Prix</th>
+          <th>Date demande</th>
+          <th>Étape</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+        <tr data-status="en-cours">
+          <td>ACH-301</td>
+          <td>Villa Marsa</td>
+          <td>Karim Trabelsi</td>
+          <td>Nadia B.</td>
+          <td>450 000 DT</td>
+          <td>12/04/2026</td>
+          <td><span class="step-badge">Négociation</span></td>
+          <td><span class="status s-pend">En cours</span></td>
+          <td>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px" onclick="openPurchase('ACH-301')">Assister</button>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="advanceStep('ACH-301')">Avancer →</button>
+          </td>
+        </tr>
+        <tr data-status="en-cours">
+          <td>ACH-298</td>
+          <td>Appartement Manar</td>
+          <td>Sonia Gharbi</td>
+          <td>Ali M.</td>
+          <td>180 000 DT</td>
+          <td>08/04/2026</td>
+          <td><span class="step-badge">Documents</span></td>
+          <td><span class="status s-pend">En cours</span></td>
+          <td>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px" onclick="openPurchase('ACH-298')">Assister</button>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="advanceStep('ACH-298')">Avancer →</button>
+          </td>
+        </tr>
+        <tr data-status="finalise">
+          <td>ACH-290</td>
+          <td>Duplex Sfax</td>
+          <td>Leila Mrad</td>
+          <td>Hassan K.</td>
+          <td>220 000 DT</td>
+          <td>05/04/2026</td>
+          <td><span class="step-badge step-done">Finalisé</span></td>
+          <td><span class="status s-conf">Finalisé</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="openPurchase('ACH-290')">Voir</button>
+            <a href="agent_contracts.html" class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px">Contrat</a>
+          </td>
+        </tr>
+        <tr data-status="en-cours">
+          <td>ACH-305</td>
+          <td>Terrain Ariana</td>
+          <td>Rami Ben Salem</td>
+          <td>Olfa T.</td>
+          <td>390 000 DT</td>
+          <td>18/04/2026</td>
+          <td><span class="step-badge">Offre initiale</span></td>
+          <td><span class="status s-pend">En cours</span></td>
+          <td>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px" onclick="openPurchase('ACH-305')">Assister</button>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="advanceStep('ACH-305')">Avancer →</button>
+          </td>
+        </tr>
+        <tr data-status="annule">
+          <td>ACH-285</td>
+          <td>Studio Lac 2</td>
+          <td>Yosr Jebali</td>
+          <td>Mehdi N.</td>
+          <td>95 000 DT</td>
+          <td>01/04/2026</td>
+          <td><span class="step-badge step-cancel">Annulé</span></td>
+          <td><span class="status s-canc">Annulé</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="openPurchase('ACH-285')">Voir</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- PROCESS TIMELINE PANEL -->
+    <div class="panel" id="processPanel" style="display:none">
+      <div class="panel-header">
+        <span class="panel-title">Processus d'achat — <span id="process-id"></span></span>
+        <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="closeProcess()">Fermer ✕</button>
+      </div>
+      <div style="padding:10px 0">
+        <div class="timeline">
+          <div class="tl-step tl-done"><div class="tl-dot"></div><div class="tl-label">Demande soumise</div></div>
+          <div class="tl-step tl-active" id="tl-nego"><div class="tl-dot"></div><div class="tl-label">Négociation</div></div>
+          <div class="tl-step" id="tl-docs"><div class="tl-dot"></div><div class="tl-label">Documents légaux</div></div>
+          <div class="tl-step" id="tl-payment"><div class="tl-dot"></div><div class="tl-label">Paiement</div></div>
+          <div class="tl-step" id="tl-contract"><div class="tl-dot"></div><div class="tl-label">Contrat signé</div></div>
+          <div class="tl-step" id="tl-done"><div class="tl-dot"></div><div class="tl-label">Transfert de propriété</div></div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="flabel">Notes de l'agent :</div>
+          <textarea class="finput ftextarea" style="height:60px" placeholder="Ajouter des notes sur l'avancement..."></textarea>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn btn-a" onclick="closeProcess()">Enregistrer</button>
+          <a href="agent_contracts.html" class="btn btn-out">Générer contrat</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Immobilier</span>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Accueil public</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
+  </div>
+
+  <script>
+    function openPurchase(id) {
+      document.getElementById('process-id').textContent = id;
+      document.getElementById('processPanel').style.display = 'block';
+      document.getElementById('processPanel').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeProcess() {
+      document.getElementById('processPanel').style.display = 'none';
+    }
+
+    function advanceStep(id) {
+      alert('Étape avancée pour ' + id + '. Notification envoyée aux parties.');
+    }
+
+    function filterTable() {
+      const filter = document.getElementById('filterStatus').value;
+      document.querySelectorAll('#purchaseTable tr[data-status]').forEach(row => {
+        row.style.display = (!filter || row.dataset.status === filter) ? '' : 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>

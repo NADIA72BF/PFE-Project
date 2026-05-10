@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Connectez-vous à votre compte GI Immobilier">
+  <title>GI Immobilier — Connexion</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .error-alert {
+      background-color: #fce4ec;
+      border-left: 4px solid #ea4335;
+      color: #c62828;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      display: none;
+      font-size: 14px;
+      font-weight: 500;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .error-alert.show {
+      display: block;
+    }
+
+    .error-alert::before {
+      content: "⚠ ";
+      margin-right: 8px;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success-alert {
+      background-color: #e8f5e9;
+      border-left: 4px solid #34a853;
+      color: #2e7d32;
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      display: none;
+      font-size: 14px;
+      font-weight: 500;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    .success-alert.show {
+      display: block;
+    }
+
+    .success-alert::before {
+      content: "✓ ";
+      margin-right: 8px;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #1a73e8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+    }
+
+    .login-btn.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .login-btn.loading .loading-spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <h1 class="nav-logo">GI Immobilier</h1>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="annonces.html" class="nav-link">Annonces</a>
+      <a href="apropos.html" class="nav-link">À propos</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+  </nav>
+
+  <main class="login-wrapper">
+    <div class="login-card">
+      <h2 class="login-title">Bienvenue</h2>
+      <div class="tabs">
+        <button class="tab active">Connexion</button>
+        <button class="tab" onclick="location.href='inscription.html'">Inscription</button>
+      </div>
+
+      <form id="loginForm" class="contact-form" style="padding: 0; max-width: none; background: none; box-shadow: none;">
+        <div id="errorMessage" class="error-alert"></div>
+        <div id="successMessage" class="success-alert"></div>
+        
+        <div class="form-field">
+          <label class="form-label" for="email">Email</label>
+          <input id="email" class="form-input" type="email" placeholder="email@exemple.com" required>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="password">Mot de passe</label>
+          <input id="password" class="form-input" type="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="login-btn">
+          <span class="loading-spinner"></span>
+          Se connecter
+        </button>
+      </form>
+
+      <div class="login-alt">
+        Mot de passe oublié ? <a href="#">Réinitialiser</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" style="margin-top: 40px;">
+    <div>
+      <span class="footer-logo">GI Immobilier</span>
+      <p style="font-size: 12px; color: var(--gray-400); margin-top: 8px;">La meilleure plateforme immobilière de Tunisie</p>
+    </div>
+    <nav class="footer-links">
+      <a href="contact.html" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Conditions d'utilisation</a>
+      <a href="#" class="footer-link">Politique de confidentialité</a>
+    </nav>
+  </footer>
+
+  <script>
+    function getDashboardByRole(role) {
+      const normalized = String(role || '').toLowerCase();
+      if (normalized === 'administrator' || normalized === 'admin') return 'admin_dashboard.html';
+      if (normalized === 'agent') return 'agent_dashboard.html';
+      return 'user_dashboard.html';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+      const loginBtn = e.target.querySelector('button');
+      
+      // Reset messages
+      errorMessage.classList.remove('show');
+      successMessage.classList.remove('show');
+      
+      // Validate inputs
+      if (!email || !password) {
+        errorMessage.textContent = 'Veuillez remplir tous les champs';
+        errorMessage.classList.add('show');
+        return;
+      }
+      
+      try {
+        // Show loading state
+        loginBtn.classList.add('loading');
+        loginBtn.disabled = true;
+        
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+          successMessage.textContent = 'Connexion réussie ! Redirection en cours...';
+          successMessage.classList.add('show');
+          
+          // Small delay for UX
+          setTimeout(() => {
+            console.log('✅ Connexion réussie!');
+            // Utiliser la destination stockée, sinon dashboard selon le rôle
+            const roleDashboard = getDashboardByRole(data?.user?.role);
+            const redirect = sessionStorage.getItem('redirectAfterLogin') || roleDashboard;
+            sessionStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirect;
+          }, 1500);
+        } else {
+          errorMessage.textContent = data.error || 'Erreur de connexion';
+          errorMessage.classList.add('show');
+          loginBtn.classList.remove('loading');
+          loginBtn.disabled = false;
+        }
+      } catch (error) {
+        errorMessage.textContent = 'Erreur réseau: ' + error.message;
+        errorMessage.classList.add('show');
+        console.error('Erreur:', error);
+        loginBtn.classList.remove('loading');
+        loginBtn.disabled = false;
+      }
+    });
+  </script>
+
+  <script src="auth-helper.js"></script>
+  <script>
+    // ✅ Mettre à jour le navbar au chargement
+    document.addEventListener("DOMContentLoaded", () => {
+      updateNavbarAuth();
+    });
+  </script>
+
+</body>
+</html>

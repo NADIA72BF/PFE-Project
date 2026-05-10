@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GI Immobilier - Plateforme de vente, location et annonces immobilières en Tunisie">
+  <title>GI Immobilier — Plateforme Immobilière Professionnelle</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <h1 class="nav-logo">GI Immobilier</h1>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Accueil</a>
+      <a href="annonces.html" class="nav-link">Annonces</a>
+      <a href="apropos.html" class="nav-link">À propos</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <a href="login.html" class="nav-btn">Connexion</a>
+  </nav>
+
+  <!-- HERO SECTION WITH CTA -->
+  <section class="hero">
+    <h2>Trouvez le bien immobilier de vos rêves</h2>
+    <p>Découvrez les meilleures opportunités immobilières en Tunisie</p>
+    
+    <div class="search-bar">
+      <input class="search-input" type="text" placeholder="Ville, quartier, code postal...">
+      <button class="search-btn">Rechercher</button>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="annonces.html" class="hero-link">Parcourir les annonces</a>
+      <button class="hero-link secondary" data-action="publish-property">Publier une annonce</button>
+    </div>
+
+    <div class="hero-trust">
+      <span>✓ 1000+ annonces actives</span>
+      <span>✓ Plateforme sécurisée</span>
+      <span>✓ Support 24/7</span>
+    </div>
+  </section>
+
+  <!-- CATEGORIES SECTION -->
+  <section class="section">
+    <h3 class="section-title">Explorez par catégorie</h3>
+    <div class="categories-grid">
+      <a href="annonces.html?category=location" class="category-card">
+        <div class="category-icon">📍</div>
+        <h4>Location</h4>
+        <p>770+ annonces</p>
+      </a>
+      <a href="annonces.html?category=vente" class="category-card">
+        <div class="category-icon">🏷️</div>
+        <h4>Vente</h4>
+        <p>680+ annonces</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- FEATURED LISTINGS -->
+  <section class="section">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px">
+      <h3 class="section-title">👉 Plus récentes annonces</h3>
+      <a href="annonces.html" style="font-size:13px;color:var(--primary);font-weight:600;text-decoration:none">Voir toutes →</a>
+    </div>
+    <div id="propertiesContainer" class="cards-grid"></div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="section section-alt">
+    <h3 class="section-title">Pourquoi nous choisir ?</h3>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">🔒</div>
+        <h4>Plateforme sécurisée</h4>
+        <p>Transactions protégées et données confidentielles avec les plus hauts standards de sécurité</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">⚡</div>
+        <h4>Processus rapide</h4>
+        <p>Trouvez et contactez les propriétaires en quelques minutes seulement</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">👥</div>
+        <h4>Équipe professionnelle</h4>
+        <p>Nos agents immobiliers expérimentés sont à votre service 24/7</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">💰</div>
+        <h4>Meilleurs prix</h4>
+        <p>Accédez à des offres exclusives et comparables sur le marché tunisien</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION -->
+  <section class="section">
+    <h3 class="section-title">Nos services</h3>
+    <div class="services">
+      <div class="service">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        </div>
+        <h4 class="service-title">Location courte durée</h4>
+        <p class="service-desc">Séjours flexibles et confortables pour vos besoins temporaires</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </div>
+        <h4 class="service-title">Location longue durée</h4>
+        <p class="service-desc">Contrats annuels sécurisés pour un logement stable</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/></svg>
+        </div>
+        <h4 class="service-title">Vente immobilière</h4>
+        <p class="service-desc">Achat en toute confiance avec assistance complète</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS SECTION -->
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-num">1000+</div>
+      <div class="stat-label">Annonces actives</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2500+</div>
+      <div class="stat-label">Clients satisfaits</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Agents professionnels</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7 ans</div>
+      <div class="stat-label">D'expérience</div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS SECTION -->
+  <section class="section">
+    <h3 class="section-title">Avis de nos clients</h3>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"J'ai trouvé mon appartement en une semaine. L'équipe a été très professionnelle et à l'écoute de mes besoins."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SB</div>
+          <div>
+            <p class="testimonial-name">Soufien Ben Youssef</p>
+            <p class="testimonial-role">Acheteur</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"Plateforme fiable et intuitives. J'ai loué ma villa en quelques jours sans difficulté."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">FA</div>
+          <div>
+            <p class="testimonial-name">Fatima Al-Rasheed</p>
+            <p class="testimonial-role">Propriétaire</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-text">"Support client exceptionnel. Ils m'ont aidé à chaque étape du processus d'achat."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MK</div>
+          <div>
+            <p class="testimonial-name">Mariem Kébir</p>
+            <p class="testimonial-role">Acheteur - Tunis</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS SECTION -->
+  <section class="section section-alt">
+    <h3 class="section-title">Comment ça marche ?</h3>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h4>Recherchez</h4>
+        <p>Parcourez nos 1000+ annonces immobilières à travers toute la Tunisie</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h4>Comparez</h4>
+        <p>Comparez les prix, localisation et caractéristiques des biens</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h4>Contactez</h4>
+        <p>Envoyez un message directement au propriétaire ou à notre équipe</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h4>Finalisez</h4>
+        <p>Concluez votre transaction en toute sécurité sur notre plateforme</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION FOR SIGNUP -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h3>Prêt à trouver votre bien idéal ?</h3>
+      <p>Rejoignez des milliers d'utilisateurs satisfaits qui ont déjà trouvé leur propriété de rêves</p>
+      <div class="cta-buttons">
+        <a href="login.html" class="cta-btn primary">Créer un compte gratuit</a>
+        <a href="annonces.html" class="cta-btn secondary">Parcourir les annonces</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP DOWNLOAD SECTION -->
+  <section class="section">
+    <h3 class="section-title">Téléchargez notre application</h3>
+    <div class="app-download">
+      <div class="app-info">
+        <h4>Accédez en un clic depuis votre téléphone</h4>
+        <p>Trouvez vos biens immobiliers où que vous soyez, à tout moment</p>
+        <div class="app-links">
+          <a href="#" class="app-link">📱 App Store</a>
+          <a href="#" class="app-link">🤖 Google Play</a>
+        </div>
+      </div>
+      <div class="app-preview">📲 Preview</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <span class="footer-logo">GI Immobilier</span>
+      <p style="font-size: 12px; color: var(--gray-500); margin-top: 8px;">La meilleure plateforme immobilière de Tunisie</p>
+    </div>
+    <nav class="footer-links">
+      <a href="contact.html" class="footer-link">Contact</a>
+      <a href="#" class="footer-link">Conditions d'utilisation</a>
+      <a href="#" class="footer-link">Politique de confidentialité</a>
+    </nav>
+  </footer>
+  <script src="auth-helper.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

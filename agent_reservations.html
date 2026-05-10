@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Immobilier — Gestion des Réservations</title>
+  <link rel="stylesheet" href="styles_agent.css">
+</head>
+<body>
+
+  <div class="nav">
+    <span class="nl">GI Immobilier</span>
+    <div class="nr">
+      <a href="agent_dashboard.html" class="nlink">Tableau de bord</a>
+      <a href="agent_validation.html" class="nlink">Valider Biens</a>
+      <a href="agent_reservations.html" class="nlink active-link">Réservations</a>
+      <a href="agent_purchases.html" class="nlink">Achats</a>
+      <a href="agent_contracts.html" class="nlink">Contrats</a>
+      <a href="agent_profile.html" class="nav-avatar">A</a>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Gestion des Réservations</div>
+        <div class="page-sub">Assistez le processus de réservation entre locataires et propriétaires</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <select class="finput" style="width:auto;font-size:10px" id="filterStatus" onchange="filterTable()">
+          <option value="">Tous les statuts</option>
+          <option value="en-attente">En attente</option>
+          <option value="confirmee">Confirmée</option>
+          <option value="annulee">Annulée</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="grid4" style="margin-bottom:14px">
+      <div class="metric"><div class="mnum" style="color:#633806">3</div><div class="mlabel">En attente</div></div>
+      <div class="metric"><div class="mnum" style="color:#3B6D11">5</div><div class="mlabel">Confirmées</div></div>
+      <div class="metric"><div class="mnum" style="color:#791F1F">1</div><div class="mlabel">Annulées</div></div>
+      <div class="metric"><div class="mnum">9</div><div class="mlabel">Total ce mois</div></div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Liste des réservations</span>
+      </div>
+      <table class="table" id="reservationTable">
+        <tr>
+          <th>#</th>
+          <th>Bien</th>
+          <th>Locataire</th>
+          <th>Propriétaire</th>
+          <th>Date début</th>
+          <th>Date fin</th>
+          <th>Prix total</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+        <tr data-status="en-attente">
+          <td>R-1042</td>
+          <td>Appart. Lac Tunis</td>
+          <td>Ahmed Bensalem</td>
+          <td>Sara M.</td>
+          <td>01/05/2026</td>
+          <td>08/05/2026</td>
+          <td>1 750 DT</td>
+          <td><span class="status s-pend">En attente</span></td>
+          <td>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px" onclick="processReservation('R-1042','confirmer')">Confirmer</button>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="openDetail('R-1042')">Détails</button>
+          </td>
+        </tr>
+        <tr data-status="confirmee">
+          <td>R-1039</td>
+          <td>Villa Marsa</td>
+          <td>Sara Mansouri</td>
+          <td>Karim T.</td>
+          <td>10/05/2026</td>
+          <td>20/05/2026</td>
+          <td>5 500 DT</td>
+          <td><span class="status s-conf">Confirmée</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="openDetail('R-1039')">Détails</button>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="generateContract('R-1039')">Contrat →</button>
+          </td>
+        </tr>
+        <tr data-status="en-attente">
+          <td>R-1041</td>
+          <td>Studio Tunis Centre</td>
+          <td>Ines Karray</td>
+          <td>Mohamed B.</td>
+          <td>20/04/2026</td>
+          <td>20/05/2026</td>
+          <td>1 200 DT</td>
+          <td><span class="status s-pend">En attente</span></td>
+          <td>
+            <button class="btn btn-a" style="font-size:9px;padding:2px 6px" onclick="processReservation('R-1041','confirmer')">Confirmer</button>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="openDetail('R-1041')">Détails</button>
+          </td>
+        </tr>
+        <tr data-status="annulee">
+          <td>R-1035</td>
+          <td>Duplex Sfax</td>
+          <td>Leila Mrad</td>
+          <td>Fatma H.</td>
+          <td>15/04/2026</td>
+          <td>30/04/2026</td>
+          <td>2 000 DT</td>
+          <td><span class="status s-canc">Annulée</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="openDetail('R-1035')">Détails</button>
+          </td>
+        </tr>
+        <tr data-status="confirmee">
+          <td>R-1030</td>
+          <td>Maison Hammamet</td>
+          <td>Omar Trabelsi</td>
+          <td>Nadia B.</td>
+          <td>01/04/2026</td>
+          <td>15/04/2026</td>
+          <td>4 200 DT</td>
+          <td><span class="status s-conf">Confirmée</span></td>
+          <td>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px" onclick="openDetail('R-1030')">Détails</button>
+            <button class="btn btn-out" style="font-size:9px;padding:2px 6px;margin-left:3px" onclick="generateContract('R-1030')">Contrat →</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- DETAIL MODAL -->
+    <div class="modal-overlay" id="detailModal" style="display:none" onclick="closeDetail()">
+      <div class="modal" style="width:360px" onclick="event.stopPropagation()">
+        <div class="modal-title">Détails de la réservation <span id="detailId"></span></div>
+        <div style="margin-top:10px">
+          <div class="detail-row"><span class="detail-label">Bien :</span><span id="d-bien">Appart. Lac Tunis</span></div>
+          <div class="detail-row"><span class="detail-label">Locataire :</span><span id="d-tenant">Ahmed Bensalem</span></div>
+          <div class="detail-row"><span class="detail-label">Propriétaire :</span><span id="d-owner">Sara M.</span></div>
+          <div class="detail-row"><span class="detail-label">Période :</span><span id="d-period">01/05 → 08/05</span></div>
+          <div class="detail-row"><span class="detail-label">Prix total :</span><span id="d-price">1 750 DT</span></div>
+          <div class="detail-row"><span class="detail-label">Statut :</span><span id="d-status">En attente</span></div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="flabel">Note de l'agent :</div>
+          <textarea class="finput ftextarea" placeholder="Ajouter une note sur cette réservation..."></textarea>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn btn-a" onclick="closeDetail()">Fermer</button>
+          <a href="agent_contracts.html" class="btn btn-out">Générer contrat</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="footer-logo">GI Immobilier</span>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Accueil public</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
+  </div>
+
+  <script>
+    const reservationData = {
+      'R-1042': { bien: 'Appart. Lac Tunis', tenant: 'Ahmed Bensalem', owner: 'Sara M.', period: '01/05 → 08/05/2026', price: '1 750 DT', status: 'En attente' },
+      'R-1039': { bien: 'Villa Marsa', tenant: 'Sara Mansouri', owner: 'Karim T.', period: '10/05 → 20/05/2026', price: '5 500 DT', status: 'Confirmée' },
+      'R-1041': { bien: 'Studio Tunis Centre', tenant: 'Ines Karray', owner: 'Mohamed B.', period: '20/04 → 20/05/2026', price: '1 200 DT', status: 'En attente' },
+      'R-1035': { bien: 'Duplex Sfax', tenant: 'Leila Mrad', owner: 'Fatma H.', period: '15/04 → 30/04/2026', price: '2 000 DT', status: 'Annulée' },
+      'R-1030': { bien: 'Maison Hammamet', tenant: 'Omar Trabelsi', owner: 'Nadia B.', period: '01/04 → 15/04/2026', price: '4 200 DT', status: 'Confirmée' }
+    };
+
+    function openDetail(id) {
+      const d = reservationData[id];
+      document.getElementById('detailId').textContent = id;
+      document.getElementById('d-bien').textContent = d.bien;
+      document.getElementById('d-tenant').textContent = d.tenant;
+      document.getElementById('d-owner').textContent = d.owner;
+      document.getElementById('d-period').textContent = d.period;
+      document.getElementById('d-price').textContent = d.price;
+      document.getElementById('d-status').textContent = d.status;
+      document.getElementById('detailModal').style.display = 'flex';
+    }
+
+    function closeDetail() {
+      document.getElementById('detailModal').style.display = 'none';
+    }
+
+    function processReservation(id, action) {
+      alert('Réservation ' + id + ' : ' + action + ' enregistré.');
+    }
+
+    function generateContract(id) {
+      window.location.href = 'agent_contracts.html';
+    }
+
+    function filterTable() {
+      const filter = document.getElementById('filterStatus').value;
+      document.querySelectorAll('#reservationTable tr[data-status]').forEach(row => {
+        row.style.display = (!filter || row.dataset.status === filter) ? '' : 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>

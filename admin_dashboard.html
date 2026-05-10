@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Admin | Dashboard</title>
+  <style>
+    :root {
+      --sidebar: #101828;
+      --sidebar-soft: #1d2939;
+      --sidebar-text: #f8fafc;
+      --sidebar-muted: #98a2b3;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e4e7ec;
+      --text: #101828;
+      --muted: #667085;
+      --danger: #d92d20;
+      --danger-soft: #fee4e2;
+      --success: #079455;
+      --success-soft: #dcfae6;
+      --warning: #b54708;
+      --warning-soft: #ffead5;
+      --accent: #175cd3;
+      --accent-soft: #d1e9ff;
+      --shadow: 0 20px 50px rgba(16, 24, 40, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(23, 92, 211, 0.10), transparent 26%),
+        linear-gradient(180deg, #eef2f6 0%, #f7f9fc 100%);
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 20%),
+        linear-gradient(180deg, #0b1220 0%, #101828 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .brand { display: flex; flex-direction: column; gap: 8px; }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #175cd3, #0ba5ec);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .brand h1 { margin: 0; font-size: 22px; }
+    .brand p, .side-card p, .menu-link small { margin: 0; color: var(--sidebar-muted); line-height: 1.5; }
+
+    .menu { display: flex; flex-direction: column; gap: 10px; }
+
+    .menu-link {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: var(--sidebar-text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .menu-link.active {
+      background: rgba(23, 92, 211, 0.22);
+      border-color: rgba(49, 130, 206, 0.45);
+    }
+
+    .menu-link strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+    .side-card {
+      margin-top: auto;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .side-card h2 { margin: 0 0 8px; font-size: 16px; }
+    .side-card code {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #93c5fd;
+    }
+
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+
+    .hero, .panel {
+      background: var(--surface);
+      border: 1px solid rgba(16, 24, 40, 0.06);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .hero h2 { margin: 0 0 8px; font-size: 30px; }
+    .hero p { margin: 0; color: var(--muted); max-width: 860px; line-height: 1.6; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, #175cd3, #0ba5ec); color: #fff; }
+    .btn-secondary { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); }
+
+    /* Metrics row */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric {
+      padding: 20px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid rgba(16, 24, 40, 0.06);
+      box-shadow: var(--shadow);
+    }
+
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .metric strong { font-size: 36px; line-height: 1; }
+    .metric small { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; }
+
+    .metric.accent-card {
+      background: linear-gradient(135deg, #175cd3, #0ba5ec);
+      color: #fff;
+    }
+    .metric.accent-card span, .metric.accent-card small { color: rgba(255,255,255,0.75); }
+    .metric.accent-card strong { color: #fff; }
+
+    /* Panel */
+    .panel { padding: 24px; }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h3 { margin: 0 0 6px; font-size: 20px; }
+    .panel-head p { margin: 0; color: var(--muted); }
+
+    /* Summary grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .summary-card {
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+    }
+
+    .summary-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .summary-card .value { font-size: 22px; font-weight: 700; }
+
+    .dist-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .dist-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .dist-bar-wrap { flex: 1; height: 8px; background: #f1f5f9; border-radius: 999px; overflow: hidden; }
+    .dist-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #175cd3, #0ba5ec); }
+
+    /* Status pill */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .pill.info { background: #f1f5f9; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    /* Two-col layout for properties + users */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    /* Property grid */
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .property-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thumb {
+      height: 130px;
+      background: #eff6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .card-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .card-title { font-size: 14px; font-weight: 700; margin: 0; line-height: 1.3; }
+    .card-meta { color: var(--muted); font-size: 12px; margin: 0; }
+    .card-price { font-size: 16px; font-weight: 800; margin: 0; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge.published { background: var(--success-soft); color: var(--success); }
+    .badge.pending { background: var(--warning-soft); color: var(--warning); }
+    .badge.rejected { background: var(--danger-soft); color: var(--danger); }
+    .badge.type { background: #eff6ff; color: #175cd3; }
+
+    /* Users table */
+    .users-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .users-table th { text-align: left; padding: 10px 12px; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); font-size: 12px; }
+    .users-table td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
+    .users-table tr:last-child td { border-bottom: none; }
+    .users-table tr:hover td { background: #f8fafc; }
+
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #175cd3, #0ba5ec);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .user-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .user-meta strong {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .user-meta span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .table-scroll {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+
+    .empty { padding: 36px 16px; color: var(--muted); text-align: center; border: 1px dashed var(--border); border-radius: 16px; }
+
+    /* Chart embed slot */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .chart-slot {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chart-slot iframe {
+      width: 100%;
+      height: 320px;
+      border: none;
+      display: block;
+    }
+
+    .chart-placeholder {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px;
+    }
+
+    .chart-placeholder strong { display: block; font-size: 15px; margin-bottom: 6px; color: var(--text); }
+
+    @media (max-width: 1200px) {
+      .metrics-row { grid-template-columns: repeat(3, 1fr); }
+      .chart-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .content { padding: 16px; }
+      .hero { flex-direction: column; align-items: flex-start; }
+      .metrics-row { grid-template-columns: 1fr 1fr; }
+      .property-grid { grid-template-columns: 1fr; }
+      .hero, .panel, .metric { border-radius: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <div>
+          <h1>Admin Console</h1>
+          <p>Tableau de bord &mdash; gestion globale du syst&egrave;me.</p>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <a class="menu-link active" href="admin_dashboard.html">
+          <div>
+            <strong>Dashboard</strong>
+            <small>Vue d&apos;ensemble</small>
+          </div>
+          <span>&bull;</span>
+        </a>
+        <a class="menu-link" href="admin_properties.html">
+          <div>
+            <strong>Propri&eacute;t&eacute;s</strong>
+            <small>Gestion et validation</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="admin_users.html">
+          <div>
+            <strong>Utilisateurs</strong>
+            <small>Gestion des comptes</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="admin_chatbot.html">
+          <div>
+            <strong>Chatbot</strong>
+            <small>Configuration IA</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+      </nav>
+
+      <div class="side-card">
+        <h2>Source</h2>
+        <p>Donn&eacute;es depuis Zoho Creator via l&apos;API backend.</p>
+        <code id="sideSource">Chargement...</code>
+      </div>
+    </aside>
+
+    <main class="content">
+
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <h2>Tableau de bord Admin</h2>
+          <p>
+            Vue compl&egrave;te sur les propri&eacute;t&eacute;s, utilisateurs et activit&eacute; en temps r&eacute;el depuis <strong>Zoho Creator</strong>.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" id="refreshBtn" type="button">Actualiser</button>
+          <button class="btn btn-primary" onclick="clearCacheAndReload()" type="button">&#8635; Vider cache</button>
+        </div>
+      </section>
+
+      <!-- Status -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <div class="pill info" id="loadStatus">Chargement des donn&eacute;es...</div>
+      </div>
+
+      <!-- 5 KPI metrics -->
+      <div class="metrics-row">
+        <article class="metric accent-card">
+          <span>Total propri&eacute;t&eacute;s</span>
+          <strong id="metricTotal">0</strong>
+          <small>Toutes les propri&eacute;t&eacute;s</small>
+        </article>
+        <article class="metric">
+          <span>Approuv&eacute;es</span>
+          <strong id="metricApproved">0</strong>
+          <small>Publi&eacute;es sur le site</small>
+        </article>
+        <article class="metric">
+          <span>En attente</span>
+          <strong id="metricPending">0</strong>
+          <small>En cours de validation</small>
+        </article>
+        <article class="metric">
+          <span>Rejet&eacute;es</span>
+          <strong id="metricRejected">0</strong>
+          <small>Non publi&eacute;es</small>
+        </article>
+        <article class="metric">
+          <span>Utilisateurs</span>
+          <strong id="metricUsers">0</strong>
+          <small>Comptes avec le r&ocirc;le User</small>
+        </article>
+      </div>
+
+      <!-- Summary analytique -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>R&eacute;sum&eacute; analytique</h3>
+            <p>Statistiques calcul&eacute;es sur l&apos;ensemble du parc immobilier.</p>
+          </div>
+        </div>
+        <div class="summary-grid">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="summary-card">
+              <div class="label">Taux d&apos;approbation</div>
+              <div class="value" id="summaryApprovalRate">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="label">Prix moyen</div>
+              <div class="value" id="summaryAvgPrice">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="label">Ville principale</div>
+              <div class="value" id="summaryTopCity" style="font-size:16px;">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="label">Type principal</div>
+              <div class="value" id="summaryTopType" style="font-size:16px;">-</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">R&eacute;partition par statut</div>
+            <ul class="dist-list" id="distList">
+              <li><span style="width:80px">Chargement</span><div class="dist-bar-wrap"><div class="dist-bar" style="width:0%"></div></div></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts Zoho Creator -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Graphiques Zoho Creator</h3>
+            <p>Rapports embarqu&eacute;s depuis Zoho Creator. Ajoutez les URLs dans <code>CREATOR_CHARTS</code>.</p>
+          </div>
+        </div>
+        <div class="chart-grid" id="chartGrid">
+          <!-- inject&eacute; par JS -->
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Utilisateurs r&eacute;cents <span id="usersCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+            <p>Derni&egrave;res fiches remont&eacute;es depuis Zoho Creator. <a href="admin_users.html" style="color:#175cd3;text-decoration:none;font-weight:600;">G&eacute;rer les utilisateurs &rarr;</a></p>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Utilisateur</th>
+                <th>Email</th>
+                <th>T&eacute;l&eacute;phone</th>
+                <th>R&ocirc;le</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td class="empty" colspan="4">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Properties + Users -->
+      <div class="two-col">
+
+        <!-- Proprietes en attente -->
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>En attente <span id="pendingCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+              <p><a href="admin_properties.html" style="color:#175cd3;text-decoration:none;font-weight:600;">Voir tout &rarr;</a></p>
+            </div>
+          </div>
+          <div id="pendingGrid" class="property-grid">
+            <div class="empty">Chargement...</div>
+          </div>
+        </section>
+
+        <!-- Proprietes publiees -->
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>Publi&eacute;es <span id="publishedCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+              <p>Biens visibles sur le site public.</p>
+            </div>
+          </div>
+          <div id="publishedGrid" class="property-grid">
+            <div class="empty">Chargement...</div>
+          </div>
+        </section>
+
+      </div>
+      <!-- Dernieres proprietes rejetees -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Propri&eacute;t&eacute;s rejet&eacute;es <span id="rejectedCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+            <p>Biens non approuv&eacute;s &mdash; <a href="admin_properties.html" style="color:#175cd3;text-decoration:none;font-weight:600;">G&eacute;rer &rarr;</a></p>
+          </div>
+        </div>
+        <div id="rejectedGrid" class="property-grid">
+          <div class="empty">Chargement...</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // ----------------------------------------------------------------
+    // GRAPHIQUES ZOHO CREATOR
+    // Dans Zoho Creator : Rapport -> Graphique -> Partager -> Embed
+    // Copiez le src de l'iframe pour chaque graphique
+    // ----------------------------------------------------------------
+    var CREATOR_CHARTS = [
+      { label: 'R\u00e9partition par statut', embedUrl: '' },
+      { label: 'Propri\u00e9t\u00e9s par ville', embedUrl: '' },
+      { label: 'Propri\u00e9t\u00e9s par type', embedUrl: '' },
+      { label: '\u00c9volution mensuelle', embedUrl: '' }
+    ];
+
+    var state = {
+      all: [],
+      pending: [],
+      published: [],
+      rejected: [],
+      users: [],
+      source: '-'
+    };
+
+    var els = {
+      refreshBtn: document.getElementById('refreshBtn'),
+      loadStatus: document.getElementById('loadStatus'),
+      sideSource: document.getElementById('sideSource'),
+      metricTotal: document.getElementById('metricTotal'),
+      metricApproved: document.getElementById('metricApproved'),
+      metricPending: document.getElementById('metricPending'),
+      metricRejected: document.getElementById('metricRejected'),
+      metricUsers: document.getElementById('metricUsers'),
+      pendingGrid: document.getElementById('pendingGrid'),
+      publishedGrid: document.getElementById('publishedGrid'),
+      rejectedGrid: document.getElementById('rejectedGrid'),
+      usersTableBody: document.getElementById('usersTableBody'),
+      pendingCount: document.getElementById('pendingCount'),
+      publishedCount: document.getElementById('publishedCount'),
+      rejectedCount: document.getElementById('rejectedCount'),
+      usersCount: document.getElementById('usersCount'),
+      summaryApprovalRate: document.getElementById('summaryApprovalRate'),
+      summaryAvgPrice: document.getElementById('summaryAvgPrice'),
+      summaryTopCity: document.getElementById('summaryTopCity'),
+      summaryTopType: document.getElementById('summaryTopType'),
+      distList: document.getElementById('distList'),
+      chartGrid: document.getElementById('chartGrid')
+    };
+
+    function setStatus(msg, type) {
+      els.loadStatus.textContent = msg;
+      els.loadStatus.className = 'pill ' + (type || 'info');
+    }
+
+    function normalizeText(value) {
+      if (value == null) return '';
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value);
+      if (Array.isArray(value)) {
+        for (var i = 0; i < value.length; i++) { var v = normalizeText(value[i]); if (v) return v; }
+        return '';
+      }
+      if (typeof value === 'object') {
+        if (value.display_value) return String(value.display_value);
+        if (value.zc_display_value) return String(value.zc_display_value);
+        if (value.first_name) return (String(value.first_name) + ' ' + String(value.last_name || '')).trim();
+        return Object.values(value).map(normalizeText).filter(Boolean).join(' ').trim();
+      }
+      return '';
+    }
+
+    function mapProperty(record) {
+      return {
+        id: normalizeText(record.ID1 || record.ID || record.id),
+        title: normalizeText(record.title || record.Title || record.Property_Title || record.Name) || 'Sans titre',
+        price: normalizeText(record.Price1 || record.Price || record.price) || 'N/A',
+        type: normalizeText(record.type_field || record.Type || record.type) || 'N/A',
+        status: normalizeText(record.Validation_Status || record.validation_status || record.ValidationStatus || 'unknown').trim().toLowerCase(),
+        location: normalizeText(record.location || record.Location || record.Address || record.City) || 'N/A',
+        image: normalizeText(record.image_proxy_url || record.image_url || record.Image || record.image || record.Photo)
+      };
+    }
+
+    function mapUserRecord(record) {
+      var id = normalizeText(record.ID1 || record.ID || record.User_ID || record.id);
+      var fullName = normalizeText(record.full_name || record.Full_Name || record.Name || record.name) || 'Sans nom';
+      var email = normalizeText(record.Email || record.email) || '-';
+      var phone = normalizeText(record.Phone_Number || record.Phone || record.phone || record.phone_number) || '-';
+      var rawRole = normalizeText(record.Role || record.User_Role || record.role);
+      var role = ['owner', 'tenant', 'buyer'].indexOf(String(rawRole).toLowerCase()) >= 0 ? 'User' : (rawRole || 'User');
+      return { id: id, fullName: fullName, email: email, phone: phone, role: role };
+    }
+
+    function escapeHtml(v) {
+      return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    function renderCard(p, section) {
+      var img = p.image ? '<img src="' + escapeHtml(p.image) + '" alt="' + escapeHtml(p.title) + '">' : 'Aucune image';
+      var badgeClass = section === 'pending' ? 'pending' : (section === 'rejected' ? 'rejected' : 'published');
+      var badgeLabel = section === 'pending' ? 'EN ATTENTE' : (section === 'rejected' ? 'REJET\u00c9E' : 'APPROUV\u00c9E');
+      return (
+        '<article class="property-card">' +
+          '<div class="thumb">' + img + '</div>' +
+          '<div class="card-body">' +
+            '<div style="display:flex;gap:5px;flex-wrap:wrap;">' +
+              '<span class="badge ' + badgeClass + '">' + badgeLabel + '</span>' +
+              '<span class="badge type">' + escapeHtml(p.type) + '</span>' +
+            '</div>' +
+            '<h4 class="card-title">' + escapeHtml(p.title) + '</h4>' +
+            '<p class="card-meta">ID: ' + escapeHtml(p.id || '-') + '</p>' +
+            '<p class="card-meta">Lieu: ' + escapeHtml(p.location) + '</p>' +
+            '<p class="card-price">' + escapeHtml(p.price) + ' DT</p>' +
+          '</div>' +
+        '</article>'
+      );
+    }
+
+    function renderGrid(container, items, section, max) {
+      var slice = max ? items.slice(0, max) : items;
+      if (!slice.length) { container.innerHTML = '<div class="empty">Aucune propri\u00e9t\u00e9.</div>'; return; }
+      container.innerHTML = slice.map(function(p) { return renderCard(p, section); }).join('');
+    }
+
+    function computeSummary(all) {
+      if (!all.length) return;
+      var approved = all.filter(function(p) { return p.status === 'approved'; });
+      var rate = Math.round((approved.length / all.length) * 100);
+      els.summaryApprovalRate.textContent = rate + '%';
+
+      var prices = all.map(function(p) {
+        var n = parseFloat(String(p.price).replace(/\s/g,'').replace(',','.'));
+        return isNaN(n) ? 0 : n;
+      }).filter(function(n) { return n > 0; });
+      var avg = prices.length ? Math.round(prices.reduce(function(a,b){return a+b;},0)/prices.length) : 0;
+      els.summaryAvgPrice.textContent = avg > 0 ? avg.toLocaleString('fr-TN') + ' DT' : 'N/A';
+
+      function top(arr, key) {
+        var f = {};
+        arr.forEach(function(p) { var v = p[key]; if (v && v !== 'N/A') f[v] = (f[v]||0)+1; });
+        var e = Object.entries(f); if (!e.length) return '-';
+        e.sort(function(a,b){return b[1]-a[1];}); return e[0][0];
+      }
+      els.summaryTopCity.textContent = top(all, 'location');
+      els.summaryTopType.textContent = top(all, 'type');
+
+      var statuses = [
+        { key: 'approved', label: 'Approuv\u00e9es', color: '#079455' },
+        { key: 'pending', label: 'En attente', color: '#b54708' },
+        { key: 'rejected', label: 'Rejet\u00e9es', color: '#d92d20' }
+      ];
+      els.distList.innerHTML = statuses.map(function(s) {
+        var count = all.filter(function(p){return p.status===s.key;}).length;
+        var pct = Math.round((count/all.length)*100);
+        return '<li><span style="width:90px;font-size:13px;">' + s.label + '</span>' +
+          '<div class="dist-bar-wrap"><div class="dist-bar" style="width:' + pct + '%;background:' + s.color + ';"></div></div>' +
+          '<span style="width:50px;text-align:right;font-size:13px;color:var(--muted);">' + count + ' (' + pct + '%)</span></li>';
+      }).join('');
+    }
+
+    function renderCharts() {
+      els.chartGrid.innerHTML = CREATOR_CHARTS.map(function(chart) {
+        if (chart.embedUrl) {
+          return '<div class="chart-slot"><iframe src="' + escapeHtml(chart.embedUrl) + '" allowfullscreen></iframe></div>';
+        }
+        return '<div class="chart-slot"><div class="chart-placeholder"><strong>' + escapeHtml(chart.label) + '</strong>' +
+          '<span>Zoho Creator &rarr; Rapport &rarr; Partager &rarr; Embed</span></div></div>';
+      }).join('');
+    }
+
+    function getInitials(name) {
+      var parts = String(name || '').trim().split(/\s+/).filter(Boolean).slice(0, 2);
+      if (!parts.length) return 'US';
+      return parts.map(function(part) { return part.charAt(0).toUpperCase(); }).join('');
+    }
+
+    function renderUsers() {
+      els.usersCount.textContent = '(' + state.users.length + ')';
+      if (!state.users.length) {
+        els.usersTableBody.innerHTML = '<tr><td class="empty" colspan="4">Aucun utilisateur trouv&eacute;.</td></tr>';
+        return;
+      }
+
+      els.usersTableBody.innerHTML = state.users.slice(0, 6).map(function(user) {
+        return '<tr>' +
+          '<td><div class="user-cell">' +
+            '<span class="avatar">' + escapeHtml(getInitials(user.fullName || user.email || user.id)) + '</span>' +
+            '<div class="user-meta">' +
+              '<strong>' + escapeHtml(user.fullName || '-') + '</strong>' +
+              '<span>ID: ' + escapeHtml(user.id || '-') + '</span>' +
+            '</div>' +
+          '</div></td>' +
+          '<td>' + escapeHtml(user.email || '-') + '</td>' +
+          '<td>' + escapeHtml(user.phone || '-') + '</td>' +
+          '<td><span class="badge type">' + escapeHtml(user.role || 'User') + '</span></td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    function render() {
+      var totalUsers = state.users.filter(function(user) {
+        return String(user.role || '').toLowerCase() === 'user';
+      }).length;
+
+      els.metricTotal.textContent = String(state.all.length);
+      els.metricApproved.textContent = String(state.published.length);
+      els.metricPending.textContent = String(state.pending.length);
+      els.metricRejected.textContent = String(state.rejected.length);
+      els.metricUsers.textContent = String(totalUsers);
+      els.sideSource.textContent = state.source || '-';
+      els.pendingCount.textContent = '(' + state.pending.length + ')';
+      els.publishedCount.textContent = '(' + state.published.length + ')';
+      els.rejectedCount.textContent = '(' + state.rejected.length + ')';
+      renderGrid(els.pendingGrid, state.pending, 'pending', 4);
+      renderGrid(els.publishedGrid, state.published, 'published', 4);
+      renderGrid(els.rejectedGrid, state.rejected, 'rejected', 4);
+      renderUsers();
+      computeSummary(state.all);
+      renderCharts();
+    }
+
+    async function loadDashboard() {
+      setStatus('Chargement des donn\u00e9es...', 'info');
+      try {
+        var results = await Promise.all([
+          fetch('/api/admin/properties'),
+          fetch('/api/admin/users')
+        ]);
+        var propertiesResponse = results[0];
+        var usersResponse = results[1];
+        var payload = await propertiesResponse.json();
+        var usersPayload = await usersResponse.json();
+        if (!propertiesResponse.ok || payload.success === false) throw new Error(payload.error || 'Impossible de charger les propri\u00e9t\u00e9s.');
+        if (!usersResponse.ok || usersPayload.success === false) throw new Error(usersPayload.error || 'Impossible de charger les utilisateurs.');
+
+        state.all = (Array.isArray(payload.all) ? payload.all : []).map(mapProperty).filter(function(p){return !!p.id;});
+        state.pending = (Array.isArray(payload.pending) ? payload.pending : []).map(mapProperty).filter(function(p){return p.id && p.status==='pending';});
+        state.published = (Array.isArray(payload.published) ? payload.published : []).map(mapProperty).filter(function(p){return p.id && p.status==='approved';});
+        state.rejected = state.all.filter(function(p){return p.status==='rejected';});
+        state.users = (Array.isArray(usersPayload.users) ? usersPayload.users : []).map(mapUserRecord).filter(function(user){
+          return user.id || user.email || user.fullName;
+        });
+        state.source = payload.source || 'zoho';
+        render();
+        setStatus('Donn\u00e9es charg\u00e9es \u2014 ' + state.all.length + ' propri\u00e9t\u00e9s, ' + state.users.length + ' utilisateurs', 'success');
+      } catch(error) {
+        state.all = []; state.pending = []; state.published = []; state.rejected = []; state.users = [];
+        state.source = 'error';
+        render();
+        setStatus(error.message, 'error');
+      }
+    }
+
+    async function clearCacheAndReload() {
+      try { await fetch('/api/admin/cache/clear', { method: 'POST' }); } catch(e) {}
+      loadDashboard();
+    }
+
+    els.refreshBtn.addEventListener('click', loadDashboard);
+    loadDashboard();
+  </script>
+</body>
+</html>

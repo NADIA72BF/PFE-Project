@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Agent | Mon Profil</title>
+  <style>
+    :root {
+      --sidebar: #0f172a;
+      --sidebar-soft: #1e293b;
+      --sidebar-text: #f8fafc;
+      --sidebar-muted: #94a3b8;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --success: #16a34a;
+      --success-soft: #dcfce7;
+      --accent: #14b8a6;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(20, 184, 166, 0.10), transparent 26%),
+        linear-gradient(180deg, #f0fdf9 0%, #f1fdf5 100%);
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 20%),
+        linear-gradient(180deg, #0a3d3a 0%, #0f172a 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #14b8a6, #06b6d4);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.08em;
+    }
+
+    .brand h1 { margin: 8px 0 0; font-size: 22px; }
+    .brand p { margin: 4px 0 0; color: var(--sidebar-muted); }
+
+    .menu-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--sidebar-text);
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      margin-bottom: 10px;
+    }
+
+    .menu-link.active {
+      background: rgba(20, 184, 166, 0.22);
+      border-color: rgba(20, 184, 166, 0.45);
+    }
+
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+
+    .hero, .panel {
+      background: var(--surface);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .hero h2 { margin: 0 0 6px; font-size: 28px; }
+    .hero p { margin: 0; color: var(--muted); }
+
+    .panel { padding: 24px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+
+    .field label { font-size: 13px; color: var(--muted); font-weight: 600; }
+
+    .control {
+      min-height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+    }
+
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary { background: linear-gradient(135deg, #14b8a6, #06b6d4); color: #fff; }
+    .btn-secondary { background: #f2f4f7; color: var(--text); border: 1px solid var(--border); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .pill.info { background: #f1f5f9; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    .helper { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+    @media (max-width: 1000px) {
+      .layout { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .content { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <h1>Agent Console</h1>
+        <p>Edition de votre compte agent.</p>
+      </div>
+
+      <a class="menu-link" href="agent_dashboard.html">
+        <span>Dashboard</span><span>&rarr;</span>
+      </a>
+      <a class="menu-link" href="agent_validation.html">
+        <span>Validation</span><span>&rarr;</span>
+      </a>
+      <a class="menu-link active" href="agent_profile.html">
+        <span>Mon profil</span><span>&bull;</span>
+      </a>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <div>
+          <h2>Mon profil agent</h2>
+          <p>Modifiez vos informations personnelles et enregistrez pour synchroniser Zoho Creator.</p>
+        </div>
+      </section>
+
+      <div class="pill info" id="status">Chargement...</div>
+
+      <section class="panel">
+        <form id="profileForm">
+          <div class="form-grid">
+            <div class="field full">
+              <label for="userId">ID utilisateur</label>
+              <input id="userId" class="control" type="text" readonly>
+            </div>
+
+            <div class="field">
+              <label for="firstName">Prenom</label>
+              <input id="firstName" class="control" type="text" required>
+            </div>
+
+            <div class="field">
+              <label for="lastName">Nom</label>
+              <input id="lastName" class="control" type="text" required>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" class="control" type="email" required>
+            </div>
+
+            <div class="field">
+              <label for="phone">Telephone</label>
+              <input id="phone" class="control" type="text">
+            </div>
+
+            <div class="field">
+              <label for="password">Nouveau mot de passe (optionnel)</label>
+              <input id="password" class="control" type="password" placeholder="Laisser vide pour ne pas modifier">
+            </div>
+
+            <div class="field">
+              <label for="confirmPassword">Confirmer mot de passe</label>
+              <input id="confirmPassword" class="control" type="password" placeholder="Meme mot de passe">
+            </div>
+
+            <div class="field full">
+              <div class="helper">Le role n'est pas modifiable depuis ce profil.</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+            <button type="button" class="btn btn-secondary" id="reloadBtn">Recharger</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const els = {
+      status: document.getElementById('status'),
+      profileForm: document.getElementById('profileForm'),
+      userId: document.getElementById('userId'),
+      firstName: document.getElementById('firstName'),
+      lastName: document.getElementById('lastName'),
+      email: document.getElementById('email'),
+      phone: document.getElementById('phone'),
+      password: document.getElementById('password'),
+      confirmPassword: document.getElementById('confirmPassword'),
+      reloadBtn: document.getElementById('reloadBtn')
+    };
+
+    function setStatus(message, type) {
+      els.status.textContent = message;
+      els.status.className = 'pill ' + (type || 'info');
+    }
+
+    function normalizeValue(value) {
+      if (value == null) return '';
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value);
+      if (Array.isArray(value)) return value.map(normalizeValue).filter(Boolean).join(' ');
+      if (typeof value === 'object') {
+        if (value.display_value) return String(value.display_value);
+        if (value.first_name) return (String(value.first_name) + ' ' + String(value.last_name || '')).trim();
+      }
+      return '';
+    }
+
+    function splitName(fullName, raw) {
+      const fromObject = raw && typeof raw === 'object' ? raw : null;
+      if (fromObject && fromObject.first_name) {
+        return {
+          firstName: String(fromObject.first_name || ''),
+          lastName: String(fromObject.last_name || '')
+        };
+      }
+
+      const parts = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+      return {
+        firstName: parts[0] || '',
+        lastName: parts.slice(1).join(' ')
+      };
+    }
+
+    function mapUser(record) {
+      const id = normalizeValue(record.ID1 || record.ID || record.User_ID || record.id);
+      const fullName = normalizeValue(record.full_name || record.Full_Name || record.Name || record.name);
+      const email = normalizeValue(record.Email || record.email);
+      const phone = normalizeValue(record.Phone_Number || record.Phone || record.phone || record.phone_number);
+      const names = splitName(fullName, record.full_name || record.Full_Name);
+
+      return {
+        id,
+        firstName: names.firstName,
+        lastName: names.lastName,
+        email,
+        phone
+      };
+    }
+
+    function fillForm(user) {
+      els.userId.value = user.id || '';
+      els.firstName.value = user.firstName || '';
+      els.lastName.value = user.lastName || '';
+      els.email.value = user.email || '';
+      els.phone.value = user.phone || '';
+      els.password.value = '';
+      els.confirmPassword.value = '';
+    }
+
+    async function loadProfile() {
+      setStatus('Chargement des donnees profil...', 'info');
+      try {
+        const response = await fetch('/api/agent/profile');
+        const payload = await response.json();
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Impossible de charger le profil.');
+        }
+
+        fillForm(mapUser(payload.user || {}));
+        setStatus('Profil charge avec succes.', 'success');
+      } catch (error) {
+        setStatus(error.message, 'error');
+      }
+    }
+
+    async function saveProfile(event) {
+      event.preventDefault();
+
+      const password = String(els.password.value || '').trim();
+      const confirmPassword = String(els.confirmPassword.value || '').trim();
+      if (password || confirmPassword) {
+        if (!password || !confirmPassword || password !== confirmPassword) {
+          setStatus('Le mot de passe et la confirmation ne correspondent pas.', 'error');
+          return;
+        }
+      }
+
+      const body = {
+        first_name: els.firstName.value.trim(),
+        last_name: els.lastName.value.trim(),
+        email: els.email.value.trim(),
+        phone_number: els.phone.value.trim()
+      };
+
+      if (password) {
+        body.password = password;
+        body.confirm_password = confirmPassword;
+      }
+
+      setStatus('Mise a jour en cours...', 'info');
+      try {
+        const response = await fetch('/api/agent/profile/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const payload = await response.json();
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Mise a jour echouee.');
+        }
+
+        setStatus(payload.message || 'Mise a jour reussie.', 'success');
+        els.password.value = '';
+        els.confirmPassword.value = '';
+        if (payload.user && payload.user.id) {
+          els.userId.value = payload.user.id;
+        }
+      } catch (error) {
+        setStatus(error.message, 'error');
+      }
+    }
+
+    els.profileForm.addEventListener('submit', saveProfile);
+    els.reloadBtn.addEventListener('click', loadProfile);
+
+    loadProfile();
+  </script>
+</body>
+</html>

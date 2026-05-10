@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Admin | Gestion Properties</title>
+  <style>
+    :root {
+      --sidebar: #101828;
+      --sidebar-soft: #1d2939;
+      --sidebar-text: #f8fafc;
+      --sidebar-muted: #98a2b3;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e4e7ec;
+      --text: #101828;
+      --muted: #667085;
+      --danger: #d92d20;
+      --danger-soft: #fee4e2;
+      --success: #079455;
+      --success-soft: #dcfae6;
+      --warning: #b54708;
+      --warning-soft: #ffead5;
+      --accent: #175cd3;
+      --accent-soft: #d1e9ff;
+      --shadow: 0 20px 50px rgba(16, 24, 40, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(23, 92, 211, 0.10), transparent 26%),
+        linear-gradient(180deg, #eef2f6 0%, #f7f9fc 100%);
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 20%),
+        linear-gradient(180deg, #0b1220 0%, #101828 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .brand { display: flex; flex-direction: column; gap: 8px; }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #175cd3, #0ba5ec);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .brand h1 { margin: 0; font-size: 22px; }
+    .brand p, .side-card p, .menu-link small { margin: 0; color: var(--sidebar-muted); line-height: 1.5; }
+
+    .menu { display: flex; flex-direction: column; gap: 10px; }
+
+    .menu-link {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: var(--sidebar-text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .menu-link.active {
+      background: rgba(23, 92, 211, 0.22);
+      border-color: rgba(49, 130, 206, 0.45);
+    }
+
+    .menu-link strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+    .side-card {
+      margin-top: auto;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .side-card h2 { margin: 0 0 8px; font-size: 16px; }
+    .side-card code {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #d1e9ff;
+    }
+
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+
+    .hero, .panel {
+      background: var(--surface);
+      border: 1px solid rgba(16, 24, 40, 0.06);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .hero h2 { margin: 0 0 8px; font-size: 30px; }
+    .hero p { margin: 0; color: var(--muted); max-width: 860px; line-height: 1.6; }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .btn-primary { background: linear-gradient(135deg, #175cd3, #1570ef); color: #fff; }
+    .btn-success { background: var(--success-soft); color: var(--success); border: 1px solid #9de6b9; }
+    .btn-warning { background: var(--warning-soft); color: var(--warning); border: 1px solid #ffd3a8; }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); border: 1px solid #fecdca; }
+    .btn-secondary { background: #f2f4f7; color: var(--text); border: 1px solid var(--border); }
+
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+
+    .metric {
+      padding: 20px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid rgba(16, 24, 40, 0.06);
+      box-shadow: var(--shadow);
+    }
+
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .metric strong { font-size: 28px; }
+    .metric small { display: block; margin-top: 8px; color: var(--muted); }
+
+    .panel { padding: 24px; }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h3 { margin: 0 0 6px; font-size: 20px; }
+    .panel-head p { margin: 0; color: var(--muted); }
+
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .pill.info { background: #f2f4f7; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .property-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+
+    .thumb {
+      height: 160px;
+      background: #eef2f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #98a2b3;
+      font-size: 14px;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .badge.published { background: var(--success-soft); color: var(--success); }
+    .badge.pending { background: var(--warning-soft); color: var(--warning); }
+
+    .actions {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .empty { padding: 36px 16px; color: var(--muted); text-align: center; border: 1px dashed var(--border); border-radius: 16px; }
+
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .content { padding: 16px; }
+      .hero { flex-direction: column; align-items: flex-start; }
+      .hero, .panel, .metric { border-radius: 18px; }
+      .property-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <div>
+          <h1>Admin Console</h1>
+          <p>Gestion des propriétés publiées et en attente de validation.</p>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <a class="menu-link" href="admin_dashboard.html">
+          <div>
+            <strong>Dashboard</strong>
+            <small>Retour au tableau de bord</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="admin_users.html">
+          <div>
+            <strong>Users</strong>
+            <small>Gestion des utilisateurs</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link active" href="admin_properties.html">
+          <div>
+            <strong>Properties</strong>
+            <small>Validation, rejet, suppression</small>
+          </div>
+          <span>&bull;</span>
+        </a>
+      </nav>
+
+      <div class="side-card">
+        <h2>Workflows Zoho</h2>
+        <p>Delete_Property, Approve_Property, Reject_Property.</p>
+        <code>Report: All_Properties</code>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <div>
+          <h2>Gestion des propriétés</h2>
+          <p>
+            Les propriétés avec <strong>Validation_Status = pending</strong> apparaissent dans le bloc de validation. L'admin peut <strong>approuver</strong> (Approve_Property), <strong>rejeter</strong> (Reject_Property) ou <strong>supprimer</strong> (Delete_Property).
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" id="refreshBtn" type="button">Actualiser</button>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="metric">
+          <span>Publiées</span>
+          <strong id="metricPublished">0</strong>
+          <small>Visibles sur le site public.</small>
+        </article>
+        <article class="metric">
+          <span>En attente</span>
+          <strong id="metricPending">0</strong>
+          <small>À valider par l'admin.</small>
+        </article>
+        <article class="metric">
+          <span>Source</span>
+          <strong id="metricSource">-</strong>
+          <small>Zoho direct ou cache backend.</small>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Propriétés en attente de validation</h3>
+            <p>Actions possibles: approuver ou rejeter.</p>
+          </div>
+        </div>
+
+        <div class="status-bar">
+          <div class="pill info" id="loadStatus">Chargement des propriétés...</div>
+          <div class="pill info" id="actionStatus">Aucune action pour le moment.</div>
+          <button onclick="clearCacheAndReload()" style="margin-left:auto;padding:6px 14px;background:#e74c3c;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;">&#x21bb; Vider cache & recharger</button>
+        </div>
+
+        <div id="pendingGrid" class="property-grid">
+          <div class="empty">Chargement...</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Propriétés publiées</h3>
+            <p>Ces propriétés sont visibles sur le site et peuvent être supprimées.</p>
+          </div>
+        </div>
+
+        <div id="publishedGrid" class="property-grid">
+          <div class="empty">Chargement...</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const state = {
+      pending: [],
+      published: [],
+      source: '-'
+    };
+
+    const els = {
+      refreshBtn: document.getElementById('refreshBtn'),
+      pendingGrid: document.getElementById('pendingGrid'),
+      publishedGrid: document.getElementById('publishedGrid'),
+      loadStatus: document.getElementById('loadStatus'),
+      actionStatus: document.getElementById('actionStatus'),
+      metricPublished: document.getElementById('metricPublished'),
+      metricPending: document.getElementById('metricPending'),
+      metricSource: document.getElementById('metricSource')
+    };
+
+    function setStatus(target, message, type) {
+      target.textContent = message;
+      target.className = 'pill ' + (type || 'info');
+    }
+
+    function normalizeText(value) {
+      if (value == null) return '';
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value);
+      if (Array.isArray(value)) {
+        for (const item of value) {
+          const v = normalizeText(item);
+          if (v) return v;
+        }
+        return '';
+      }
+      if (typeof value === 'object') {
+        if (value.display_value) return String(value.display_value);
+        if (value.zc_display_value) return String(value.zc_display_value);
+        if (value.first_name) return (String(value.first_name) + ' ' + String(value.last_name || '')).trim();
+        return Object.values(value).map(normalizeText).filter(Boolean).join(' ').trim();
+      }
+      return '';
+    }
+
+    function mapProperty(record) {
+      const id = normalizeText(record.ID1 || record.ID || record.id);
+      const title = normalizeText(record.title || record.Title || record.Property_Title || record.Name) || 'Sans titre';
+      const description = normalizeText(record.description || record.Description || record.Details);
+      const price = normalizeText(record.Price1 || record.Price || record.price) || 'N/A';
+      const type = normalizeText(record.type_field || record.Type || record.type) || 'N/A';
+      const status = normalizeText(record.Validation_Status || record.validation_status || record.ValidationStatus || record.validationStatus || 'unknown').trim().toLowerCase();
+      const location = normalizeText(record.location || record.Location || record.Address || record.City) || 'N/A';
+      const image = normalizeText(record.image_proxy_url || record.image_url || record.Image || record.image || record.Photo);
+      return { id, title, description, price, type, status, location, image };
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderCard(property, section) {
+      const desc = property.description ? property.description.slice(0, 90) : '';
+      const imageHtml = property.image
+        ? '<img src="' + escapeHtml(property.image) + '" alt="' + escapeHtml(property.title) + '">'
+        : 'Aucune image';
+
+      let actions = '';
+      if (section === 'pending') {
+        actions =
+          '<button class="btn btn-success action-btn" data-action="approve" data-id="' + escapeHtml(property.id) + '">Approuver</button>' +
+          '<button class="btn btn-warning action-btn" data-action="reject" data-id="' + escapeHtml(property.id) + '">Rejeter</button>';
+      } else {
+        actions = '<button class="btn btn-danger action-btn" data-action="delete" data-id="' + escapeHtml(property.id) + '">Supprimer</button>';
+      }
+
+      return (
+        '<article class="property-card">' +
+          '<div class="thumb">' + imageHtml + '</div>' +
+          '<div class="card-body">' +
+            '<div class="badge-row">' +
+              '<span class="badge ' + (section === 'pending' ? 'pending' : 'published') + '">' + (section === 'pending' ? 'PENDING' : 'APPROVED') + '</span>' +
+              '<span class="badge" style="background:#eff8ff;color:#175cd3">' + escapeHtml(property.type) + '</span>' +
+            '</div>' +
+            '<h4 class="title">' + escapeHtml(property.title) + '</h4>' +
+            '<p class="meta">ID: ' + escapeHtml(property.id || '-') + '</p>' +
+            '<p class="meta">Lieu: ' + escapeHtml(property.location) + '</p>' +
+            '<p class="price">' + escapeHtml(property.price) + ' DT</p>' +
+            '<p class="meta">' + escapeHtml(desc) + '</p>' +
+            '<div class="actions">' + actions + '</div>' +
+          '</div>' +
+        '</article>'
+      );
+    }
+
+    function renderSection(container, items, section) {
+      if (!items.length) {
+        container.innerHTML = '<div class="empty">Aucune propriété dans ce bloc.</div>';
+        return;
+      }
+      container.innerHTML = items.map(function(item) { return renderCard(item, section); }).join('');
+    }
+
+    function render() {
+      els.metricPending.textContent = String(state.pending.length);
+      els.metricPublished.textContent = String(state.published.length);
+      els.metricSource.textContent = state.source || '-';
+      renderSection(els.pendingGrid, state.pending, 'pending');
+      renderSection(els.publishedGrid, state.published, 'published');
+    }
+
+    async function loadProperties() {
+      setStatus(els.loadStatus, 'Chargement des propriétés...', 'info');
+      try {
+        const response = await fetch('/api/admin/properties');
+        const payload = await response.json();
+
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Impossible de charger les propriétés.');
+        }
+
+        state.pending = (Array.isArray(payload.pending) ? payload.pending : [])
+          .map(mapProperty)
+          .filter(function(p) { return p.id && p.status === 'pending'; });
+        state.published = (Array.isArray(payload.published) ? payload.published : [])
+          .map(mapProperty)
+          .filter(function(p) { return p.id && p.status === 'approved'; });
+        state.source = payload.source || 'zoho';
+
+        render();
+        setStatus(els.loadStatus, 'Propriétés chargées: ' + (state.pending.length + state.published.length), 'success');
+      } catch (error) {
+        state.pending = [];
+        state.published = [];
+        state.source = 'error';
+        render();
+        setStatus(els.loadStatus, error.message, 'error');
+      }
+    }
+
+    async function performAction(action, propertyId) {
+      if (!propertyId) return;
+
+      const labels = {
+        approve: 'approuver',
+        reject: 'rejeter',
+        delete: 'supprimer'
+      };
+
+      const confirmed = window.confirm('Confirmer ' + labels[action] + ' la propriété ' + propertyId + ' ?');
+      if (!confirmed) return;
+
+      setStatus(els.actionStatus, 'Action en cours...', 'info');
+
+      const endpointMap = {
+        approve: '/api/admin/properties/approve',
+        reject: '/api/admin/properties/reject',
+        delete: '/api/admin/properties/delete'
+      };
+
+      try {
+        const response = await fetch(endpointMap[action], {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ID1: propertyId })
+        });
+        const payload = await response.json();
+
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Action échouée.');
+        }
+
+        setStatus(els.actionStatus, payload.message || 'Action effectuée.', 'success');
+        await loadProperties();
+      } catch (error) {
+        setStatus(els.actionStatus, error.message, 'error');
+      }
+    }
+
+    els.refreshBtn.addEventListener('click', loadProperties);
+
+    document.body.addEventListener('click', function(event) {
+      const button = event.target.closest('.action-btn');
+      if (!button) return;
+      performAction(button.getAttribute('data-action'), button.getAttribute('data-id'));
+    });
+
+    async function clearCacheAndReload() {
+      try {
+        await fetch('/api/admin/cache/clear', { method: 'POST' });
+      } catch(e) { /* ignore */ }
+      loadProperties();
+    }
+
+    loadProperties();
+  </script>
+</body>
+</html>

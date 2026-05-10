@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI User | Paiements</title>
+  <style>
+    :root {
+      --sidebar: #2b0f19;
+      --sidebar-text: #fff8fb;
+      --sidebar-muted: #d2bdc6;
+      --surface: #ffffff;
+      --surface-alt: #fff8fa;
+      --border: #ead8df;
+      --text: #2a1219;
+      --muted: #7a5d68;
+      --danger: #b42318;
+      --danger-soft: #fee4e2;
+      --success: #067647;
+      --success-soft: #d1fadf;
+      --warning: #b54708;
+      --warning-soft: #ffead5;
+      --accent: #8f1d3a;
+      --accent-2: #d14b5e;
+      --shadow: 0 20px 50px rgba(42, 18, 25, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(143, 29, 58, 0.15), transparent 26%),
+        linear-gradient(180deg, #fff4f7 0%, #fff9fb 100%);
+      min-height: 100vh;
+    }
+
+    .layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: 100vh; }
+    .sidebar {
+      background: linear-gradient(180deg, #3a131f 0%, #2b0f19 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .brand-badge {
+      width: 46px; height: 46px; border-radius: 14px;
+      background: linear-gradient(135deg, #8f1d3a, #d14b5e);
+      display: grid; place-items: center; font-weight: 700; color: #fff;
+    }
+    .brand h1 { margin: 10px 0 6px; font-size: 22px; }
+    .brand p, .menu-link small { margin: 0; color: var(--sidebar-muted); }
+
+    .menu { display: flex; flex-direction: column; gap: 10px; }
+    .menu-link {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; border-radius: 16px; color: var(--sidebar-text);
+      text-decoration: none; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .menu-link.active { background: rgba(209, 75, 94, 0.22); border-color: rgba(209, 75, 94, 0.45); }
+    .menu-link strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+    .side-card {
+      margin-top: auto; padding: 18px; border-radius: 18px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    }
+    .side-card h2 { margin: 0 0 8px; font-size: 16px; }
+    .side-card code {
+      display: inline-block; margin-top: 10px; padding: 6px 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.08); color: #ffd5de;
+    }
+
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+    .hero, .panel {
+      background: var(--surface);
+      border: 1px solid rgba(42,18,25,0.08);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .hero { padding: 24px; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+    .hero h2 { margin: 0 0 8px; font-size: 30px; }
+    .hero p { margin: 0; color: var(--muted); }
+
+    .btn {
+      border: 0; border-radius: 14px; padding: 10px 14px; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .btn-secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+
+    .pill {
+      display: inline-flex; align-items: center; min-height: 36px; padding: 8px 14px;
+      border-radius: 999px; font-size: 13px; border: 1px solid transparent;
+    }
+    .pill.info { background: #fff2f6; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    .metrics-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .metric {
+      padding: 20px; border-radius: 20px; background: var(--surface);
+      border: 1px solid rgba(42,18,25,0.08); box-shadow: var(--shadow);
+    }
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .metric strong { font-size: 34px; line-height: 1; }
+    .metric small { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; }
+
+    .panel { padding: 24px; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+    .panel-head h3 { margin: 0 0 6px; font-size: 20px; }
+    .panel-head p { margin: 0; color: var(--muted); }
+
+    .records-table {
+      width: 100%; border-collapse: collapse; border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; font-size: 13px;
+    }
+    .records-table thead th {
+      text-align: left; background: #fff4f7; color: #5a2a37; padding: 10px;
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border);
+    }
+    .records-table tbody td { padding: 10px; border-bottom: 1px solid #f4e5ea; color: var(--text); }
+    .records-table tbody tr:last-child td { border-bottom: 0; }
+
+    .status { display: inline-flex; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+    .status.paid { background: var(--success-soft); color: var(--success); }
+    .status.pending { background: var(--warning-soft); color: var(--warning); }
+    .status.default { background: #f4e8ec; color: #704553; }
+
+    .empty {
+      padding: 24px 16px; color: var(--muted); text-align: center;
+      border: 1px dashed var(--border); border-radius: 14px;
+    }
+
+    @media (max-width: 1200px) { .metrics-row { grid-template-columns: 1fr; } }
+    @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) {
+      .content { padding: 16px; }
+      .hero { flex-direction: column; align-items: flex-start; }
+      .hero, .panel, .metric { border-radius: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <h1>User Console</h1>
+        <p>Espace paiements synchronise depuis Zoho Creator.</p>
+      </div>
+
+      <nav class="menu">
+        <a class="menu-link" href="user_dashboard.html"><div><strong>Dashboard</strong><small>Vue d'ensemble</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="user_contracts.html"><div><strong>Contrats</strong><small>Mes contrats utilisateur</small></div><span>&rarr;</span></a>
+        <a class="menu-link active" href="user_payments.html"><div><strong>Paiements</strong><small>Historique des paiements</small></div><span>&bull;</span></a>
+        <a class="menu-link" href="owner_add_property.html"><div><strong>Publier un bien</strong><small>Espace proprietaire</small></div><span>&rarr;</span></a>
+      </nav>
+
+      <div class="side-card">
+        <h2>Source</h2>
+        <p>Donnees Zoho Creator via backend.</p>
+        <code id="sideSource">Chargement...</code>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <div>
+          <h2 id="heroTitle">Mes paiements</h2>
+          <p id="heroSubtitle">Chargement du profil en cours...</p>
+        </div>
+        <div>
+          <button class="btn btn-secondary" id="refreshBtn" type="button">Actualiser</button>
+          <button class="btn btn-secondary" type="button" onclick="logout()">Deconnexion</button>
+        </div>
+      </section>
+
+      <div><div class="pill info" id="loadStatus">Chargement des donnees...</div></div>
+
+      <div id="topKpiGrid" class="metrics-row"></div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Historique des paiements <span id="paymentsCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+            <p>Paiements lies au compte utilisateur connecte.</p>
+          </div>
+        </div>
+        <div id="paymentsWrap"><div class="empty">Chargement...</div></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="auth-helper.js"></script>
+  <script>
+    var state = { authUser: null, profile: null, payments: [], source: '-' };
+
+    var els = {
+      heroTitle: document.getElementById('heroTitle'),
+      heroSubtitle: document.getElementById('heroSubtitle'),
+      refreshBtn: document.getElementById('refreshBtn'),
+      loadStatus: document.getElementById('loadStatus'),
+      sideSource: document.getElementById('sideSource'),
+      topKpiGrid: document.getElementById('topKpiGrid'),
+      paymentsCount: document.getElementById('paymentsCount'),
+      paymentsWrap: document.getElementById('paymentsWrap')
+    };
+
+    function setStatus(msg, type) {
+      els.loadStatus.textContent = msg;
+      els.loadStatus.className = 'pill ' + (type || 'info');
+    }
+
+    function normalizeText(value) {
+      if (value == null) return '';
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value).trim();
+      if (Array.isArray(value)) {
+        for (var i = 0; i < value.length; i++) { var nested = normalizeText(value[i]); if (nested) return nested; }
+        return '';
+      }
+      if (typeof value === 'object') {
+        if (value.display_value) return normalizeText(value.display_value);
+        if (value.zc_display_value) return normalizeText(value.zc_display_value);
+        if (value.first_name || value.last_name) return (normalizeText(value.first_name) + ' ' + normalizeText(value.last_name)).trim();
+      }
+      return '';
+    }
+
+    function parseMoney(value) {
+      var raw = normalizeText(value).replace(/\s/g, '').replace(',', '.').replace(/[^\d.-]/g, '');
+      var num = Number(raw);
+      return Number.isFinite(num) ? num : 0;
+    }
+
+    function formatMoney(value) {
+      if (!Number.isFinite(value) || value <= 0) return '0 DT';
+      return value.toLocaleString('fr-TN') + ' DT';
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function mapProfile(raw) {
+      if (!raw || typeof raw !== 'object') return null;
+      var name = normalizeText(raw.full_name || raw.Full_Name || raw.Name || raw.name);
+      if (!name) name = (normalizeText(raw.first_name || raw.First_Name) + ' ' + normalizeText(raw.last_name || raw.Last_Name)).trim();
+      return {
+        id: normalizeText(raw.ID || raw.ID1 || raw.id),
+        name: name || '-',
+        email: normalizeText(raw.Email || raw.email) || '-',
+        role: normalizeText(raw.Role || raw.User_Role || raw.role) || 'User'
+      };
+    }
+
+    function mapPayment(raw) {
+      return {
+        id: normalizeText(raw.ID || raw.ID1 || raw.id) || '-',
+        method: normalizeText(raw.Payment_Method || raw.Method || raw.method) || 'N/A',
+        amount: parseMoney(raw.Amount || raw.Price || raw.Total || raw.total_amount),
+        status: normalizeText(raw.Status || raw.status || raw.Payment_Status) || 'N/A',
+        date: normalizeText(raw.Payment_Date || raw.Date || raw.Created_Time || raw.created_time) || '-'
+      };
+    }
+
+    function statusClass(status) {
+      var s = String(status || '').toLowerCase();
+      if (s.includes('paid') || s.includes('paye') || s.includes('confirmed')) return 'paid';
+      if (s.includes('pending') || s.includes('attente')) return 'pending';
+      return 'default';
+    }
+
+    function renderTopKpis() {
+      var total = state.payments.reduce(function(sum, payment) { return sum + (payment.amount || 0); }, 0);
+      var paid = state.payments.filter(function(p) { return statusClass(p.status) === 'paid'; });
+      var pending = state.payments.filter(function(p) { return statusClass(p.status) === 'pending'; });
+      var paidTotal = paid.reduce(function(sum, p) { return sum + (p.amount || 0); }, 0);
+      var pendingTotal = pending.reduce(function(sum, p) { return sum + (p.amount || 0); }, 0);
+
+      var cards = [
+        { label: 'Total paiements', value: state.payments.length, note: 'Transactions utilisateur' },
+        { label: 'Montant paye', value: formatMoney(Math.round(paidTotal)), note: 'Somme deja reglee' },
+        { label: 'Montant en attente', value: formatMoney(Math.round(pendingTotal || (total - paidTotal))), note: 'A regler' }
+      ];
+
+      els.topKpiGrid.innerHTML = cards.map(function(card) {
+        return '<article class="metric"><span>' + escapeHtml(card.label) + '</span><strong>' + escapeHtml(String(card.value)) + '</strong><small>' + escapeHtml(card.note) + '</small></article>';
+      }).join('');
+    }
+
+    function renderPaymentsTable() {
+      if (!state.payments.length) {
+        els.paymentsWrap.innerHTML = '<div class="empty">Aucun paiement pour le moment.</div>';
+        return;
+      }
+
+      var head = '<th>ID</th><th>Methode</th><th>Montant</th><th>Statut</th><th>Date</th>';
+      var body = state.payments.map(function(payment) {
+        return '<tr>' +
+          '<td>' + escapeHtml(payment.id) + '</td>' +
+          '<td>' + escapeHtml(payment.method) + '</td>' +
+          '<td>' + escapeHtml(formatMoney(payment.amount || 0)) + '</td>' +
+          '<td><span class="status ' + statusClass(payment.status) + '">' + escapeHtml(payment.status) + '</span></td>' +
+          '<td>' + escapeHtml(payment.date) + '</td>' +
+        '</tr>';
+      }).join('');
+
+      els.paymentsWrap.innerHTML = '<table class="records-table"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table>';
+    }
+
+    function render() {
+      var profile = state.profile || {};
+      var authUser = state.authUser || {};
+      var finalName = profile.name && profile.name !== '-' ? profile.name : normalizeText(authUser.name || authUser.email || 'Utilisateur');
+      var finalRole = profile.role && profile.role !== '-' ? profile.role : normalizeText(authUser.role || 'User');
+
+      els.heroTitle.textContent = 'Paiements de ' + finalName;
+      els.heroSubtitle.textContent = 'Role: ' + finalRole + ' | Donnees synchronisees depuis Zoho Creator';
+      els.sideSource.textContent = state.source || '-';
+      els.paymentsCount.textContent = '(' + state.payments.length + ')';
+
+      renderTopKpis();
+      renderPaymentsTable();
+    }
+
+    async function safeFetchJson(url) {
+      try {
+        var response = await fetch(url);
+        var payload = await response.json();
+        if (!response.ok || payload.success === false) return { ok: false, error: payload.error || ('Erreur chargement: ' + url), payload: payload };
+        return { ok: true, payload: payload };
+      } catch (error) {
+        return { ok: false, error: error.message || ('Erreur reseau: ' + url) };
+      }
+    }
+
+    async function loadPage() {
+      setStatus('Chargement des donnees...', 'info');
+
+      var authStatus = await requireAuth();
+      if (!authStatus || !authStatus.loggedIn) return;
+      state.authUser = authStatus.user || {};
+
+      var results = await Promise.all([
+        safeFetchJson('/api/agent/profile'),
+        safeFetchJson('/api/payments/user')
+      ]);
+
+      var profileRes = results[0];
+      var paymentsRes = results[1];
+
+      state.profile = profileRes.ok ? mapProfile(profileRes.payload.user) : null;
+      state.payments = paymentsRes.ok ? (Array.isArray(paymentsRes.payload.data) ? paymentsRes.payload.data : []).map(mapPayment) : [];
+      state.source = (profileRes.ok && paymentsRes.ok) ? 'zoho' : 'partial-fallback';
+
+      render();
+      if (profileRes.ok && paymentsRes.ok) setStatus('Donnees chargees avec succes.', 'success');
+      else setStatus('Chargement partiel des donnees.', 'error');
+    }
+
+    els.refreshBtn.addEventListener('click', loadPage);
+    loadPage();
+  </script>
+</body>
+</html>

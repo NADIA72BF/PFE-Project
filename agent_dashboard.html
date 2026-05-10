@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI Agent | Dashboard</title>
+  <style>
+    :root {
+      --sidebar: #0f172a;
+      --sidebar-soft: #1e293b;
+      --sidebar-text: #f8fafc;
+      --sidebar-muted: #94a3b8;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --success: #16a34a;
+      --success-soft: #dcfce7;
+      --warning: #d97706;
+      --warning-soft: #fef3c7;
+      --accent: #14b8a6;
+      --accent-soft: #ccfbf1;
+      --shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(20, 184, 166, 0.10), transparent 26%),
+        linear-gradient(180deg, #f0fdf9 0%, #f1fdf5 100%);
+      min-height: 100vh;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 20%),
+        linear-gradient(180deg, #0a3d3a 0%, #0f172a 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .brand { display: flex; flex-direction: column; gap: 8px; }
+
+    .brand-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #14b8a6, #06b6d4);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .brand h1 { margin: 0; font-size: 22px; }
+    .brand p, .side-card p, .menu-link small { margin: 0; color: var(--sidebar-muted); line-height: 1.5; }
+
+    .menu { display: flex; flex-direction: column; gap: 10px; }
+
+    .menu-link {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: var(--sidebar-text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .menu-link.active {
+      background: rgba(20, 184, 166, 0.22);
+      border-color: rgba(20, 184, 166, 0.45);
+    }
+
+    .menu-link strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+    .side-card {
+      margin-top: auto;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .side-card h2 { margin: 0 0 8px; font-size: 16px; }
+    .side-card code {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #99f6e4;
+    }
+
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+
+    .hero, .panel {
+      background: var(--surface);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .hero h2 { margin: 0 0 8px; font-size: 30px; }
+    .hero p { margin: 0; color: var(--muted); max-width: 860px; line-height: 1.6; }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .btn-primary { background: linear-gradient(135deg, #14b8a6, #06b6d4); color: #fff; }
+    .btn-secondary { background: #f1f5f9; color: var(--text); border: 1px solid var(--border); }
+
+    /* Metrics row */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric {
+      padding: 20px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      box-shadow: var(--shadow);
+    }
+
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .metric strong { font-size: 44px; line-height: 1; }
+    .metric small { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; }
+
+    /* Panel */
+    .panel { padding: 24px; }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head h3 { margin: 0 0 6px; font-size: 20px; }
+    .panel-head p { margin: 0; color: var(--muted); }
+
+    /* Summary grid: 2 columns */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .summary-card {
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+    }
+
+    .summary-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .summary-card .value { font-size: 22px; font-weight: 700; }
+
+    .dist-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .dist-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .dist-bar-wrap { flex: 1; height: 8px; background: #f1f5f9; border-radius: 999px; overflow: hidden; }
+    .dist-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #14b8a6, #06b6d4); }
+
+    /* Status pill */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: 1px solid transparent;
+    }
+
+    .pill.info { background: #f1f5f9; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    /* Property grid */
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .property-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thumb {
+      height: 140px;
+      background: #f0fdf9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .card-title { font-size: 15px; font-weight: 700; margin: 0; line-height: 1.3; }
+    .card-meta { color: var(--muted); font-size: 12px; margin: 0; }
+    .card-price { font-size: 18px; font-weight: 800; margin: 0; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge.published { background: var(--success-soft); color: var(--success); }
+    .badge.pending { background: var(--warning-soft); color: var(--warning); }
+    .badge.type { background: #f0f9ff; color: #14b8a6; }
+
+    .empty { padding: 36px 16px; color: var(--muted); text-align: center; border: 1px dashed var(--border); border-radius: 16px; }
+
+    @media (max-width: 1200px) {
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .content { padding: 16px; }
+      .hero { flex-direction: column; align-items: flex-start; }
+      .metrics-row { grid-template-columns: 1fr; }
+      .hero, .panel, .metric { border-radius: 18px; }
+      .property-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <div>
+          <h1>Agent Console</h1>
+          <p>Tableau de bord &mdash; vue d&apos;ensemble de l&apos;activit&eacute;.</p>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <a class="menu-link active" href="agent_dashboard.html">
+          <div>
+            <strong>Dashboard</strong>
+            <small>Vue d&apos;ensemble</small>
+          </div>
+          <span>&bull;</span>
+        </a>
+        <a class="menu-link" href="agent_validation.html">
+          <div>
+            <strong>Validation</strong>
+            <small>Suivi des propri&eacute;t&eacute;s</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="agent_profile.html">
+          <div>
+            <strong>Profile</strong>
+            <small>Gestion du profil agent</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+      </nav>
+
+      <div class="side-card">
+        <h2>Source</h2>
+        <p>Les donn&eacute;es proviennent de Zoho Creator via l&apos;API backend.</p>
+        <code id="sideSource">Chargement...</code>
+      </div>
+    </aside>
+
+    <main class="content">
+
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <h2>Tableau de bord Agent</h2>
+          <p>
+            Vue d&apos;ensemble des propri&eacute;t&eacute;s en temps r&eacute;el depuis <strong>Zoho Creator</strong>.
+            Naviguez vers <a href="agent_validation.html" style="color:#14b8a6;text-decoration:none;font-weight:600;">Validation</a> pour approuver ou rejeter.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" id="refreshBtn" type="button">Actualiser</button>
+          <button class="btn btn-primary" onclick="clearCacheAndReload()" type="button">&#8635; Vider cache</button>
+        </div>
+      </section>
+
+      <!-- Status pill -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <div class="pill info" id="loadStatus">Chargement des donn&eacute;es...</div>
+      </div>
+
+      <!-- Metrics row: Zoho Analytics KPIs -->
+      <div id="topKpiGrid" class="metrics-row"></div>
+
+      <!-- Summary panel -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>R&eacute;sum&eacute; analytique</h3>
+            <p>Statistiques calcul&eacute;es sur l&apos;ensemble du parc immobilier.</p>
+          </div>
+        </div>
+        <div class="summary-grid">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="summary-card">
+              <div class="label">Taux d&apos;approbation</div>
+              <div class="value" id="summaryApprovalRate">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="label">Prix moyen</div>
+              <div class="value" id="summaryAvgPrice">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="label">Ville principale</div>
+              <div class="value" id="summaryTopCity" style="font-size:16px;">-</div>
+            </div>
+            <div class="summary-card">
+              <div class="label">Type principal</div>
+              <div class="value" id="summaryTopType" style="font-size:16px;">-</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">R&eacute;partition par statut</div>
+            <ul class="dist-list" id="distList">
+              <li><span style="width:80px">Chargement</span><div class="dist-bar-wrap"><div class="dist-bar" style="width:0%"></div></div></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pending properties grid -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Propri&eacute;t&eacute;s en attente <span id="pendingCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+            <p>Derniers biens soumis &mdash; <a href="agent_validation.html" style="color:#14b8a6;text-decoration:none;font-weight:600;">Voir tout &rarr;</a></p>
+          </div>
+        </div>
+        <div id="pendingGrid" class="property-grid">
+          <div class="empty">Chargement...</div>
+        </div>
+      </section>
+
+      <!-- Published properties grid -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Propri&eacute;t&eacute;s publi&eacute;es <span id="publishedCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+            <p>Biens approuv&eacute;s visibles sur le site public.</p>
+          </div>
+        </div>
+        <div id="publishedGrid" class="property-grid">
+          <div class="empty">Chargement...</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    var state = {
+      all: [],
+      pending: [],
+      published: [],
+      rejected: [],
+      source: '-'
+    };
+
+    var els = {
+      refreshBtn: document.getElementById('refreshBtn'),
+      loadStatus: document.getElementById('loadStatus'),
+      topKpiGrid: document.getElementById('topKpiGrid'),
+      sideSource: document.getElementById('sideSource'),
+      pendingGrid: document.getElementById('pendingGrid'),
+      publishedGrid: document.getElementById('publishedGrid'),
+      pendingCount: document.getElementById('pendingCount'),
+      publishedCount: document.getElementById('publishedCount'),
+      summaryApprovalRate: document.getElementById('summaryApprovalRate'),
+      summaryAvgPrice: document.getElementById('summaryAvgPrice'),
+      summaryTopCity: document.getElementById('summaryTopCity'),
+      summaryTopType: document.getElementById('summaryTopType'),
+      distList: document.getElementById('distList')
+    };
+
+    function setStatus(msg, type) {
+      els.loadStatus.textContent = msg;
+      els.loadStatus.className = 'pill ' + (type || 'info');
+    }
+
+    function normalizeText(value) {
+      if (value == null) return '';
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value);
+      if (Array.isArray(value)) {
+        for (var i = 0; i < value.length; i++) {
+          var v = normalizeText(value[i]);
+          if (v) return v;
+        }
+        return '';
+      }
+      if (typeof value === 'object') {
+        if (value.display_value) return String(value.display_value);
+        if (value.zc_display_value) return String(value.zc_display_value);
+        if (value.first_name) return (String(value.first_name) + ' ' + String(value.last_name || '')).trim();
+        return Object.values(value).map(normalizeText).filter(Boolean).join(' ').trim();
+      }
+      return '';
+    }
+
+    function mapProperty(record) {
+      var id = normalizeText(record.ID1 || record.ID || record.id);
+      var title = normalizeText(record.title || record.Title || record.Property_Title || record.Name) || 'Sans titre';
+      var price = normalizeText(record.Price1 || record.Price || record.price) || 'N/A';
+      var type = normalizeText(record.type_field || record.Type || record.type) || 'N/A';
+      var status = normalizeText(record.Validation_Status || record.validation_status || record.ValidationStatus || record.validationStatus || 'unknown').trim().toLowerCase();
+      var location = normalizeText(record.location || record.Location || record.Address || record.City) || 'N/A';
+      var image = normalizeText(record.image_proxy_url || record.image_url || record.Image || record.image || record.Photo);
+      return { id: id, title: title, price: price, type: type, status: status, location: location, image: image };
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderCard(property, section) {
+      var imageHtml = property.image
+        ? '<img src="' + escapeHtml(property.image) + '" alt="' + escapeHtml(property.title) + '">'
+        : 'Aucune image';
+      var badgeClass = section === 'pending' ? 'pending' : 'published';
+      var badgeLabel = section === 'pending' ? 'EN ATTENTE' : 'APPROV&Eacute;E';
+      return (
+        '<article class="property-card">' +
+          '<div class="thumb">' + imageHtml + '</div>' +
+          '<div class="card-body">' +
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+              '<span class="badge ' + badgeClass + '">' + badgeLabel + '</span>' +
+              '<span class="badge type">' + escapeHtml(property.type) + '</span>' +
+            '</div>' +
+            '<h4 class="card-title">' + escapeHtml(property.title) + '</h4>' +
+            '<p class="card-meta">ID: ' + escapeHtml(property.id || '-') + '</p>' +
+            '<p class="card-meta">Lieu: ' + escapeHtml(property.location) + '</p>' +
+            '<p class="card-price">' + escapeHtml(property.price) + ' DT</p>' +
+          '</div>' +
+        '</article>'
+      );
+    }
+
+    function renderGrid(container, items, section, max) {
+      var slice = max ? items.slice(0, max) : items;
+      if (!slice.length) {
+        container.innerHTML = '<div class="empty">Aucune propri&eacute;t&eacute; dans ce bloc.</div>';
+        return;
+      }
+      container.innerHTML = slice.map(function(item) { return renderCard(item, section); }).join('');
+    }
+
+    function computeSummary(all) {
+      if (!all.length) return;
+
+      var approved = all.filter(function(p) { return p.status === 'approved'; });
+      var rate = all.length > 0 ? Math.round((approved.length / all.length) * 100) : 0;
+      els.summaryApprovalRate.textContent = rate + '%';
+
+      var prices = all.map(function(p) {
+        var n = parseFloat(String(p.price).replace(/\s/g, '').replace(',', '.'));
+        return isNaN(n) ? 0 : n;
+      }).filter(function(n) { return n > 0; });
+      var avgPrice = prices.length ? Math.round(prices.reduce(function(a, b) { return a + b; }, 0) / prices.length) : 0;
+      els.summaryAvgPrice.textContent = avgPrice > 0 ? avgPrice.toLocaleString('fr-TN') + ' DT' : 'N/A';
+
+      function topValue(arr, key) {
+        var freq = {};
+        arr.forEach(function(p) {
+          var v = p[key];
+          if (v && v !== 'N/A') freq[v] = (freq[v] || 0) + 1;
+        });
+        var entries = Object.entries(freq);
+        if (!entries.length) return '-';
+        entries.sort(function(a, b) { return b[1] - a[1]; });
+        return entries[0][0];
+      }
+
+      els.summaryTopCity.textContent = topValue(all, 'location');
+      els.summaryTopType.textContent = topValue(all, 'type');
+
+      // Distribution bar list
+      var statuses = [
+        { key: 'approved', label: 'Approuv&eacute;es', color: '#16a34a' },
+        { key: 'pending', label: 'En attente', color: '#d97706' },
+        { key: 'rejected', label: 'Rejet&eacute;es', color: '#dc2626' }
+      ];
+      els.distList.innerHTML = statuses.map(function(s) {
+        var count = all.filter(function(p) { return p.status === s.key; }).length;
+        var pct = all.length > 0 ? Math.round((count / all.length) * 100) : 0;
+        return (
+          '<li>' +
+            '<span style="width:90px;font-size:13px;">' + s.label + '</span>' +
+            '<div class="dist-bar-wrap"><div class="dist-bar" style="width:' + pct + '%;background:' + s.color + ';"></div></div>' +
+            '<span style="width:50px;text-align:right;font-size:13px;color:var(--muted);">' + count + ' (' + pct + '%)</span>' +
+          '</li>'
+        );
+      }).join('');
+    }
+
+    function renderTopKpis() {
+      var cards = [
+        { label: 'Total proprietes', value: state.all.length, note: 'Toutes les proprietes' },
+        { label: 'Approuvees', value: state.published.length, note: 'Publiees sur le site' },
+        { label: 'En attente', value: state.pending.length, note: 'En cours de validation' },
+        { label: 'Rejetees', value: state.rejected.length, note: 'Non publiees' }
+      ];
+
+      els.topKpiGrid.innerHTML = cards.map(function(card) {
+        return (
+          '<article class="metric">' +
+            '<span>' + escapeHtml(card.label) + '</span>' +
+            '<strong>' + escapeHtml(String(card.value)) + '</strong>' +
+            '<small>' + escapeHtml(card.note) + '</small>' +
+          '</article>'
+        );
+      }).join('');
+    }
+
+    function render() {
+      els.sideSource.textContent = state.source || '-';
+
+      els.pendingCount.textContent = '(' + state.pending.length + ')';
+      els.publishedCount.textContent = '(' + state.published.length + ')';
+
+      renderTopKpis();
+      renderGrid(els.pendingGrid, state.pending, 'pending', 4);
+      renderGrid(els.publishedGrid, state.published, 'published', 4);
+      computeSummary(state.all);
+    }
+
+    async function loadDashboard() {
+      setStatus('Chargement des donn\u00e9es...', 'info');
+      try {
+        var response = await fetch('/api/admin/properties');
+        var payload = await response.json();
+
+        if (!response.ok || payload.success === false) {
+          throw new Error(payload.error || 'Impossible de charger les propri\u00e9t\u00e9s.');
+        }
+
+        var allRaw = Array.isArray(payload.all) ? payload.all : [];
+        state.all = allRaw.map(mapProperty).filter(function(p) { return !!p.id; });
+        state.pending = (Array.isArray(payload.pending) ? payload.pending : [])
+          .map(mapProperty).filter(function(p) { return p.id && p.status === 'pending'; });
+        state.published = (Array.isArray(payload.published) ? payload.published : [])
+          .map(mapProperty).filter(function(p) { return p.id && p.status === 'approved'; });
+        state.rejected = state.all.filter(function(p) { return p.status === 'rejected'; });
+        state.source = payload.source || 'zoho';
+
+        render();
+        setStatus('Donn\u00e9es charg\u00e9es \u2014 ' + state.all.length + ' propri\u00e9t\u00e9s', 'success');
+      } catch (error) {
+        state.all = [];
+        state.pending = [];
+        state.published = [];
+        state.rejected = [];
+        state.source = 'error';
+        render();
+        setStatus(error.message, 'error');
+      }
+    }
+
+    async function clearCacheAndReload() {
+      try {
+        await fetch('/api/admin/cache/clear', { method: 'POST' });
+      } catch(e) { /* ignore */ }
+      loadDashboard();
+    }
+
+    els.refreshBtn.addEventListener('click', loadDashboard);
+
+    loadDashboard();
+  </script>
+</body>
+</html>
