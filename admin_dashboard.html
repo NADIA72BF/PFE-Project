@@ -388,6 +388,105 @@
       .property-grid { grid-template-columns: 1fr; }
       .hero, .panel, .metric { border-radius: 18px; }
     }
+
+    /* ── Tab navigation ── */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 6px;
+      box-shadow: var(--shadow);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 11px 18px;
+      border: none;
+      border-radius: 13px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+    }
+    .tab-btn:hover:not(.active) { background: var(--surface-alt); color: var(--text); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #8B1A2F, #a93226);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(139,26,47,0.35);
+    }
+    .tab-panel { display: none; flex-direction: column; gap: 22px; }
+    .tab-panel.active { display: flex; }
+
+    /* ── Analytics stat cards ── */
+    .analytics-header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .analytics-header h3 { margin: 0 0 4px; font-size: 22px; }
+    .analytics-header p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .analytics-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .stat-card {
+      border-radius: 22px;
+      padding: 26px 24px;
+      border: 1px solid transparent;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 28px 60px rgba(16,24,40,0.14); }
+    .stat-num { font-size: 44px; font-weight: 800; line-height: 1; margin-bottom: 14px; }
+    .stat-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--muted); }
+    .stat-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+    .stat-card.blue   { background: linear-gradient(135deg,#eff6ff,#dbeafe); border-color:#bfdbfe; }
+    .stat-card.blue   .stat-num { color: #1d4ed8; }
+    .stat-card.green  { background: linear-gradient(135deg,#f0fdf4,#dcfce7); border-color:#bbf7d0; }
+    .stat-card.green  .stat-num { color: #15803d; }
+    .stat-card.purple { background: linear-gradient(135deg,#faf5ff,#ede9fe); border-color:#ddd6fe; }
+    .stat-card.purple .stat-num { color: #6d28d9; }
+    .stat-card.orange { background: linear-gradient(135deg,#fff7ed,#ffedd5); border-color:#fed7aa; }
+    .stat-card.orange .stat-num { color: #c2410c; }
+
+    /* Skeleton pulse */
+    @keyframes skel-pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+    .skel { background:#e2e8f0; border-radius:8px; animation:skel-pulse 1.4s ease-in-out infinite; }
+    .skel-num  { height:44px; width:70px; margin-bottom:14px; }
+    .skel-txt  { height:18px; width:130px; }
+
+    /* iframe wrapper */
+    .iframe-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .iframe-loader {
+      text-align: center;
+      color: var(--muted);
+      padding: 32px 0 8px;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    @media (max-width: 900px) { .analytics-cards { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .analytics-cards { grid-template-columns: 1fr; } .tab-btn { font-size: 12px; padding: 9px 10px; } }
   </style>
 </head>
 <body>
@@ -454,6 +553,51 @@
           <button class="btn btn-primary" onclick="clearCacheAndReload()" type="button">&#8635; Vider cache</button>
         </div>
       </section>
+
+      <!-- Tab navigation -->
+      <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" onclick="switchTab('analytics',this)" role="tab" aria-selected="true">&#128202; Analytics</button>
+        <button class="tab-btn" onclick="switchTab('dashboard',this)" role="tab" aria-selected="false">&#128203; Vue d&apos;ensemble</button>
+      </nav>
+
+      <!-- ═══════════════════════════════════════════════
+           TAB 1 : ANALYTICS  (default / active)
+           ═══════════════════════════════════════════════ -->
+      <div class="tab-panel active" id="tab-analytics">
+
+        <!-- Section header -->
+        <div class="analytics-header">
+          <div>
+            <h3>&#128202; Tableau de Bord &mdash; Vue d&apos;ensemble</h3>
+            <p>Derni&egrave;re mise &agrave; jour&nbsp;: <span id="analyticsUpdated">-</span></p>
+          </div>
+          <button class="btn btn-secondary" id="analyticsRefreshBtn" type="button" onclick="loadAnalytics()">&#128260; Actualiser</button>
+        </div>
+
+        <!-- 4 stat cards -->
+        <div class="analytics-cards" id="analyticsCards">
+          <!-- injected by loadAnalytics() -->
+        </div>
+
+        <!-- Zoho Analytics iframe -->
+        <div class="iframe-wrap">
+          <p class="iframe-loader" id="iframeLoader">Chargement du tableau de bord analytique&hellip;</p>
+          <iframe
+            frameborder="0"
+            width="100%"
+            height="750"
+            src="https://analytics.zoho.com/open-view/3208169000000460126/3b8784c3ab48dd254c9d21d736b157e735b345dbcfe38f5b3843593eb1eb63c9"
+            style="border:none;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.10);margin-top:8px;display:block;"
+            onload="var l=document.getElementById('iframeLoader');if(l)l.style.display='none';">
+          </iframe>
+        </div>
+
+      </div><!-- /tab-analytics -->
+
+      <!-- ═══════════════════════════════════════════════
+           TAB 2 : VUE D'ENSEMBLE  (existing content)
+           ═══════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-dashboard">
 
       <!-- Status -->
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
@@ -604,6 +748,8 @@
           <div class="empty">Chargement...</div>
         </div>
       </section>
+
+      </div><!-- /tab-dashboard -->
 
     </main>
   </div>
@@ -864,7 +1010,77 @@
     }
 
     els.refreshBtn.addEventListener('click', loadDashboard);
-    loadDashboard();
+
+    // ── Tab switching ──────────────────────────────────────────────
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+      document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      var panel = document.getElementById('tab-' + name);
+      if (panel) panel.classList.add('active');
+      if (btn)   { btn.classList.add('active'); btn.setAttribute('aria-selected','true'); }
+      if (name === 'dashboard' && !state.all.length) loadDashboard();
+    }
+
+    // ── Analytics stat cards ───────────────────────────────────────
+    var ANALYTICS_CARDS_DEF = [
+      { id: 'props',      icon: '&#127968;', label: 'Propriétés totales',   color: 'blue'   },
+      { id: 'contracts',  icon: '&#128203;', label: 'Contrats totaux',               color: 'green'  },
+      { id: 'users',      icon: '&#128101;', label: 'Utilisateurs inscrits',          color: 'purple' },
+      { id: 'reservations',icon:'&#128197;', label: 'Réservations totales',      color: 'orange' }
+    ];
+
+    function renderAnalyticsSkeleton() {
+      var grid = document.getElementById('analyticsCards');
+      grid.innerHTML = ANALYTICS_CARDS_DEF.map(function(c) {
+        return '<div class="stat-card ' + c.color + '">' +
+          '<div class="skel skel-num"></div>' +
+          '<div class="skel skel-txt"></div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function renderAnalyticsCards(counts) {
+      var grid = document.getElementById('analyticsCards');
+      grid.innerHTML = ANALYTICS_CARDS_DEF.map(function(c, i) {
+        return '<div class="stat-card ' + c.color + '">' +
+          '<div class="stat-num">' + (counts[i] !== undefined ? counts[i] : '---') + '</div>' +
+          '<div class="stat-label">' + c.icon + ' ' + c.label + '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    async function loadAnalytics() {
+      renderAnalyticsSkeleton();
+      var updated = document.getElementById('analyticsUpdated');
+      if (updated) updated.textContent = new Date().toLocaleTimeString('fr-FR');
+
+      try {
+        var responses = await Promise.all([
+          fetch('/api/admin/properties',    { credentials: 'include' }),
+          fetch('/api/admin/contracts',     { credentials: 'include' }),
+          fetch('/api/admin/users',         { credentials: 'include' }),
+          fetch('/api/admin/reservations',  { credentials: 'include' })
+        ]);
+        var payloads = await Promise.all(responses.map(function(r) { return r.json().catch(function(){return {};}); }));
+        var propsData    = payloads[0];
+        var contractData = payloads[1];
+        var usersData    = payloads[2];
+        var resData      = payloads[3];
+
+        var propsCount   = Array.isArray(propsData.all)       ? propsData.all.length
+                         : Array.isArray(propsData.data)      ? propsData.data.length : '---';
+        var contractCount= Array.isArray(contractData.data)   ? contractData.data.length : '---';
+        var usersCount   = Array.isArray(usersData.users)     ? usersData.users.length : '---';
+        var resCount     = Array.isArray(resData.data)        ? resData.data.length : '---';
+
+        renderAnalyticsCards([propsCount, contractCount, usersCount, resCount]);
+      } catch (err) {
+        renderAnalyticsCards(['---', '---', '---', '---']);
+      }
+    }
+
+    // Load analytics on page open, then load dashboard data lazily on tab switch
+    loadAnalytics();
   </script>
 </body>
 </html>

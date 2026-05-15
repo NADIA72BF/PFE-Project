@@ -46,6 +46,13 @@
       transition: color 0.3s ease;
     }
     .nav-link:hover { color: var(--accent-2); }
+    #nav-auth { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+    .nav-auth-user { color:rgba(255,255,255,.85); font-size:13px; font-weight:600; }
+    .nav-auth-btn { font-size:13px; font-weight:600; padding:8px 16px; border-radius:8px; text-decoration:none; transition:all .2s; white-space:nowrap; }
+    .nav-auth-btn--login { background:linear-gradient(135deg,#8B1A2F,#a93226); color:#fff; }
+    .nav-auth-btn--signup { color:#fff; border:1.5px solid rgba(255,255,255,.5); background:transparent; }
+    .nav-auth-btn--dashboard { background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.2); }
+    .nav-auth-btn--logout { background:rgba(220,38,38,.15); color:#fca5a5; border:1px solid rgba(220,38,38,.3); }
     .nav-btn {
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: white;
@@ -234,5 +241,6 @@
       e.target.reset();
     });
   </script>
+  <script src="auth-helper.js"></script>
 </body>
 </html>

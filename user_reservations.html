@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI User | Réservations &amp; Achats</title>
+  <style>
+    :root {
+      --sidebar: #2b0f19;
+      --sidebar-text: #fff8fb;
+      --sidebar-muted: #d2bdc6;
+      --surface: #ffffff;
+      --border: #ead8df;
+      --text: #2a1219;
+      --muted: #7a5d68;
+      --danger: #b42318;
+      --danger-soft: #fee4e2;
+      --success: #067647;
+      --success-soft: #d1fadf;
+      --warning: #b54708;
+      --warning-soft: #ffead5;
+      --accent: #8f1d3a;
+      --accent-2: #d14b5e;
+      --shadow: 0 20px 50px rgba(42,18,25,0.1);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(143,29,58,0.15), transparent 26%),
+        linear-gradient(180deg, #fff4f7 0%, #fff9fb 100%);
+      min-height: 100vh;
+    }
+    .layout { display: grid; grid-template-columns: 280px minmax(0,1fr); min-height: 100vh; }
+    .sidebar {
+      background: linear-gradient(180deg, #3a131f 0%, #2b0f19 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .brand-badge {
+      width: 46px; height: 46px; border-radius: 14px;
+      background: linear-gradient(135deg, #8f1d3a, #d14b5e);
+      display: grid; place-items: center; font-weight: 700; color: #fff;
+    }
+    .brand h1 { margin: 10px 0 6px; font-size: 22px; }
+    .brand p, .menu-link small { margin: 0; color: var(--sidebar-muted); }
+    .menu { display: flex; flex-direction: column; gap: 10px; }
+    .menu-link {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; border-radius: 16px; color: var(--sidebar-text);
+      text-decoration: none; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .menu-link.active { background: rgba(209,75,94,0.22); border-color: rgba(209,75,94,0.45); }
+    .menu-link strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    .side-card {
+      margin-top: auto; padding: 18px; border-radius: 18px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    }
+    .side-card h2 { margin: 0 0 8px; font-size: 16px; }
+
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+    .hero {
+      background: var(--surface); border: 1px solid rgba(42,18,25,0.08);
+      border-radius: 24px; box-shadow: var(--shadow);
+      padding: 24px; display: flex; justify-content: space-between; gap: 16px; align-items: center;
+    }
+    .hero h2 { margin: 0 0 8px; font-size: 30px; }
+    .hero p { margin: 0; color: var(--muted); }
+
+    .btn {
+      border: 0; border-radius: 14px; padding: 10px 14px; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; }
+    .btn-secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); font-size: 12px; padding: 6px 12px; border-radius: 10px; }
+    .btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .pill {
+      display: inline-flex; align-items: center; min-height: 36px; padding: 8px 14px;
+      border-radius: 999px; font-size: 13px; border: 1px solid transparent;
+    }
+    .pill.info { background: #fff2f6; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    .metrics-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .metric {
+      padding: 20px; border-radius: 20px; background: var(--surface);
+      border: 1px solid rgba(42,18,25,0.08); box-shadow: var(--shadow);
+    }
+    .metric span { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; }
+    .metric strong { font-size: 34px; line-height: 1; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); }
+    .tab-btn {
+      padding: 12px 24px; border: 0; background: none; font-size: 15px; font-weight: 600;
+      color: var(--muted); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .panel {
+      background: var(--surface); border: 1px solid rgba(42,18,25,0.08);
+      border-radius: 24px; box-shadow: var(--shadow); padding: 24px;
+    }
+    .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .panel-head h3 { margin: 0; font-size: 20px; }
+
+    .records-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .records-table thead th {
+      text-align: left; background: #fff4f7; color: #5a2a37; padding: 10px;
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--border);
+    }
+    .records-table thead th:first-child { border-radius: 10px 0 0 0; }
+    .records-table thead th:last-child { border-radius: 0 10px 0 0; }
+    .records-table tbody td { padding: 12px 10px; border-bottom: 1px solid #f4e5ea; }
+    .records-table tbody tr:last-child td { border-bottom: 0; }
+    .records-table tbody tr:hover td { background: #fff8fa; }
+
+    .status { display: inline-flex; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .status.pending  { background: var(--warning-soft); color: var(--warning); }
+    .status.confirmed { background: var(--success-soft); color: var(--success); }
+    .status.cancelled { background: var(--danger-soft); color: var(--danger); }
+    .status.default  { background: #f4e8ec; color: #704553; }
+
+    .empty {
+      padding: 40px 16px; color: var(--muted); text-align: center;
+      border: 1px dashed var(--border); border-radius: 14px;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) {
+      .content { padding: 16px; }
+      .metrics-row { grid-template-columns: 1fr; }
+      .records-table { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <h1>User Console</h1>
+        <p>Gérez vos réservations et demandes d'achat.</p>
+      </div>
+
+      <nav class="menu">
+        <a class="menu-link" href="user_dashboard.html"><div><strong>Dashboard</strong><small>Vue d'ensemble</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="user_properties.html"><div><strong>Mes Propriétés</strong><small>Gestion des biens</small></div><span>&rarr;</span></a>
+        <a class="menu-link active" href="user_reservations.html"><div><strong>Réservations &amp; Achats</strong><small>Suivi de vos demandes</small></div><span>&bull;</span></a>
+        <a class="menu-link" href="user_contracts.html"><div><strong>Contrats</strong><small>Mes contrats utilisateur</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="user_payments.html"><div><strong>Paiements</strong><small>Historique des paiements</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="owner_add_property.html"><div><strong>Publier un bien</strong><small>Espace propriétaire</small></div><span>&rarr;</span></a>
+      </nav>
+
+      <div class="side-card">
+        <h2>Statut</h2>
+        <p id="sideUserName">Chargement...</p>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <div>
+          <h2>Réservations &amp; Achats</h2>
+          <p id="heroSubtitle">Suivez et gérez vos demandes en cours.</p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary" onclick="loadAll()">Actualiser</button>
+          <button class="btn btn-secondary" onclick="logout()">Déconnexion</button>
+        </div>
+      </section>
+
+      <div><div class="pill info" id="loadStatus">Chargement des données...</div></div>
+
+      <div class="metrics-row" id="kpiRow">
+        <div class="metric"><span>Réservations en attente</span><strong id="kpiResPending">—</strong></div>
+        <div class="metric"><span>Demandes d'achat en attente</span><strong id="kpiPurchPending">—</strong></div>
+        <div class="metric"><span>Total demandes</span><strong id="kpiTotal">—</strong></div>
+      </div>
+
+      <div class="panel">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab('reservations', this)">Réservations</button>
+          <button class="tab-btn" onclick="switchTab('purchases', this)">Demandes d'achat</button>
+        </div>
+
+        <!-- RESERVATIONS TAB -->
+        <div class="tab-panel active" id="tab-reservations" style="margin-top:20px">
+          <div class="panel-head">
+            <h3>Mes réservations <span id="resCount" style="font-size:14px;color:var(--muted);font-weight:400"></span></h3>
+          </div>
+          <div id="resWrap"><div class="empty">Chargement...</div></div>
+        </div>
+
+        <!-- PURCHASES TAB -->
+        <div class="tab-panel" id="tab-purchases" style="margin-top:20px">
+          <div class="panel-head">
+            <h3>Mes demandes d'achat <span id="purchCount" style="font-size:14px;color:var(--muted);font-weight:400"></span></h3>
+          </div>
+          <div id="purchWrap"><div class="empty">Chargement...</div></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Cancel confirmation modal -->
+  <div id="cancelModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center">
+    <div style="background:#fff;border-radius:20px;padding:32px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.25)">
+      <h3 style="margin:0 0 10px;font-size:20px" id="cancelModalTitle">Confirmer l'annulation</h3>
+      <p style="margin:0 0 24px;color:var(--muted)" id="cancelModalMsg">Voulez-vous vraiment annuler cette demande ?</p>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeCancelModal()">Non, garder</button>
+        <button class="btn btn-primary" id="cancelConfirmBtn" style="background:linear-gradient(135deg,var(--danger),#e53e3e)">Oui, annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth-helper.js"></script>
+  <script>
+    var state = { reservations: [], purchases: [] };
+    var pendingCancel = null; // { type: 'reservation'|'purchase', id: '', rowEl: null }
+
+    function setStatus(msg, type) {
+      var el = document.getElementById('loadStatus');
+      el.textContent = msg;
+      el.className = 'pill ' + (type || 'info');
+    }
+
+    function txt(v) {
+      if (v == null) return '';
+      if (typeof v === 'string' || typeof v === 'number') return String(v).trim();
+      if (Array.isArray(v)) { for (var i=0;i<v.length;i++){var r=txt(v[i]);if(r)return r;} return ''; }
+      if (typeof v === 'object') {
+        return txt(v.display_value || v.zc_display_value || v.title || v.Name || '');
+      }
+      return '';
+    }
+
+    function statusClass(s) {
+      var sl = (s || '').toLowerCase();
+      if (sl.includes('attente')) return 'pending';
+      if (sl.includes('confirm') || sl.includes('accept')) return 'confirmed';
+      if (sl.includes('annul') || sl.includes('refus')) return 'cancelled';
+      return 'default';
+    }
+
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+    }
+
+    function openCancelModal(type, id, label, rowEl) {
+      pendingCancel = { type: type, id: id, rowEl: rowEl };
+      document.getElementById('cancelModalTitle').textContent = type === 'reservation' ? 'Annuler la réservation' : "Annuler la demande d'achat";
+      document.getElementById('cancelModalMsg').textContent = 'Voulez-vous vraiment annuler : ' + label + ' ?';
+      document.getElementById('cancelModal').style.display = 'flex';
+    }
+
+    function closeCancelModal() {
+      pendingCancel = null;
+      document.getElementById('cancelModal').style.display = 'none';
+    }
+
+    document.getElementById('cancelConfirmBtn').addEventListener('click', async function() {
+      if (!pendingCancel) return;
+      var btn = this;
+      btn.disabled = true;
+      btn.textContent = 'Annulation...';
+
+      var url = pendingCancel.type === 'reservation'
+        ? '/api/reservations/' + encodeURIComponent(pendingCancel.id) + '/cancel'
+        : '/api/purchases/' + encodeURIComponent(pendingCancel.id) + '/cancel';
+
+      try {
+        var res = await fetch(url, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, credentials: 'include' });
+        var data = await res.json();
+        if (res.ok && data.success) {
+          closeCancelModal();
+          setStatus('Annulation effectuée avec succès.', 'success');
+          await loadAll();
+        } else {
+          alert(data.error || 'Erreur lors de l\'annulation.');
+          btn.disabled = false;
+          btn.textContent = 'Oui, annuler';
+        }
+      } catch (e) {
+        alert('Erreur réseau : ' + e.message);
+        btn.disabled = false;
+        btn.textContent = 'Oui, annuler';
+      }
+    });
+
+    function renderReservations(list) {
+      var wrap = document.getElementById('resWrap');
+      var count = document.getElementById('resCount');
+      count.textContent = '(' + list.length + ')';
+
+      if (!list.length) {
+        wrap.innerHTML = '<div class="empty">Aucune réservation trouvée.</div>';
+        return;
+      }
+
+      var rows = list.map(function(r) {
+        var id = r.ID || r.id || '';
+        var property = txt(r.Property1 || r.Property || r.property || '');
+        var start = txt(r.Start_Date || r.start_date || '');
+        var end = txt(r.End_Date || r.end_date || '');
+        var status = txt(r.Status || r.status || r.Statut || r.statut || 'En attente');
+        var duration = txt(r.Duration_Text || r.duration || '');
+        var sc = statusClass(status);
+        var canCancel = sc === 'pending';
+
+        return '<tr>' +
+          '<td>' + (property || '—') + '</td>' +
+          '<td>' + (start || '—') + '</td>' +
+          '<td>' + (end || '—') + '</td>' +
+          '<td>' + (duration || '—') + '</td>' +
+          '<td><span class="status ' + sc + '">' + status + '</span></td>' +
+          '<td>' + (canCancel
+            ? '<button class="btn btn-danger" onclick="openCancelModal(\'reservation\',\'' + id + '\',\'' + (property||'cette réservation').replace(/'/g,"\\'") + '\',this)">Annuler</button>'
+            : '<span style="color:var(--muted);font-size:12px">—</span>') +
+          '</td>' +
+          '</tr>';
+      }).join('');
+
+      wrap.innerHTML = '<table class="records-table">' +
+        '<thead><tr><th>Propriété</th><th>Début</th><th>Fin</th><th>Durée</th><th>Statut</th><th>Action</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody></table>';
+    }
+
+    function renderPurchases(list) {
+      var wrap = document.getElementById('purchWrap');
+      var count = document.getElementById('purchCount');
+      count.textContent = '(' + list.length + ')';
+
+      if (!list.length) {
+        wrap.innerHTML = '<div class="empty">Aucune demande d\'achat trouvée.</div>';
+        return;
+      }
+
+      var rows = list.map(function(p) {
+        var id = p.ID || p.id || '';
+        var property = txt(p.Property || p.property || '');
+        var date = txt(p.Request_Date || p.request_date || p.Date || '');
+        var status = txt(p.Statut || p.Status || p.status || 'En attente');
+        var pref = txt(p.Preference_de_contact || p.preference_de_contact || '');
+        var sc = statusClass(status);
+        var canCancel = sc === 'pending';
+
+        return '<tr>' +
+          '<td>' + (property || '—') + '</td>' +
+          '<td>' + (date || '—') + '</td>' +
+          '<td>' + (pref || '—') + '</td>' +
+          '<td><span class="status ' + sc + '">' + status + '</span></td>' +
+          '<td>' + (canCancel
+            ? '<button class="btn btn-danger" onclick="openCancelModal(\'purchase\',\'' + id + '\',\'' + (property||'cette demande').replace(/'/g,"\\'") + '\',this)">Annuler</button>'
+            : '<span style="color:var(--muted);font-size:12px">—</span>') +
+          '</td>' +
+          '</tr>';
+      }).join('');
+
+      wrap.innerHTML = '<table class="records-table">' +
+        '<thead><tr><th>Propriété</th><th>Date demande</th><th>Contact préféré</th><th>Statut</th><th>Action</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody></table>';
+    }
+
+    function updateKPIs() {
+      var resPending = state.reservations.filter(function(r){ return statusClass(txt(r.Status||r.status||'')) === 'pending'; }).length;
+      var purchPending = state.purchases.filter(function(p){ return statusClass(txt(p.Statut||p.Status||p.status||'')) === 'pending'; }).length;
+      document.getElementById('kpiResPending').textContent = resPending;
+      document.getElementById('kpiPurchPending').textContent = purchPending;
+      document.getElementById('kpiTotal').textContent = state.reservations.length + state.purchases.length;
+    }
+
+    async function loadAll() {
+      setStatus('Chargement des données...', 'info');
+      try {
+        var [resRes, purchRes] = await Promise.all([
+          fetch('/api/reservations/user', { credentials: 'include' }),
+          fetch('/api/purchases/user', { credentials: 'include' })
+        ]);
+
+        var resData = await resRes.json();
+        var purchData = await purchRes.json();
+
+        state.reservations = Array.isArray(resData.data) ? resData.data : [];
+        state.purchases = Array.isArray(purchData.data) ? purchData.data : [];
+
+        renderReservations(state.reservations);
+        renderPurchases(state.purchases);
+        updateKPIs();
+        setStatus('Données synchronisées depuis Zoho.', 'success');
+      } catch (e) {
+        setStatus('Erreur : ' + e.message, 'error');
+      }
+    }
+
+    async function logout() {
+      await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+      window.location.href = 'login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      var auth = await fetch('/api/auth-status', { credentials: 'include' }).then(function(r){ return r.json(); });
+      if (!auth.loggedIn) { window.location.href = 'login.html'; return; }
+      document.getElementById('sideUserName').textContent = auth.name || auth.email || 'Utilisateur';
+      document.getElementById('heroSubtitle').textContent = 'Bonjour ' + (auth.name || '') + ' — suivez vos demandes en temps réel.';
+      await loadAll();
+    });
+  </script>
+</body>
+</html>

@@ -326,11 +326,24 @@ function displayPropertyDetails(property) {
   // Récupérer les données
   const title = property.title || "Sans titre";
   const location = resolveLocationText(property.location);
-  const price = property.Price1 || "N/A";
   const status = property.status || "N/A";
   const description = property.description || "Pas de description disponible";
   const type = property.type_field || "N/A";
+  const typeLower = type.toLowerCase();
   const images = resolveImageUrls(property);
+
+  // Build price display based on type
+  const priceLines = [];
+  if (typeLower.includes('courte') && property.prix_nuit) priceLines.push(`${property.prix_nuit} DT / nuit`);
+  if (typeLower.includes('longue') && property.loyer_mensuel) priceLines.push(`${property.loyer_mensuel} DT / mois`);
+  if ((typeLower.includes('vente') || typeLower.includes('achat')) && property.Price1) priceLines.push(`${property.Price1} DT`);
+  if (priceLines.length === 0 && property.Price1) priceLines.push(`${property.Price1} DT`);
+  const priceHtml = priceLines.length > 0 ? priceLines.join(' &nbsp;·&nbsp; ') : 'Prix non renseigné';
+
+  // Caution lines
+  const cautionLines = [];
+  if (typeLower.includes('courte') && property.caution_courte) cautionLines.push(`Caution courte durée : ${property.caution_courte} DT`);
+  if (typeLower.includes('longue') && property.caution_longue) cautionLines.push(`Caution longue durée : ${property.caution_longue} DT`);
 
   // Mettre à jour le titre de la page
   document.title = `GI Immobilier — ${title}`;
@@ -339,7 +352,7 @@ function displayPropertyDetails(property) {
   renderPropertyGallery(images, title);
 
   // Déterminer la couleur du badge
-  const badgeColor = type.toLowerCase().includes('to rent') ? 'var(--success)' : 'var(--accent)';
+  const badgeColor = type.toLowerCase().includes('location') ? 'var(--success)' : 'var(--accent)';
 
   // Reconstruire complètement le contenu
   const detailBody = document.querySelector('.detail-body');
@@ -356,7 +369,8 @@ function displayPropertyDetails(property) {
     ">${type}</span>
     
     <h1 class="detail-title" style="font-size:32px;font-weight:700;margin:12px 0">${title} — ${location}</h1>
-    <p class="detail-price" style="font-size:28px;font-weight:700;color:var(--accent);margin:12px 0">${price} DT</p>
+    <p class="detail-price" style="font-size:28px;font-weight:700;color:var(--accent);margin:12px 0">${priceHtml}</p>
+    ${cautionLines.length > 0 ? `<p style="font-size:13px;color:var(--gray-600);margin:4px 0 12px">${cautionLines.join(' &nbsp;·&nbsp; ')}</p>` : ''}
 
     <div class="detail-specs" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0">
       <div class="spec" style="text-align:center;padding:16px;background:var(--gray-50);border-radius:8px">
@@ -414,8 +428,8 @@ function setupReservationModal(property) {
     return;
   }
 
-  const isRental = typeField.includes('to rent');
-  
+  const isRental = typeField.includes('location') || typeField.includes('durée') || typeField.includes('duree');
+
   if (isRental) {
     rentBtn.style.display = 'block';
     rentBtn.style.visibility = 'visible';
@@ -589,7 +603,7 @@ function setupPurchaseModal(property) {
 
   // ── Visibility logic ─────────────────────────────────────────
   const typeField = (property.type_field || '').toLowerCase().trim();
-  const isSale = typeField.includes('for sale') || typeField.includes('vente') || typeField.includes('sale');
+  const isSale = typeField.includes('vente') || typeField.includes('achat');
 
   console.log(`🏷️ type_field="${property.type_field}" → isSale=${isSale}`);
 
@@ -606,7 +620,7 @@ function setupPurchaseModal(property) {
   console.log('✅ Demande d\'achat button SHOWN');
 
   if (priceDisplay) {
-    priceDisplay.textContent = property.Price1 || '—';
+    priceDisplay.textContent = property.Price1 ? `${property.Price1} DT` : '—';
   }
 
   // ── Prevent duplicate listeners using a flag ──────────────────

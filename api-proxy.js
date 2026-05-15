@@ -66,7 +66,6 @@ const ZOHO_API_DOMAIN        = process.env.ZOHO_API_DOMAIN          || 'www.zoho
 const ZOHO_ACCOUNTS_DOMAIN   = process.env.ZOHO_ACCOUNTS_DOMAIN     || 'accounts.zoho.com';
 const ZOHO_OAUTH_URL         = `https://${ZOHO_ACCOUNTS_DOMAIN}/oauth/v2/token`;
 const ZOHO_MEDIA_HOSTS       = ['creator.zoho.com', 'creatorapp.zoho.com', ZOHO_API_DOMAIN];
-const ALLOW_OFFLINE_LOGIN    = process.env.ALLOW_OFFLINE_LOGIN !== 'false';
 const FALLBACK_USER_ID       = process.env.FALLBACK_USER_ID || '';
 
 // Zoho Creator base URLs
@@ -104,11 +103,9 @@ const REJECT_PROPERTY_FIELD = process.env.REJECT_PROPERTY_WORKFLOW_FIELD || 'Pro
 // --- Cache / timing constants -------------------------------------------------
 const PROPERTIES_TTL_MS      = Math.max(1000, Number(process.env.PROPERTIES_CACHE_TTL_MS    || 15000));
 const PROPERTY_DETAIL_TTL_MS = Math.max(1000, Number(process.env.PROPERTY_DETAIL_CACHE_TTL_MS || 15000));
-const USERS_CACHE_TTL_MS     = Math.max(1000, Number(process.env.USERS_CACHE_TTL_MS          || 600000));
 const IMAGE_FIELDS_TTL_MS    = Math.max(1000, Number(process.env.IMAGE_FIELDS_TTL_MS          || 3600000));
 
 const LOCAL_UPLOADS_DIR           = path.join(__dirname, 'uploads');
-const USERS_CACHE_PATH            = path.join(__dirname, 'users_cache.json');
 
 const IMAGE_FIELD_CANDIDATES = ['image','Image','photo','Photo','property_image','Property_Image','featured_image'];
 
@@ -354,55 +351,6 @@ function extractWorkflowAlertMessage(payload, fallback = 'Une erreur est survenu
   return fallback;
 }
 
-// USER CACHE HELPERS
-
-function loadCachedUsers() {
-  try {
-    if (!fs.existsSync(USERS_CACHE_PATH)) return [];
-    const parsed = safeParseJsonFile(fs, USERS_CACHE_PATH);
-    const users = Array.isArray(parsed) ? parsed : (parsed?.data || []);
-    return users.map(normalizeUserRecord).filter(Boolean);
-  } catch { return []; }
-}
-
-function persistUsersCache(users) {
-  if (!Array.isArray(users)) return;
-  try {
-    const existing = loadCachedUsers();
-    const merged = [];
-    const seen = new Set();
-    const push = (u) => {
-      const n = normalizeUserRecord(u);
-      if (!n) return;
-      const key = n.Email.toLowerCase();
-      if (seen.has(key)) return;
-      seen.add(key);
-      merged.push(n);
-    };
-    users.forEach(push);
-    existing.forEach(push);
-    fs.writeFileSync(USERS_CACHE_PATH, JSON.stringify(merged, null, 2));
-  } catch (err) { console.warn('WARN Users cache write failed:', err.message); }
-}
-
-function removeUserFromCacheById(userId) {
-  const target = String(userId || '').trim();
-  if (!target) return;
-  try {
-    const existing = loadCachedUsers();
-    const filtered = existing.filter((u) => String(u?.ID || u?.ID1 || '').trim() !== target);
-    fs.writeFileSync(USERS_CACHE_PATH, JSON.stringify(filtered, null, 2));
-  } catch (err) {
-    console.warn('WARN Users cache delete failed:', err.message);
-  }
-}
-
-function isUsersCacheFresh() {
-  try {
-    if (!fs.existsSync(USERS_CACHE_PATH)) return false;
-    return Date.now() - fs.statSync(USERS_CACHE_PATH).mtimeMs <= USERS_CACHE_TTL_MS;
-  } catch { return false; }
-}
 
 function buildUsersReportUrl() {
   return `${BASE_CREATOR}/report/All_Users`;
@@ -433,29 +381,21 @@ async function resolveSessionUserContext(req) {
   const sessionEmail = String(req.session.userEmail || '').trim().toLowerCase();
   const identifiers = new Set([sessionUserId, sessionUserId1].filter(Boolean));
 
-  const cachedUser = loadCachedUsers().find((user) => doesUserMatchSession(user, sessionUserId, sessionUserId1, sessionEmail));
-  if (cachedUser) {
-    collectUserIdentifierValues(cachedUser).forEach((value) => identifiers.add(value));
-  }
-
-  if (!cachedUser || !sessionUserId1) {
-    try {
-      const { payload } = await fetchZohoJson(buildUsersReportUrl(), {
-        retries: 2,
-        fallbackMessage: 'Erreur résolution utilisateur session'
-      });
-      const users = Array.isArray(payload?.data) ? payload.data : [];
-      if (users.length) persistUsersCache(users);
-      const zohoUser = users.find((user) => doesUserMatchSession(user, sessionUserId, sessionUserId1, sessionEmail));
-      if (zohoUser) {
-        collectUserIdentifierValues(zohoUser).forEach((value) => identifiers.add(value));
-        if (!req.session.userId1) {
-          req.session.userId1 = String(zohoUser?.ID1 || zohoUser?.id1 || zohoUser?.User_ID || zohoUser?.user_id || '').trim();
-        }
+  try {
+    const { payload } = await fetchZohoJson(buildUsersReportUrl(), {
+      retries: 2,
+      fallbackMessage: 'Erreur résolution utilisateur session'
+    });
+    const users = Array.isArray(payload?.data) ? payload.data : [];
+    const zohoUser = users.find((user) => doesUserMatchSession(user, sessionUserId, sessionUserId1, sessionEmail));
+    if (zohoUser) {
+      collectUserIdentifierValues(zohoUser).forEach((value) => identifiers.add(value));
+      if (!req.session.userId1) {
+        req.session.userId1 = String(zohoUser?.ID1 || zohoUser?.id1 || zohoUser?.User_ID || zohoUser?.user_id || '').trim();
       }
-    } catch (err) {
-      console.warn('WARN resolveSessionUserContext:', err.message);
     }
+  } catch (err) {
+    console.warn('WARN resolveSessionUserContext:', err.message);
   }
 
   return {
@@ -580,6 +520,20 @@ function collectPurchasedPropertyReferences(purchases) {
   return Array.from(references);
 }
 
+function collectReservationPropertyReferences(reservations) {
+  const references = new Set();
+  (reservations || []).forEach((reservation) => {
+    [
+      reservation?.Property1,
+      reservation?.Property,
+      reservation?.property,
+      reservation?.Property_Title,
+      reservation?.property_title
+    ].forEach((value) => collectLookupReferenceValues(value, references));
+  });
+  return Array.from(references);
+}
+
 function contractMatchesPurchasedProperties(contract, propertyReferences) {
   if (!contract || typeof contract !== 'object') return false;
   if (!Array.isArray(propertyReferences) || propertyReferences.length === 0) return false;
@@ -592,7 +546,10 @@ function contractMatchesPurchasedProperties(contract, propertyReferences) {
     contract.property_title,
     contract.Purchase,
     contract.Purchase && contract.Purchase.Property,
-    contract.Purchase && contract.Purchase.property
+    contract.Purchase && contract.Purchase.property,
+    contract.Reservation,
+    contract.Reservation && contract.Reservation.Property,
+    contract.Reservation && contract.Reservation.Property1
   ].forEach((value) => collectLookupReferenceValues(value, contractReferences));
 
   return Array.from(contractReferences).some((value) => propertyReferences.includes(value));
@@ -602,16 +559,28 @@ async function fetchUserScopedReport(req, reportName, criteriaField, fallbackMes
   const { userIds, userEmail } = await resolveSessionUserContext(req);
   let scopedData = [];
   const criteria = buildOrCriteria(criteriaField, userIds);
-  const reportBaseUrl = `${BASE_CREATORAPP}/report/${reportName}?field_config=all&max_records=200`;
+  const ts = Date.now();
+  // BASE_CREATORAPP does not support the criteria query parameter (returns 401).
+  // Use BASE_V21 with oauthtoken for criteria-based queries, which is the correct endpoint.
+  const fallbackUrl = `${BASE_CREATORAPP}/report/${reportName}?field_config=all&max_records=200&_t=${ts}`;
 
   if (criteria) {
-    try {
-      const { payload } = await fetchZohoJson(`${reportBaseUrl}&criteria=${encodeURIComponent(criteria)}`, {
-        fallbackMessage
-      });
-      scopedData = Array.isArray(payload?.data) ? payload.data : [];
-    } catch (err) {
-      console.warn(`WARN ${reportName} criteria fetch:`, err.message);
+    const criteriaTargets = [
+      { url: `${BASE_V21}/report/${reportName}?field_config=all&max_records=200&criteria=${encodeURIComponent(criteria)}&_t=${ts}`, authType: 'oauthtoken' },
+      { url: `${BASE_CREATOR}/report/${reportName}?field_config=all&max_records=200&criteria=${encodeURIComponent(criteria)}&_t=${ts}`, authType: 'bearer' },
+    ];
+    for (const target of criteriaTargets) {
+      try {
+        const { payload } = await fetchZohoJson(target.url, {
+          authType: target.authType,
+          fallbackMessage,
+          retries: 1
+        });
+        const data = Array.isArray(payload?.data) ? payload.data : [];
+        if (data.length > 0) { scopedData = data; break; }
+      } catch (err) {
+        console.warn(`WARN ${reportName} criteria fetch (${target.authType}):`, err.message);
+      }
     }
   }
 
@@ -619,38 +588,188 @@ async function fetchUserScopedReport(req, reportName, criteriaField, fallbackMes
     return scopedData;
   }
 
-  const { payload } = await fetchZohoJson(reportBaseUrl, {
-    fallbackMessage
-  });
+  const { payload } = await fetchZohoJson(fallbackUrl, { fallbackMessage });
   const allData = Array.isArray(payload?.data) ? payload.data : [];
   return allData.filter((record) => recordBelongsToResolvedUser(record, userIds, userEmail));
 }
 
-async function fetchUserContracts(req) {
-  const purchases = await fetchUserScopedReport(req, 'All_Purchases', 'Buyer', 'Erreur récupération achats');
-  const propertyReferences = collectPurchasedPropertyReferences(purchases);
+function extractLookupId(val) {
+  if (val == null) return '';
+  if (typeof val === 'string' || typeof val === 'number') return String(val).trim();
+  if (typeof val === 'object') {
+    return String(val.ID || val.id || val.ID1 || val.id1 || val.value || '').trim();
+  }
+  return '';
+}
 
-  const buyerScopedContracts = await fetchUserScopedReport(req, 'All_Contracts', 'Buyer', 'Erreur récupération contrats');
-  if (!propertyReferences.length) {
-    return buyerScopedContracts;
+// Returns true if a Zoho lookup field value contains the given targetId.
+// Zoho Creator returns lookup fields as objects: { ID: "<system-id>", display_value: "<ID1>" }
+// The display_value typically holds the linked record's ID1 (the user-defined field).
+function lookupMatchesId(val, targetId) {
+  if (!val || !targetId) return false;
+  const t = String(targetId).trim();
+  if (!t) return false;
+  if (typeof val === 'string' || typeof val === 'number') return String(val).trim() === t;
+  if (typeof val === 'object') {
+    return [
+      val.ID, val.id, val.ID1, val.id1,
+      val.value, val.display_value, val.zc_display_value
+    ].some(v => v != null && String(v).trim() === t);
+  }
+  return false;
+}
+
+// Fetch all records of a Zoho report (no filtering) — uses BASE_CREATOR, same as /api/admin/properties.
+async function fetchAllRecords(reportName, fallbackMessage) {
+  const url = `${BASE_CREATOR}/report/${reportName}?field_config=all&max_records=200`;
+  const { payload } = await fetchZohoJson(url, { retries: 3, fallbackMessage: fallbackMessage || `Erreur ${reportName}` });
+  return Array.isArray(payload?.data) ? payload.data : [];
+}
+
+// Returns a Set of property identifiers (system IDs, ID1s, titles) owned by the logged-in user.
+// Mirrors the logic of /api/properties/user: tries criteria first, then per-record fetch fallback.
+async function fetchOwnerPropertyIds(req) {
+  const userId1 = String(req.session.userId1 || '').trim();
+  const userId  = String(req.session.userId  || '').trim();
+  if (!userId1 && !userId) return new Set();
+
+  const { userIds, userEmail } = await resolveSessionUserContext(req);
+  const reportBase = `${BASE_CREATORAPP}/report/All_Properties?field_config=all&max_records=200`;
+
+  let ownerProps = [];
+
+  // 1. Try server-side criteria filter (fast path — same as /api/properties/user)
+  const criteria = buildOrCriteria('User', userIds);
+  if (criteria) {
+    try {
+      const { payload: cp } = await fetchZohoJson(
+        `${reportBase}&criteria=${encodeURIComponent(criteria)}`,
+        { fallbackMessage: 'owner props criteria', retries: 1 }
+      );
+      ownerProps = Array.isArray(cp?.data) ? cp.data : [];
+      console.log(`[fetchOwnerPropertyIds] criteria returned ${ownerProps.length} props`);
+    } catch (e) {
+      console.warn('[fetchOwnerPropertyIds] criteria failed:', e.message);
+    }
   }
 
-  const { payload } = await fetchZohoJson(`${BASE_CREATORAPP}/report/All_Contracts?field_config=all&max_records=200`, {
-    fallbackMessage: 'Erreur récupération contrats'
-  });
-  const allContracts = Array.isArray(payload?.data) ? payload.data : [];
-  const propertyScopedContracts = allContracts.filter((contract) => contractMatchesPurchasedProperties(contract, propertyReferences));
+  // 2. Fallback: per-record fetch to get the User field (not returned in list reports)
+  if (ownerProps.length === 0) {
+    console.log('[fetchOwnerPropertyIds] falling back to per-record fetch');
+    const { payload: ap } = await fetchZohoJson(reportBase, { fallbackMessage: 'owner props list' });
+    const allProps = Array.isArray(ap?.data) ? ap.data : [];
+    const full = await Promise.all(allProps.map(async p => {
+      if (!p.ID) return p;
+      try {
+        const { payload: rec } = await fetchZohoJson(
+          `${BASE_CREATORAPP}/report/All_Properties/${encodeURIComponent(p.ID)}?field_config=all`,
+          { fallbackMessage: '', retries: 1 }
+        );
+        const record = rec?.data ?? rec;
+        return (record && typeof record === 'object') ? { ...p, ...record } : p;
+      } catch { return p; }
+    }));
+    const matchUser = (f) => lookupMatchesId(f, userId1) || lookupMatchesId(f, userId) ||
+      recordBelongsToResolvedUser({ User: f }, userIds, userEmail);
+    ownerProps = full.filter(p => matchUser(p.User));
+    console.log(`[fetchOwnerPropertyIds] per-record fetch found ${ownerProps.length} owned props`);
+  }
 
-  const merged = [];
-  const seen = new Set();
-  [...buyerScopedContracts, ...propertyScopedContracts].forEach((contract) => {
-    const key = String(contract?.ID || contract?.ID1 || contract?.id || JSON.stringify(contract)).trim();
-    if (!key || seen.has(key)) return;
-    seen.add(key);
-    merged.push(contract);
+  const ids = new Set();
+  ownerProps.forEach(p => {
+    [p.ID, p.ID1, p.id, p.id1].forEach(v => { if (v) ids.add(String(v).trim()); });
+    const title = String(p.title || p.Title || p.name || p.Name || '').trim();
+    if (title) ids.add(title);
+  });
+  console.log(`[fetchOwnerPropertyIds] ownerPropIds:`, [...ids]);
+  return ids;
+}
+
+async function fetchUserContracts(req) {
+  const { userIds, userEmail } = await resolveSessionUserContext(req);
+
+  // Fetch purchases and reservations (both caught so one failing doesn't abort all)
+  const [purchases, reservations] = await Promise.all([
+    fetchUserScopedReport(req, 'All_Purchases', 'Buyer', 'Erreur récupération achats').catch(() => []),
+    fetchUserScopedReport(req, 'All_Reservations', 'User', 'Erreur récupération réservations').catch(() => []),
+  ]);
+
+  const purchaseIds = purchases.map((p) => String(p?.ID || '').trim()).filter(Boolean);
+  const reservationIds = reservations.map((r) => String(r?.ID || '').trim()).filter(Boolean);
+  const propertyReferences = collectPurchasedPropertyReferences(purchases);
+  const reservationPropertyReferences = collectReservationPropertyReferences(reservations);
+
+  console.log('[fetchUserContracts] userIds:', userIds, '| email:', userEmail);
+  console.log('[fetchUserContracts] Purchases:', purchases.length, purchaseIds);
+  console.log('[fetchUserContracts] Reservations:', reservations.length, reservationIds);
+
+  // Fetch all contracts — wrapped so a Zoho error returns [] instead of a 500
+  let allContracts = [];
+  try {
+    const { payload } = await fetchZohoJson(
+      `${BASE_CREATORAPP}/report/All_Contracts?field_config=all&max_records=200&_t=${Date.now()}`,
+      { fallbackMessage: 'Erreur récupération contrats' }
+    );
+    allContracts = Array.isArray(payload?.data) ? payload.data : [];
+  } catch (err) {
+    console.error('[fetchUserContracts] Failed to fetch All_Contracts:', err.message);
+    return [];
+  }
+
+  console.log('[fetchUserContracts] All contracts from Zoho:', allContracts.length);
+
+  const matched = allContracts.filter((contract) => {
+    // 1. Direct match via contract.Buyer (confirmed field name in Zoho Creator)
+    if (userIds.length > 0) {
+      const buyerId = extractLookupId(contract?.Buyer);
+      if (buyerId && userIds.includes(buyerId)) return true;
+    }
+    if (userEmail) {
+      const buyerEmail = String(
+        contract?.Buyer?.email || contract?.Buyer?.Email ||
+        contract?.Buyer?.display_value || ''
+      ).trim().toLowerCase();
+      if (buyerEmail && buyerEmail === userEmail.toLowerCase()) return true;
+    }
+
+    // 2. Match by Reservation.ID (rental contracts — confirmed field name)
+    if (reservationIds.length > 0) {
+      const rid = extractLookupId(contract?.Reservation);
+      if (rid && reservationIds.includes(rid)) return true;
+    }
+
+    // 3. Match by Purchase.ID (sale contracts — confirmed field name)
+    if (purchaseIds.length > 0) {
+      const pid = extractLookupId(contract?.Purchase);
+      if (pid && purchaseIds.includes(pid)) return true;
+    }
+
+    // 4. Fallback: match by shared Property ID (from purchases or reservations)
+    if (propertyReferences.length > 0 && contractMatchesPurchasedProperties(contract, propertyReferences)) return true;
+    if (reservationPropertyReferences.length > 0 && contractMatchesPurchasedProperties(contract, reservationPropertyReferences)) return true;
+
+    return false;
   });
 
-  return merged;
+  console.log('[fetchUserContracts] Matched contracts:', matched.length);
+
+  // Enrich each matched contract with full field data from the single-record endpoint
+  const full = await Promise.all(
+    matched.map(async (contract) => {
+      try {
+        const { payload: rec } = await fetchZohoJson(
+          `${BASE_CREATORAPP}/report/All_Contracts/${contract.ID}?field_config=all`,
+          { fallbackMessage: 'Erreur détail contrat' }
+        );
+        const record = rec?.data ?? rec;
+        return record && typeof record === 'object' ? { ...contract, ...record } : contract;
+      } catch {
+        return contract;
+      }
+    })
+  );
+
+  return full;
 }
 
 function getCachedPropertyDetail(id) {
@@ -853,10 +972,12 @@ function extractCreatedRecordId(createData) {
 
 function normalizePropertyType(type) {
   if (!type) return type;
-  const t = type.trim().toLowerCase();
-  if (t === 'location') return 'To Rent';
-  if (t === 'vente') return 'For Sale';
-  return type;
+  const t = type.trim();
+  const tl = t.toLowerCase();
+  if (tl === 'location') return 'To Rent';
+  if (tl === 'for sale') return 'For Sale';
+  if (tl === 'to rent') return 'To Rent';
+  return t;
 }
 
 async function uploadPropertyImageToZoho(recordId, imageDataUrl) {
@@ -1008,6 +1129,7 @@ app.get('/api/auth-status', (req, res) => {
   res.json({ loggedIn: false });
 });
 
+
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -1015,21 +1137,11 @@ app.post('/api/login', async (req, res) => {
 
     const normalizedEmail = String(email).trim();
 
-    // Try cache first
-    if (isUsersCacheFresh()) {
-      const cached = findUserByEmail(loadCachedUsers(), normalizedEmail);
-      if (cached && cached.Password === password) {
-        return createUserSession(req, res, cached, { source: 'cache' });
-      }
-    }
-
-    // Fetch from Zoho
     try {
       const { payload } = await fetchZohoJson(buildUsersReportUrl(), { retries: 3, fallbackMessage: 'Erreur Zoho users' });
       const users = payload.data || [];
-      if (users.length > 0) persistUsersCache(users);
 
-      const user = findUserByEmail(users.length > 0 ? users : loadCachedUsers(), normalizedEmail);
+      const user = findUserByEmail(users, normalizedEmail);
       if (!user || user.Password !== password) {
         return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
       }
@@ -1038,13 +1150,7 @@ app.post('/api/login', async (req, res) => {
       return createUserSession(req, res, user, { source: 'zoho' });
     } catch (err) {
       console.error('ERROR Login Zoho error:', err.message);
-      if (!ALLOW_OFFLINE_LOGIN) return res.status(503).json({ error: err.message });
-
-      const fallback = findUserByEmail(loadCachedUsers(), normalizedEmail);
-      if (!fallback || fallback.Password !== password) {
-        return res.status(401).json({ error: 'Email ou mot de passe incorrect' });
-      }
-      return createUserSession(req, res, fallback, { source: 'cache', warning: 'Mode hors-ligne' });
+      return res.status(503).json({ error: 'Service indisponible, veuillez réessayer.' });
     }
   } catch (err) {
     console.error('Login error:', err);
@@ -1082,35 +1188,63 @@ app.post('/api/signup', async (req, res) => {
   try {
     const { first_name, last_name, email, phone_number, password, confirm_password } = req.body;
 
-    // Only basic presence check - all other validation is in Zoho workflow "Add_User"
+    // Presence check
     if (!first_name || !last_name || !email || !phone_number || !password || !confirm_password) {
       return res.status(400).json({ error: 'Tous les champs sont requis' });
+    }
+    if (password !== confirm_password) {
+      return res.status(400).json({ error: 'Les mots de passe ne correspondent pas' });
+    }
+    // Validate plain password in Node.js
+    if (password.length < 8) {
+      return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères.' });
+    }
+    if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({ error: 'Le mot de passe doit contenir au moins une majuscule.' });
+    }
+    if (!/[0-9]/.test(password)) {
+      return res.status(400).json({ error: 'Le mot de passe doit contenir au moins un chiffre.' });
+    }
+    if (!/[!@#$%^&*()]/.test(password)) {
+      return res.status(400).json({ error: 'Le mot de passe doit contenir au moins un caractère spécial parmi !@#$%^&*()' });
     }
 
     const normalizedEmail = String(email).trim();
 
-    const formUrl = `${BASE_CREATOR}/form/User`;
-    const requestBody = {
-      data: {
-        full_name: { first_name, last_name },
-        Email: normalizedEmail,
-        Phone_Number: phone_number,
-        Role: 'User',
-        Password: password,
-        Confirm_password: confirm_password
-        // Role defaults to User for public signup
+    // Check email uniqueness in Node.js before hitting Zoho
+    try {
+      const { payload: emailCheck } = await fetchZohoJson(
+        `${BASE_CREATOR}/report/All_Users?criteria=${encodeURIComponent(`Email == "${normalizedEmail}"`)}`,
+        { fallbackMessage: 'email check' }
+      );
+      if (Array.isArray(emailCheck?.data) && emailCheck.data.length > 0) {
+        return res.status(400).json({ error: 'Cet email est déjà utilisé.' });
       }
-    };
+    } catch (err) {
+      console.warn('[Signup] Email check failed (continuing):', err.message);
+    }
 
-    console.log(' Signup - forwarding to Zoho Creator (workflow Add_User will validate)');
-
+    // Step 1: POST plain password so the Zoho workflow validates and creates the record.
+    // Real Zoho record IDs are purely numeric (e.g. 4899073000000214003).
+    // A workflow execution ref looks like "UVH@..." — that means cancel submit was triggered.
+    const formUrl = `${BASE_CREATOR}/form/User`;
     let createData;
     try {
       const { payload } = await fetchZohoJson(formUrl, {
         method: 'POST',
         authType: 'bearer',
-        body: requestBody,
+        body: {
+          data: {
+            full_name: { first_name, last_name },
+            Email: normalizedEmail,
+            Phone_Number: phone_number,
+            Role: 'User',
+            Password: password,
+            Confirm_password: password
+          }
+        },
         retries: 3,
+        requireSuccessCode: true,
         fallbackMessage: 'Erreur creation compte'
       });
       createData = payload;
@@ -1118,26 +1252,22 @@ app.post('/api/signup', async (req, res) => {
       return res.status(400).json({ error: err.message });
     }
 
-    // Surface Zoho workflow alert messages (password rules, email exists, etc.)
     if (createData?.error || (createData?.code && Number(createData.code) !== 3000)) {
       const msg = extractWorkflowAlertMessage(createData, 'Erreur lors de la creation du compte');
       return res.status(400).json({ error: msg });
     }
 
-    console.log(`OK Signup OK: ${normalizedEmail}`);
-    req.session.userId = createData.data?.ID || `new-${Date.now()}`;
+    const zohoRecordId = createData?.data?.ID;
+    // Non-numeric ID means Zoho ran cancel submit (workflow rejected the submission).
+    if (!zohoRecordId || !/^\d+$/.test(String(zohoRecordId).trim())) {
+      const msg = extractWorkflowAlertMessage(createData, 'Erreur lors de la creation du compte');
+      return res.status(400).json({ error: msg || 'Inscription refusée par le serveur. Vérifiez les critères du mot de passe.' });
+    }
+
+    req.session.userId = zohoRecordId;
     req.session.userEmail = normalizedEmail;
     req.session.userName = `${first_name} ${last_name}`;
     req.session.userRole = 'User';
-
-    persistUsersCache([{
-      ID: req.session.userId,
-      Email: normalizedEmail,
-      Password: password,
-      Phone_Number: phone_number,
-      full_name: { first_name, last_name },
-      Role: 'User'
-    }]);
 
     res.json({ success: true, message: 'Compte cree avec succes!', user: { email: normalizedEmail, name: req.session.userName, role: req.session.userRole } });
   } catch (err) {
@@ -1238,6 +1368,76 @@ app.get('/api/properties', async (req, res) => {
   }
 });
 
+app.get('/api/properties/user', requireAuth, async (req, res) => {
+  try {
+    const { userIds, userEmail } = await resolveSessionUserContext(req);
+
+    const reportBaseUrl = `${BASE_CREATORAPP}/report/All_Properties?field_config=all&max_records=200`;
+
+    // 1. Try criteria query first (works if User column is in the Zoho report)
+    const criteria = buildOrCriteria('User', userIds);
+    let scopedData = [];
+    if (criteria) {
+      try {
+        const { payload: cp } = await fetchZohoJson(`${reportBaseUrl}&criteria=${encodeURIComponent(criteria)}`, {
+          fallbackMessage: 'criteria fetch'
+        });
+        scopedData = Array.isArray(cp?.data) ? cp.data : [];
+      } catch (err) {
+        console.warn('[/api/properties/user] criteria fetch failed:', err.message);
+      }
+    }
+
+    if (scopedData.length > 0) {
+      return res.json({ success: true, data: scopedData.map(enrichPropertyWithImage) });
+    }
+
+    // 2. Criteria returned nothing — fetch all properties then individually
+    //    fetch each record so the User field (not in report columns) is included.
+    const { payload: ap } = await fetchZohoJson(reportBaseUrl, { fallbackMessage: 'Erreur récupération propriétés utilisateur' });
+    const allProps = Array.isArray(ap?.data) ? ap.data : [];
+
+    const full = await Promise.all(
+      allProps.map(async (prop) => {
+        if (!prop.ID) return prop;
+        try {
+          const { payload: rec } = await fetchZohoJson(
+            `${BASE_CREATORAPP}/report/All_Properties/${prop.ID}?field_config=all`,
+            { fallbackMessage: '' }
+          );
+          const record = rec?.data ?? rec;
+          return record && typeof record === 'object' ? { ...prop, ...record } : prop;
+        } catch {
+          return prop;
+        }
+      })
+    );
+
+    const userProps = full.filter((record) => recordBelongsToResolvedUser(record, userIds, userEmail));
+    res.json({ success: true, data: userProps.map(enrichPropertyWithImage) });
+  } catch (err) {
+    console.error('[/api/properties/user] error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/api/properties/update/:id', requireAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const allowed = ['title', 'description', 'location', 'Price1', 'prix_nuit',
+                     'loyer_mensuel', 'caution_courte', 'caution_longue',
+                     'Surface1', 'Rooms1', 'Bathrooms1', 'Floor', 'Year_Built'];
+    const data = {};
+    allowed.forEach((f) => { if (req.body[f] !== undefined) data[f] = req.body[f]; });
+    await fetchZohoJson(`${BASE_CREATORAPP}/report/All_Properties/${id}`, {
+      method: 'PATCH', body: { data }, fallbackMessage: 'Erreur mise à jour propriété'
+    });
+    removePropertyFromCacheById(id);
+    clearPropertiesResponseCache();
+    res.json({ success: true, message: 'Propriété mise à jour avec succès!' });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.get('/api/properties/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -1254,7 +1454,8 @@ app.get('/api/properties/:id', async (req, res) => {
 app.post('/api/properties/create', requireAuth, async (req, res) => {
   try {
     const { title, description, price, location, address_line_1, address_line_2, city_district,
-            type, floor, surface, bedrooms, bathrooms, year_built, status, image, images } = req.body;
+            type, floor, surface, bedrooms, bathrooms, year_built, status, image, images,
+            prix_nuit, loyer_mensuel, caution_courte, caution_longue } = req.body;
 
     const normalizedType = normalizePropertyType(type);
     const locationPayload = buildPropertyLocationPayload({ location, address_line_1, address_line_2, city_district });
@@ -1273,7 +1474,11 @@ app.post('/api/properties/create', requireAuth, async (req, res) => {
       data: {
         title,
         description: description || '',
-        Price1: parseFloat(price),
+        ...(price != null && price !== '' ? { Price1: parseFloat(price) } : {}),
+        ...(prix_nuit != null && prix_nuit !== '' ? { prix_nuit: parseFloat(prix_nuit) } : {}),
+        ...(loyer_mensuel != null && loyer_mensuel !== '' ? { loyer_mensuel: parseFloat(loyer_mensuel) } : {}),
+        ...(caution_courte != null && caution_courte !== '' ? { caution_courte: parseFloat(caution_courte) } : {}),
+        ...(caution_longue != null && caution_longue !== '' ? { caution_longue: parseFloat(caution_longue) } : {}),
         type_field: normalizedType,
         Rooms1: bedrooms ? parseInt(bedrooms) : null,
         Bathrooms1: bathrooms ? parseInt(bathrooms) : null,
@@ -1316,7 +1521,13 @@ app.post('/api/properties/create', requireAuth, async (req, res) => {
 
     if (createdId) {
       const cached = enrichPropertyWithImage({
-        ID: String(createdId), title, description, Price1: String(price), status,
+        ID: String(createdId), title, description,
+        ...(price != null ? { Price1: String(price) } : {}),
+        ...(prix_nuit != null ? { prix_nuit: String(prix_nuit) } : {}),
+        ...(loyer_mensuel != null ? { loyer_mensuel: String(loyer_mensuel) } : {}),
+        ...(caution_courte != null ? { caution_courte: String(caution_courte) } : {}),
+        ...(caution_longue != null ? { caution_longue: String(caution_longue) } : {}),
+        status,
         [PROPERTY_VALIDATION_FIELD]: PENDING_STATUS_VALUE,
         Validation_Status: PENDING_STATUS_VALUE,
         type_field: normalizedType, location: locationPayload,
@@ -1526,8 +1737,174 @@ app.post('/api/purchases/create', requireAuth, async (req, res) => {
 
 app.get('/api/purchases/user', requireAuth, async (req, res) => {
   try {
-    const data = await fetchUserScopedReport(req, 'All_Purchases', 'Buyer', 'Erreur récupération achats');
+    const userId1 = String(req.session.userId1 || '').trim();
+    const userId  = String(req.session.userId  || '').trim();
+    if (!userId1 && !userId) return res.json({ success: true, data: [] });
+    const all  = await fetchAllRecords('All_Purchases', 'Erreur récupération achats');
+    const data = all.filter(r => lookupMatchesId(r.Buyer, userId1) || lookupMatchesId(r.Buyer, userId));
+    console.log(`[purchases/user] userId1=${userId1} userId=${userId} total=${all.length} matched=${data.length}`);
     res.json({ success: true, data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get('/api/reservations/user', requireAuth, async (req, res) => {
+  try {
+    const userId1 = String(req.session.userId1 || '').trim();
+    const userId  = String(req.session.userId  || '').trim();
+    if (!userId1 && !userId) return res.json({ success: true, data: [] });
+    const all  = await fetchAllRecords('All_Reservations', 'Erreur récupération réservations');
+    // Debug: print first record's User field so we can see the exact structure Zoho returns
+    if (all.length > 0) console.log('[DEBUG reservations] first record User field:', JSON.stringify(all[0]?.User), '| session userId1:', userId1, 'userId:', userId);
+    const data = all.filter(r => lookupMatchesId(r.User, userId1) || lookupMatchesId(r.User, userId));
+    console.log(`[reservations/user] userId1=${userId1} userId=${userId} total=${all.length} matched=${data.length}`);
+    res.json({ success: true, data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get('/api/reservations/owner', requireAuth, async (req, res) => {
+  try {
+    if (!req.session.userId) return res.json({ success: true, data: [] });
+
+    const [ownerPropIds, allReservations] = await Promise.all([
+      fetchOwnerPropertyIds(req).catch(e => { console.error('[res/owner] fetchOwnerPropertyIds failed:', e.message); return new Set(); }),
+      fetchAllRecords('All_Reservations', 'Erreur réservations').catch(e => { console.error('[res/owner] res failed:', e.message); return []; }),
+    ]);
+
+    console.log(`[res/owner] ownerPropIds=${[...ownerPropIds]} allRes=${allReservations.length}`);
+    if (ownerPropIds.size === 0) return res.json({ success: true, data: [] });
+
+    const matchProp = (field) => [...ownerPropIds].some(pid => lookupMatchesId(field, pid));
+    const data = allReservations.filter(r => matchProp(r.Property1 || r.Property));
+
+    console.log(`[res/owner] matched=${data.length}`);
+    res.json({ success: true, data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get('/api/purchases/owner', requireAuth, async (req, res) => {
+  try {
+    if (!req.session.userId) return res.json({ success: true, data: [] });
+
+    const userId1 = String(req.session.userId1 || '').trim();
+    const userId  = String(req.session.userId  || '').trim();
+    const matchUser = (field) => lookupMatchesId(field, userId1) || lookupMatchesId(field, userId);
+
+    const [ownerPropIds, allPurchases] = await Promise.all([
+      fetchOwnerPropertyIds(req).catch(e => { console.error('[pur/owner] fetchOwnerPropertyIds failed:', e.message); return new Set(); }),
+      fetchAllRecords('All_Purchases', 'Erreur achats').catch(e => { console.error('[pur/owner] purch failed:', e.message); return []; }),
+    ]);
+
+    console.log(`[pur/owner] userId1=${userId1} ownerPropIds=${[...ownerPropIds]} allPurch=${allPurchases.length}`);
+    if (ownerPropIds.size === 0 && !userId1 && !userId) return res.json({ success: true, data: [] });
+
+    const matchProp = (field) => [...ownerPropIds].some(pid => lookupMatchesId(field, pid));
+
+    const data = allPurchases.filter(pur =>
+      matchUser(pur.Seller) || matchProp(pur.Property || pur.property)
+    );
+
+    console.log(`[pur/owner] matched=${data.length}`);
+    res.json({ success: true, data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.patch('/api/reservations/:id/status', requireAuth, async (req, res) => {
+  try {
+    const id = String(req.params.id || '').trim();
+    const status = String(req.body?.status || '').trim();
+    if (!id || !['Confirmé', 'Annulé', 'En attente'].includes(status)) {
+      return res.status(400).json({ error: 'ID et statut valide requis' });
+    }
+    await ensureValidToken();
+    const resTargets = [
+      { url: `${BASE_V21}/report/All_Reservations/${encodeURIComponent(id)}`,        authType: 'oauthtoken' },
+      { url: `${BASE_CREATOR}/report/All_Reservations/${encodeURIComponent(id)}`,    authType: 'bearer' },
+      { url: `${BASE_CREATORAPP}/report/All_Reservations/${encodeURIComponent(id)}`, authType: 'bearer' }
+    ];
+    for (const target of resTargets) {
+      try {
+        const { payload } = await fetchZohoJson(target.url, {
+          method: 'PATCH', authType: target.authType,
+          body: { data: { Status: status }, result: { message: true } },
+          retries: 2, fallbackMessage: 'Erreur statut réservation'
+        });
+        if (payload?.code === 3000 || payload?.result?.[0]?.code === 3000 || payload?.data) return res.json({ success: true });
+      } catch (e) { console.warn('PATCH res status failed:', target.url, e.message); }
+    }
+    res.status(400).json({ error: 'Impossible de mettre à jour le statut.' });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.patch('/api/purchases/:id/status', requireAuth, async (req, res) => {
+  try {
+    const id = String(req.params.id || '').trim();
+    const status = String(req.body?.status || '').trim();
+    if (!id || !['Acceptée', 'Refusée', 'En attente'].includes(status)) {
+      return res.status(400).json({ error: 'ID et statut valide requis' });
+    }
+    await ensureValidToken();
+    const purchTargets = [
+      { url: `${BASE_V21}/report/All_Purchases/${encodeURIComponent(id)}`,        authType: 'oauthtoken' },
+      { url: `${BASE_CREATOR}/report/All_Purchases/${encodeURIComponent(id)}`,    authType: 'bearer' },
+      { url: `${BASE_CREATORAPP}/report/All_Purchases/${encodeURIComponent(id)}`, authType: 'bearer' }
+    ];
+    for (const target of purchTargets) {
+      try {
+        const { payload } = await fetchZohoJson(target.url, {
+          method: 'PATCH', authType: target.authType,
+          body: { data: { Statut: status }, result: { message: true } },
+          retries: 2, fallbackMessage: 'Erreur statut achat'
+        });
+        if (payload?.code === 3000 || payload?.result?.[0]?.code === 3000 || payload?.data) return res.json({ success: true });
+      } catch (e) { console.warn('PATCH purch status failed:', target.url, e.message); }
+    }
+    res.status(400).json({ error: 'Impossible de mettre à jour le statut.' });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.patch('/api/reservations/:id/cancel', requireAuth, async (req, res) => {
+  try {
+    const id = String(req.params.id || '').trim();
+    if (!id) return res.status(400).json({ error: 'ID requis' });
+    await ensureValidToken();
+    const targets = [
+      `${BASE_V21}/report/All_Reservations/${encodeURIComponent(id)}`,
+      `${BASE_CREATOR}/report/All_Reservations/${encodeURIComponent(id)}`
+    ];
+    for (const url of targets) {
+      try {
+        const { payload } = await fetchZohoJson(url, {
+          method: 'PATCH', authType: 'bearer',
+          body: { data: { Status: 'Annulé' } },
+          retries: 2, fallbackMessage: 'Erreur annulation réservation'
+        });
+        if (payload?.code === 3000 || payload?.data) return res.json({ success: true });
+      } catch (e) { console.warn('PATCH reservation cancel failed on', url, e.message); }
+    }
+    res.status(400).json({ error: 'Impossible d\'annuler la réservation.' });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.patch('/api/purchases/:id/cancel', requireAuth, async (req, res) => {
+  try {
+    const id = String(req.params.id || '').trim();
+    if (!id) return res.status(400).json({ error: 'ID requis' });
+    await ensureValidToken();
+    const targets = [
+      `${BASE_V21}/report/All_Purchases/${encodeURIComponent(id)}`,
+      `${BASE_CREATOR}/report/All_Purchases/${encodeURIComponent(id)}`
+    ];
+    for (const url of targets) {
+      try {
+        const { payload } = await fetchZohoJson(url, {
+          method: 'PATCH', authType: 'bearer',
+          body: { data: { Statut: 'Annulée' } },
+          retries: 2, fallbackMessage: 'Erreur annulation demande d\'achat'
+        });
+        if (payload?.code === 3000 || payload?.data) return res.json({ success: true });
+      } catch (e) { console.warn('PATCH purchase cancel failed on', url, e.message); }
+    }
+    res.status(400).json({ error: 'Impossible d\'annuler la demande.' });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
@@ -1537,9 +1914,82 @@ app.get('/api/purchases/user', requireAuth, async (req, res) => {
 
 app.get('/api/contracts/user', requireAuth, async (req, res) => {
   try {
-    const data = await fetchUserContracts(req);
-    res.json({ success: true, data });
+    const userId1 = String(req.session.userId1 || '').trim();
+    const userId  = String(req.session.userId  || '').trim();
+    if (!userId1 && !userId) return res.json({ success: true, data: [] });
+
+    const matchUser = (field) => lookupMatchesId(field, userId1) || lookupMatchesId(field, userId);
+
+    const [allReservations, allPurchases, allContracts] = await Promise.all([
+      fetchAllRecords('All_Reservations', 'Erreur réservations').catch(e => { console.error('[contracts] All_Reservations fetch failed:', e.message); return []; }),
+      fetchAllRecords('All_Purchases',    'Erreur achats').catch(e => { console.error('[contracts] All_Purchases fetch failed:', e.message); return []; }),
+      fetchAllRecords('All_Contracts',    'Erreur contrats').catch(e => { console.error('[contracts] All_Contracts fetch failed:', e.message); return []; }),
+    ]);
+
+    const userResIds = new Set(
+      allReservations.filter(r => matchUser(r.User)).map(r => String(r.ID || '').trim()).filter(Boolean)
+    );
+    const userPurIds = new Set(
+      allPurchases.filter(r => matchUser(r.Buyer)).map(r => String(r.ID || '').trim()).filter(Boolean)
+    );
+
+    console.log(`[contracts/user] userId1=${userId1} userId=${userId} reservations=${userResIds.size} purchases=${userPurIds.size} allContracts=${allContracts.length}`);
+
+    const data = allContracts.filter(c => {
+      if (matchUser(c.Buyer)) return true;
+      const rid = extractLookupId(c.Reservation);
+      if (rid && userResIds.has(rid)) return true;
+      const pid = extractLookupId(c.Purchase);
+      if (pid && userPurIds.has(pid)) return true;
+      return false;
+    });
+
+    console.log(`[contracts/user] matched=${data.length}`);
+
+    // Enrich each matched contract with its full single-record fetch so that
+    // URL/file fields like Contrat_PDF_URL are included (Zoho omits them in list reports).
+    const enriched = await Promise.all(data.map(async (contract) => {
+      const recordId = String(contract.ID || '').trim();
+      if (!recordId) return contract;
+      try {
+        const { payload } = await fetchZohoJson(
+          `${BASE_CREATOR}/report/All_Contracts/${recordId}?field_config=all`,
+          { retries: 2, fallbackMessage: 'Erreur détail contrat' }
+        );
+        const full = payload?.data ?? payload;
+        return (full && typeof full === 'object') ? { ...contract, ...full } : contract;
+      } catch {
+        return contract;
+      }
+    }));
+
+    res.json({ success: true, data: enriched });
   } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// PDF download proxy — fetches Zoho Sign PDF with the current OAuth token and
+// streams it back as an attachment so the browser downloads it without navigating.
+app.get('/api/contracts/pdf-download', requireAuth, async (req, res) => {
+  const pdfUrl = String(req.query.url || '').trim();
+  if (!pdfUrl) return res.status(400).json({ error: 'Paramètre url manquant' });
+
+  try {
+    await ensureValidToken();
+    const upstream = await fetch(pdfUrl, {
+      headers: { 'Authorization': getAuthHeader('bearer') }
+    });
+
+    if (!upstream.ok) {
+      return res.status(upstream.status).json({ error: `Zoho Sign a répondu ${upstream.status}` });
+    }
+
+    const contractId = String(req.query.id || 'contrat').replace(/[^a-zA-Z0-9_-]/g, '');
+    res.setHeader('Content-Type', upstream.headers.get('content-type') || 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="contrat-${contractId}.pdf"`);
+    upstream.body.pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1548,42 +1998,69 @@ app.get('/api/contracts/user', requireAuth, async (req, res) => {
 
 app.get('/api/payments/user', requireAuth, async (req, res) => {
   try {
-    const data = await fetchUserScopedReport(req, 'All_Payments', 'Contract.Buyer', 'Erreur récupération paiements');
+    const userId1 = String(req.session.userId1 || '').trim();
+    const userId  = String(req.session.userId  || '').trim();
+    if (!userId1 && !userId) return res.json({ success: true, data: [] });
+
+    const matchUser = (field) => lookupMatchesId(field, userId1) || lookupMatchesId(field, userId);
+
+    const [allContracts, allPayments] = await Promise.all([
+      fetchAllRecords('All_Contracts', 'Erreur contrats').catch(e => { console.error('[payments] All_Contracts fetch failed:', e.message); return []; }),
+      fetchAllRecords('All_Payments',  'Erreur paiements').catch(e => { console.error('[payments] All_Payments fetch failed:', e.message); return []; }),
+    ]);
+
+    const userContractIds = new Set(
+      allContracts.filter(c => matchUser(c.Buyer)).map(c => String(c.ID || '').trim()).filter(Boolean)
+    );
+
+    const data = allPayments.filter(p => {
+      const cid = extractLookupId(p.Contract);
+      if (cid && userContractIds.has(cid)) return true;
+      if (matchUser(p.User))  return true;
+      if (matchUser(p.Buyer)) return true;
+      return false;
+    });
+
+    console.log(`[payments/user] userId1=${userId1} userId=${userId} contracts=${userContractIds.size} allPayments=${allPayments.length} matched=${data.length}`);
     res.json({ success: true, data });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
+// Temporary debug endpoint — remove after diagnosis
+app.get('/api/debug/owner', async (req, res) => {
+  const userId1 = String(req.session.userId1 || '').trim();
+  const userId  = String(req.session.userId  || '').trim();
+  const propsUrl = `${BASE_CREATORAPP}/report/All_Properties?field_config=all&max_records=200`;
+  const [propsResult, reservations] = await Promise.all([
+    fetchZohoJson(propsUrl, { retries: 3, fallbackMessage: 'debug' }).catch(() => ({ payload: null })),
+    fetchAllRecords('All_Reservations', 'debug').catch(() => []),
+  ]);
+  const props = Array.isArray(propsResult.payload?.data) ? propsResult.payload.data : [];
+  res.json({
+    session: { userId1, userId },
+    totalProperties: props.length,
+    firstPropertyAllFields: props[0] || null,
+    firstPropertyKeys: props[0] ? Object.keys(props[0]) : [],
+    totalReservations: reservations.length,
+    firstReservationAllFields: reservations[0] || null,
+  });
+});
+
 // GET all users for admin panel
 app.get('/api/admin/users', async (req, res) => {
   try {
     console.log(' Admin: Fetching all users...');
-    const forceZoho = String(req.query?.refresh || req.query?.source || '').toLowerCase();
-    const skipCache = forceZoho === '1' || forceZoho === 'true' || forceZoho === 'zoho';
 
-    // Try cache first
-    if (!skipCache && isUsersCacheFresh()) {
-      const cached = loadCachedUsers();
-      if (cached.length > 0) {
-        return res.json({ success: true, users: cached, source: 'cache' });
-      }
-    }
-
-    // Fetch from Zoho
     const { payload } = await fetchZohoJson(buildUsersReportUrl(), {
       retries: 3,
       fallbackMessage: 'Erreur recuperation des utilisateurs'
     });
 
     const users = payload.data || [];
-    if (users.length > 0) {
-      persistUsersCache(users);
-    }
-
     console.log(`OK Admin users loaded: ${users.length} records`);
-    res.json({ success: true, users: users.length > 0 ? users : loadCachedUsers(), source: 'zoho' });
+    res.json({ success: true, users, source: 'zoho' });
   } catch (err) {
     console.error('ERROR Admin users fetch error:', err.message);
-    const fallback = loadCachedUsers();
-    res.json({ success: true, users: fallback, source: 'cache-fallback', warning: err.message });
+    res.status(503).json({ success: false, error: err.message });
   }
 });
 
@@ -1596,31 +2073,33 @@ app.post('/api/admin/users/add', async (req, res) => {
     if (!first_name || !last_name || !email || !password || !confirm_password) {
       return res.status(400).json({ error: 'Tous les champs sont requis (nom, prenom, email, mot de passe)' });
     }
+    if (password !== confirm_password) {
+      return res.status(400).json({ error: 'Les mots de passe ne correspondent pas' });
+    }
 
     const normalizedEmail = String(email).trim();
 
     console.log(` Admin: Creating user - ${normalizedEmail}, role: ${role || 'client'}`);
 
+    // Step 1: send plain password so workflow validates and creates the record
     const formUrl = `${BASE_CREATOR}/form/User`;
-    const requestBody = {
-      data: {
-        full_name: { first_name, last_name },
-        Email: normalizedEmail,
-        Phone_Number: phone_number || '',
-        Password: password,
-        Confirm_password: confirm_password,
-        Role: role || 'User'
-        // Workflow "Add_User" handles validation + uniqueness check
-      }
-    };
-
     let createData;
     try {
       const { payload } = await fetchZohoJson(formUrl, {
         method: 'POST',
         authType: 'bearer',
-        body: requestBody,
+        body: {
+          data: {
+            full_name: { first_name, last_name },
+            Email: normalizedEmail,
+            Phone_Number: phone_number || '',
+            Password: password,
+            Confirm_password: password,
+            Role: role || 'User'
+          }
+        },
         retries: 3,
+        requireSuccessCode: true,
         fallbackMessage: 'Erreur creation utilisateur'
       });
       createData = payload;
@@ -1628,22 +2107,25 @@ app.post('/api/admin/users/add', async (req, res) => {
       return res.status(400).json({ error: err.message });
     }
 
-    // Surface Zoho workflow alert messages
     if (createData?.error || (createData?.code && Number(createData.code) !== 3000)) {
       const msg = extractWorkflowAlertMessage(createData, 'Erreur lors de la creation de l\'utilisateur');
       return res.status(400).json({ error: msg });
     }
 
-    // Update users cache
+    const zohoUserId = createData?.data?.ID;
+    if (!zohoUserId) {
+      const msg = extractWorkflowAlertMessage(createData, 'Erreur creation utilisateur');
+      return res.status(400).json({ error: msg || 'Aucun ID retourné par Zoho' });
+    }
+
     const newUser = {
-      ID: createData.data?.ID || `new-${Date.now()}`,
+      ID: zohoUserId,
       Email: normalizedEmail,
       Password: password,
       Phone_Number: phone_number || '',
       full_name: { first_name, last_name },
       Role: role || 'User'
     };
-    persistUsersCache([newUser]);
 
     console.log(`OK Admin: User created - ${normalizedEmail}`);
     res.json({ success: true, message: 'Utilisateur cree avec succes!', data: newUser });
@@ -1677,7 +2159,6 @@ app.post('/api/admin/users/delete', async (req, res) => {
               requireSuccessCode: true,
               fallbackMessage: `Erreur workflow ${formName}`
             });
-            removeUserFromCacheById(ID1);
             console.log(`OK Admin: User deleted via workflow ${formName} - ${ID1}`);
             return res.json({ success: true, message: 'Utilisateur supprime avec succes!', workflow: formName });
           } catch (err) {
@@ -1712,7 +2193,6 @@ app.post('/api/admin/users/delete', async (req, res) => {
         console.log(`Delete direct response [${response.status}]:`, JSON.stringify(result));
 
         if (response.status === 200 || response.status === 204 || result?.code === 3000) {
-          removeUserFromCacheById(ID1);
           console.log(`OK Admin: User deleted via direct report - ${ID1}`);
           return res.json({ success: true, message: 'Utilisateur supprime avec succes!' });
         }
@@ -1810,16 +2290,7 @@ app.get('/api/admin/users/detail/:id', async (req, res) => {
     res.json({ success: true, user, source: 'zoho' });
   } catch (err) {
     console.error('Admin user detail error:', err.message);
-    const fallback = loadCachedUsers();
-    const userId = String(req.params.id || '').trim();
-    const user = fallback.find((u) => {
-      const id = String(u?.ID || '').trim();
-      const id1 = String(u?.ID1 || '').trim();
-      const uid = String(u?.User_ID || '').trim();
-      return id === userId || id1 === userId || uid === userId;
-    });
-    if (user) return res.json({ success: true, user, source: 'cache-fallback' });
-    res.status(500).json({ error: err.message });
+    res.status(503).json({ error: err.message });
   }
 });
 
@@ -1854,7 +2325,7 @@ app.post('/api/admin/users/update', async (req, res) => {
     }
     if (password) {
       updateData.Password = password;
-      updateData.Confirm_password = confirm_password;
+      updateData.Confirm_password = password;
     }
 
     if (!Object.keys(updateData).length) {
@@ -1942,7 +2413,6 @@ app.post('/api/admin/users/update', async (req, res) => {
       }
     }
 
-    persistUsersCache([updatedUser]);
     res.json({ success: true, message: 'Utilisateur mis à jour avec succès.' });
   } catch (err) {
     console.error('Admin update user error:', err.message);
@@ -1971,18 +2441,7 @@ app.get('/api/agent/profile', requireAuth, async (req, res) => {
     res.json({ success: true, user, source: 'zoho' });
   } catch (err) {
     console.error('Agent profile fetch error:', err.message);
-
-    const sessionUserId = String(req.session.userId || '').trim();
-    const sessionEmail = String(req.session.userEmail || '').trim().toLowerCase();
-    const fallbackUsers = loadCachedUsers();
-    const user = fallbackUsers.find((u) => {
-      const id = String(u?.ID || u?.ID1 || '').trim();
-      const email = String(u?.Email || u?.email || '').trim().toLowerCase();
-      return (sessionUserId && id === sessionUserId) || (sessionEmail && email === sessionEmail);
-    });
-
-    if (user) return res.json({ success: true, user, source: 'cache-fallback' });
-    res.status(500).json({ error: err.message });
+    res.status(503).json({ error: err.message });
   }
 });
 
@@ -2016,7 +2475,7 @@ app.post('/api/agent/profile/update', requireAuth, async (req, res) => {
 
     if (password) {
       updateData.Password = password;
-      updateData.Confirm_password = confirm_password;
+      updateData.Confirm_password = password;
     }
 
     // Security: role cannot be modified from agent profile endpoint.
@@ -2028,7 +2487,6 @@ app.post('/api/agent/profile/update', requireAuth, async (req, res) => {
       return res.status(400).json({ error: 'Mise à jour profil échouée. Vérifiez les scopes ZohoCreator.report.UPDATE.' });
     }
 
-    persistUsersCache([{ ID: sessionUserId, ...updateData }]);
     req.session.userName = `${first_name} ${last_name}`.trim();
     req.session.userEmail = email;
 
@@ -2203,6 +2661,28 @@ app.post('/api/admin/cache/clear', (req, res) => {
   res.json({ success: true, message: 'Cache vidé.' });
 });
 
+app.get('/api/admin/contracts', async (req, res) => {
+  try {
+    const { payload } = await fetchZohoJson(
+      `${BASE_CREATOR}/report/All_Contracts?field_config=all&max_records=200`,
+      { retries: 3, fallbackMessage: 'Erreur récupération contrats admin' }
+    );
+    const data = Array.isArray(payload?.data) ? payload.data : [];
+    res.json({ success: true, data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get('/api/admin/reservations', async (req, res) => {
+  try {
+    const { payload } = await fetchZohoJson(
+      `${BASE_CREATOR}/report/All_Reservations?field_config=all&max_records=200`,
+      { retries: 3, fallbackMessage: 'Erreur récupération réservations admin' }
+    );
+    const data = Array.isArray(payload?.data) ? payload.data : [];
+    res.json({ success: true, data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.get('/api/admin/properties', async (req, res) => {
   try {
     console.log(' Admin: Fetching all properties...');
@@ -2353,7 +2833,7 @@ app.post('/api/admin/properties/delete', async (req, res) => {
 // SERVER START
 // -----------------------------------------------------------------------------
 
-function startServer(port, retries = 5) {
+function startServer(port) {
   const server = app.listen(port, () => {
     console.log(`OK Server running on http://localhost:${port}`);
     console.log(' OAuth auto-refresh active');
@@ -2361,9 +2841,9 @@ function startServer(port, retries = 5) {
   });
 
   server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE' && retries > 0) {
-      console.warn(`WARN Port ${port} in use, trying ${port + 1}...`);
-      return startServer(port + 1, retries - 1);
+    if (err.code === 'EADDRINUSE') {
+      console.error(`ERROR Port ${port} is already in use. Stop the other process first, then restart.`);
+      process.exit(1);
     }
     console.error('ERROR Server error:', err);
   });

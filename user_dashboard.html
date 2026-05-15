@@ -295,6 +295,27 @@
           </div>
           <span>&bull;</span>
         </a>
+        <a class="menu-link" href="user_properties.html">
+          <div>
+            <strong>Mes Propriétés</strong>
+            <small>Gestion des biens</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="owner_requests.html">
+          <div>
+            <strong>Demandes reçues</strong>
+            <small>Réservations &amp; achats entrants</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="user_reservations.html">
+          <div>
+            <strong>Réservations &amp; Achats</strong>
+            <small>Suivi de vos demandes</small>
+          </div>
+          <span>&rarr;</span>
+        </a>
         <a class="menu-link" href="user_contracts.html">
           <div>
             <strong>Contrats</strong>
@@ -395,6 +416,18 @@
         <section class="panel">
           <div class="panel-head">
             <div>
+              <h3>Reservations recentes <span id="reservationsCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+              <p>Demandes de location liees a votre compte.</p>
+            </div>
+          </div>
+          <div id="reservationsWrap">
+            <div class="empty">Chargement...</div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
               <h3>Derniers achats <span id="purchasesCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
               <p>Demandes d'achat liees a votre compte.</p>
             </div>
@@ -437,6 +470,7 @@
       profile: null,
       authUser: null,
       properties: [],
+      reservations: [],
       purchases: [],
       contracts: [],
       payments: [],
@@ -456,10 +490,12 @@
       summaryRole: document.getElementById('summaryRole'),
       distList: document.getElementById('distList'),
       propertiesCount: document.getElementById('propertiesCount'),
+      reservationsCount: document.getElementById('reservationsCount'),
       purchasesCount: document.getElementById('purchasesCount'),
       contractsCount: document.getElementById('contractsCount'),
       paymentsCount: document.getElementById('paymentsCount'),
       propertiesWrap: document.getElementById('propertiesWrap'),
+      reservationsWrap: document.getElementById('reservationsWrap'),
       purchasesWrap: document.getElementById('purchasesWrap'),
       contractsWrap: document.getElementById('contractsWrap'),
       paymentsWrap: document.getElementById('paymentsWrap')
@@ -523,12 +559,23 @@
       };
     }
 
+    function mapReservation(raw) {
+      return {
+        id: normalizeText(raw.ID || raw.ID1 || raw.id) || '-',
+        property: normalizeText(raw.Property1?.display_value || raw.Property1 || raw.Property?.display_value || raw.Property || raw.property || raw.Property_Title) || 'Bien non precise',
+        start: normalizeText(raw.Start_Date || raw.start_date) || '-',
+        end: normalizeText(raw.End_Date || raw.end_date) || '-',
+        status: normalizeText(raw.Status || raw.status || raw.Statut || raw.statut) || 'En attente',
+        duration: normalizeText(raw.Duration_Text || raw.duration) || '-'
+      };
+    }
+
     function mapPurchase(raw) {
       return {
         id: normalizeText(raw.ID || raw.ID1 || raw.id) || '-',
         property: normalizeText(raw.Property?.display_value || raw.Property || raw.property || raw.Property_Title) || 'Bien non precise',
         amount: parseMoney(raw.Amount || raw.Price || raw.Price1 || raw.Total || raw.total_amount),
-        status: normalizeText(raw.Status || raw.status || raw.Purchase_Status) || 'N/A',
+        status: normalizeText(raw.Statut || raw.Status || raw.status || raw.Purchase_Status) || 'N/A',
         date: normalizeText(raw.Created_Time || raw.CreatedTime || raw.Date || raw.Request_Date || raw.created_time) || '-'
       };
     }
@@ -564,9 +611,9 @@
       return {
         id: normalizeText(raw.ID || raw.ID1 || raw.id) || '-',
         property: normalizeText(raw.Property?.display_value || raw.Property || raw.property || raw.Property_Title) || 'Bien non precise',
-        type: normalizeText(raw.Contract_Type || raw.Type || raw.type) || 'N/A',
+        type: normalizeText(raw.type_field || raw.Contract_Type || raw.Type || raw.type) || 'N/A',
         status: normalizeText(raw.Status || raw.status || raw.Contract_Status) || 'N/A',
-        date: normalizeText(raw.Created_Time || raw.CreatedTime || raw.Date || raw.Start_Date || raw.created_time) || '-'
+        date: normalizeText(raw.creation_date || raw.Date_signature || raw.Created_Time || raw.CreatedTime || raw.created_time) || '-'
       };
     }
 
@@ -641,10 +688,10 @@
       var totalPaid = state.payments.reduce(function(sum, payment) { return sum + (payment.amount || 0); }, 0);
       var cards = [
         { label: 'Mes proprietes', value: state.properties.length, note: 'Biens ajoutes par vous' },
+        { label: 'Reservations', value: state.reservations.length, note: 'Demandes de location' },
         { label: 'Achats', value: state.purchases.length, note: 'Demandes d\'achat' },
         { label: 'Contrats', value: state.contracts.length, note: 'Contrats recuperes' },
-        { label: 'Paiements', value: state.payments.length, note: 'Paiements enregistres' },
-        { label: 'Montant paye', value: formatMoney(Math.round(totalPaid)), note: 'Total utilisateur' }
+        { label: 'Paiements', value: state.payments.length, note: 'Paiements enregistres' }
       ];
 
       els.topKpiGrid.innerHTML = cards.map(function(card) {
@@ -659,9 +706,10 @@
     }
 
     function renderDistribution() {
-      var total = state.properties.length + state.purchases.length + state.contracts.length + state.payments.length;
+      var total = state.properties.length + state.reservations.length + state.purchases.length + state.contracts.length + state.payments.length;
       var items = [
         { label: 'Biens', count: state.properties.length },
+        { label: 'Reservations', count: state.reservations.length },
         { label: 'Achats', count: state.purchases.length },
         { label: 'Contrats', count: state.contracts.length },
         { label: 'Paiements', count: state.payments.length }
@@ -716,6 +764,7 @@
       els.summaryRole.textContent = finalRole;
 
       els.propertiesCount.textContent = '(' + state.properties.length + ')';
+      els.reservationsCount.textContent = '(' + state.reservations.length + ')';
       els.purchasesCount.textContent = '(' + state.purchases.length + ')';
       els.contractsCount.textContent = '(' + state.contracts.length + ')';
       els.paymentsCount.textContent = '(' + state.payments.length + ')';
@@ -734,6 +783,19 @@
         ],
         state.properties.slice(0, 6),
         'Aucune propriete ajoutee pour le moment.'
+      );
+
+      renderTable(
+        els.reservationsWrap,
+        [
+          { key: 'id', label: 'ID' },
+          { key: 'property', label: 'Bien' },
+          { key: 'start', label: 'Debut' },
+          { key: 'end', label: 'Fin' },
+          { key: 'status', label: 'Statut' }
+        ],
+        state.reservations.slice(0, 6),
+        'Aucune reservation pour le moment.'
       );
 
       renderTable(
@@ -798,6 +860,7 @@
       var results = await Promise.all([
         safeFetchJson('/api/agent/profile'),
         safeFetchJson('/api/admin/properties'),
+        safeFetchJson('/api/reservations/user'),
         safeFetchJson('/api/purchases/user'),
         safeFetchJson('/api/contracts/user'),
         safeFetchJson('/api/payments/user')
@@ -805,9 +868,10 @@
 
       var profileRes = results[0];
       var propertiesRes = results[1];
-      var purchasesRes = results[2];
-      var contractsRes = results[3];
-      var paymentsRes = results[4];
+      var reservationsRes = results[2];
+      var purchasesRes = results[3];
+      var contractsRes = results[4];
+      var paymentsRes = results[5];
 
       state.profile = profileRes.ok ? mapProfile(profileRes.payload.user) : null;
       if (!state.profile) {
@@ -825,15 +889,17 @@
       state.properties = allProperties.map(mapOwnedProperty).filter(function(property) {
         return property.ownerId && ownerId && property.ownerId === ownerId;
       });
+      var reservationsRaw = reservationsRes.ok ? (Array.isArray(reservationsRes.payload.data) ? reservationsRes.payload.data : []) : [];
       var purchasesRaw = purchasesRes.ok ? (Array.isArray(purchasesRes.payload.data) ? purchasesRes.payload.data : []) : [];
       var contractsRaw = contractsRes.ok ? (Array.isArray(contractsRes.payload.data) ? contractsRes.payload.data : []) : [];
       var paymentsRaw = paymentsRes.ok ? (Array.isArray(paymentsRes.payload.data) ? paymentsRes.payload.data : []) : [];
 
+      state.reservations = reservationsRaw.map(mapReservation);
       state.purchases = purchasesRaw.map(mapPurchase);
       state.contracts = contractsRaw.map(mapContract);
       state.payments = paymentsRaw.map(mapPayment);
 
-      var failures = [profileRes, propertiesRes, purchasesRes, contractsRes, paymentsRes].filter(function(r) { return !r.ok; });
+      var failures = [profileRes, propertiesRes, reservationsRes, purchasesRes, contractsRes, paymentsRes].filter(function(r) { return !r.ok; });
       state.source = failures.length ? 'partial-fallback' : 'zoho';
 
       render();

@@ -24,7 +24,6 @@ async function checkAuth() {
 
 // ✅ Rediriger vers login avec destination
 function redirectToLogin(destination) {
-  // Sauvegarder la destination souhaitée
   sessionStorage.setItem('redirectAfterLogin', destination || window.location.pathname);
   window.location.href = 'login.html';
 }
@@ -37,23 +36,21 @@ function redirectToSignup(destination) {
 
 // ✅ Gérer la redirection après authentification
 function handlePostAuthRedirect() {
-  // Vérifier si on a une destination stockée
   const loginRedirect = sessionStorage.getItem('redirectAfterLogin');
   const signupRedirect = sessionStorage.getItem('redirectAfterSignup');
-  
+
   if (loginRedirect) {
     sessionStorage.removeItem('redirectAfterLogin');
     window.location.href = loginRedirect;
     return;
   }
-  
+
   if (signupRedirect) {
     sessionStorage.removeItem('redirectAfterSignup');
     window.location.href = signupRedirect;
     return;
   }
 
-  // Par défaut, rediriger vers le tableau de bord selon le rôle
   checkAuth().then((authStatus) => {
     if (authStatus?.loggedIn) {
       window.location.href = getDashboardByRole(authStatus?.user?.role);
@@ -77,30 +74,26 @@ async function requireAuth() {
 // ✅ Logout
 async function logout() {
   try {
-    // Clear session on frontend
     sessionStorage.clear();
     localStorage.removeItem('authToken');
-    
-    // Call logout endpoint - both POST and GET work
-    const response = await fetch('/api/logout', { 
+
+    const response = await fetch('/api/logout', {
       method: 'POST',
       credentials: 'include'
     });
-    
+
     const data = await response.json();
-    
+
     if (data.success || response.ok) {
-      console.log('✅ Déconnexion réussie');
       window.location.href = 'index.html';
     }
   } catch (error) {
     console.error('Erreur logout:', error);
-    // Force redirect even if logout fails
     window.location.href = 'index.html';
   }
 }
 
-// ✅ Direct logout via GET (simple redirect)
+// ✅ Direct logout via GET
 function logoutNow() {
   window.location.href = '/api/logout';
 }
@@ -108,135 +101,88 @@ function logoutNow() {
 // ✅ Mettre à jour le navbar basé sur l'auth status
 async function updateNavbarAuth() {
   const authStatus = await checkAuth();
-  
-  // Chercher les éléments du navbar
-  const navLinks = document.querySelector('.nav-links');
-  const navUnified = document.querySelector('.nav-unified .nr');
-  
-  // Fonction pour ajouter les éléments au navbar
-  const addAuthElements = (container) => {
-    if (!container) return;
-    
-    // Vider les liens existants d'auth
-    const oldAuthLinks = container.querySelectorAll('[data-auth-link]');
-    oldAuthLinks.forEach(link => link.remove());
-    
-    if (authStatus.loggedIn) {
-      // ✅ Afficher le nom d'utilisateur avec icône
-      const userInfo = document.createElement('div');
-      userInfo.setAttribute('data-auth-link', 'true');
-      userInfo.style.cssText = `
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-right: 12px;
-        font-size: 14px;
-        font-weight: 600;
-        color: white;
-      `;
-      
-      // ✅ Ensure userName is a string
-      const userName = typeof authStatus.user.name === 'string' 
-        ? authStatus.user.name 
-        : (authStatus.user.name?.first_name 
-          ? `${authStatus.user.name.first_name} ${authStatus.user.name.last_name || ''}`.trim()
-          : authStatus.user.email);
-      
-      userInfo.innerHTML = `
-        <span>👤 ${userName}</span>
-      `;
-      container.appendChild(userInfo);
-      
-      // ✅ Bouton Tableau de bord
-      const dashboardLink = document.createElement('a');
-      dashboardLink.href = getDashboardByRole(authStatus?.user?.role);
-      dashboardLink.className = 'nav-link';
-      dashboardLink.setAttribute('data-auth-link', 'true');
-      dashboardLink.style.cssText = `
-        padding: 8px 16px;
-        background: rgba(102, 126, 234, 0.1);
-        border-radius: 6px;
-        text-decoration: none;
-        color: white;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      `;
-      dashboardLink.innerHTML = '📊 Tableau de bord';
-      container.appendChild(dashboardLink);
-      
-      // ✅ Bouton Déconnexion
-      const logoutLink = document.createElement('a');
-      logoutLink.href = '#';
-      logoutLink.className = 'nav-link';
-      logoutLink.setAttribute('data-auth-link', 'true');
-      logoutLink.style.cssText = `
-        padding: 8px 16px;
-        background: #ff4444;
-        color: white;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      `;
-      logoutLink.innerHTML = '🚪 Déconnexion';
-      logoutLink.onclick = (e) => {
-        e.preventDefault();
-        logout();
-      };
-      container.appendChild(logoutLink);
-    } else {
-      // ✅ Afficher les liens Login/Signup
-      const loginLink = document.createElement('a');
-      loginLink.href = 'login.html';
-      loginLink.className = 'nav-link';
-      loginLink.setAttribute('data-auth-link', 'true');
-      loginLink.style.cssText = `
-        padding: 8px 16px;
-        background: var(--primary);
-        color: white;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-      `;
-      loginLink.textContent = '🔑 Connexion';
-      container.appendChild(loginLink);
-      
-      const signupLink = document.createElement('a');
-      signupLink.href = 'inscription.html';
-      signupLink.className = 'nav-link';
-      signupLink.setAttribute('data-auth-link', 'true');
-      signupLink.style.cssText = `
-        padding: 8px 16px;
-        border: 2px solid white;
-        color: white;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      `;
-      signupLink.textContent = '✍️ Inscription';
-      container.appendChild(signupLink);
+
+  // Find the nav element — handles .nav, .top-nav, and div.nav variants
+  const navEl = document.querySelector('nav.nav, nav.top-nav, div.nav');
+  if (!navEl) return;
+
+  // Remove every static hardcoded auth button (the duplicate source)
+  navEl.querySelectorAll('.nav-btn').forEach(el => el.remove());
+
+  // Don't add auth buttons on login/inscription pages — user is already there
+  const page = window.location.pathname.split('/').pop() || 'index.html';
+  if (page === 'login.html' || page === 'inscription.html') {
+    // Auto-redirect from login if already authenticated
+    if (page === 'login.html' && authStatus.loggedIn) {
+      const redirect = sessionStorage.getItem('redirectAfterLogin') || getDashboardByRole(authStatus?.user?.role);
+      sessionStorage.removeItem('redirectAfterLogin');
+      setTimeout(() => { window.location.href = redirect; }, 300);
     }
-  };
-  
-  // Appliquer aux deux navbars
-  if (navLinks) addAuthElements(navLinks);
-  if (navUnified) addAuthElements(navUnified);
-  
-  // ✅ Auto-redirect from login page if already authenticated
-  if (window.location.pathname.includes('login.html') && authStatus.loggedIn) {
-    const redirect = sessionStorage.getItem('redirectAfterLogin') || getDashboardByRole(authStatus?.user?.role);
-    sessionStorage.removeItem('redirectAfterLogin');
-    setTimeout(() => window.location.href = redirect, 500);
+    return;
+  }
+
+  // Find or create the right-side auth container
+  let authContainer = navEl.querySelector('#nav-auth');
+  if (!authContainer) {
+    authContainer = document.createElement('div');
+    authContainer.id = 'nav-auth';
+    navEl.appendChild(authContainer);
+  }
+
+  // Clear previous auth elements
+  authContainer.innerHTML = '';
+
+  if (authStatus.loggedIn) {
+    const user = authStatus.user || {};
+    const userName = typeof user.name === 'string'
+      ? user.name
+      : (user.name?.first_name
+        ? `${user.name.first_name} ${user.name.last_name || ''}`.trim()
+        : (user.email || 'Utilisateur'));
+
+    const isAdmin = String(user.role || '').toLowerCase() === 'administrator' ||
+                    String(user.role || '').toLowerCase() === 'admin';
+
+    // Username chip
+    const userChip = document.createElement('span');
+    userChip.className = 'nav-auth-user';
+    userChip.textContent = `👤 ${userName}`;
+    authContainer.appendChild(userChip);
+
+    // Dashboard / Admin button
+    const dashBtn = document.createElement('a');
+    dashBtn.href = getDashboardByRole(user.role);
+    dashBtn.className = 'nav-auth-btn nav-auth-btn--dashboard';
+    dashBtn.textContent = isAdmin ? '⚙️ Admin' : '📊 Tableau de bord';
+    authContainer.appendChild(dashBtn);
+
+    // Logout button
+    const logoutBtn = document.createElement('a');
+    logoutBtn.href = '#';
+    logoutBtn.className = 'nav-auth-btn nav-auth-btn--logout';
+    logoutBtn.textContent = '🚪 Déconnexion';
+    logoutBtn.addEventListener('click', (e) => { e.preventDefault(); logout(); });
+    authContainer.appendChild(logoutBtn);
+
+  } else {
+    // Login button
+    const loginBtn = document.createElement('a');
+    loginBtn.href = 'login.html';
+    loginBtn.className = 'nav-auth-btn nav-auth-btn--login';
+    loginBtn.textContent = '🔑 Connexion';
+    authContainer.appendChild(loginBtn);
+
+    // Signup button
+    const signupBtn = document.createElement('a');
+    signupBtn.href = 'inscription.html';
+    signupBtn.className = 'nav-auth-btn nav-auth-btn--signup';
+    signupBtn.textContent = '📝 Inscription';
+    authContainer.appendChild(signupBtn);
   }
 }
 
 // ✅ Ajouter les protections sur les boutons d'action
 function addAuthProtection() {
-  // Bouton "Publier une propriété"
   const publishBtn = document.querySelector('[data-action="publish-property"]');
   if (publishBtn) {
     publishBtn.addEventListener('click', async (e) => {
@@ -250,13 +196,6 @@ function addAuthProtection() {
     });
   }
 
-  // ✅ Auth check for buy button is handled inside detail.js setupPurchaseModal()
-  // (checks auth before opening modal, redirects to login if needed)
-
-  // ✅ Auth check for rent button is handled inside detail.js setupReservationModal()
-  // (checks auth before opening modal, redirects to login if needed)
-
-  // ✅ Visiter button
   const visitBtns = document.querySelectorAll('[data-action="visit-property"]');
   visitBtns.forEach(btn => {
     btn.addEventListener('click', async (e) => {

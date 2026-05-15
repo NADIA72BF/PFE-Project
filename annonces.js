@@ -64,6 +64,16 @@ function resolveImageUrl(property) {
   return null;
 }
 
+function resolvePrice(property) {
+  const type = (property.type_field || '').toLowerCase();
+  const parts = [];
+  if (type.includes('courte') && property.prix_nuit) parts.push(`${property.prix_nuit} DT/nuit`);
+  if (type.includes('longue') && property.loyer_mensuel) parts.push(`${property.loyer_mensuel} DT/mois`);
+  if ((type.includes('vente') || type.includes('achat')) && property.Price1) parts.push(`${property.Price1} DT`);
+  if (parts.length === 0 && property.Price1) parts.push(`${property.Price1} DT`);
+  return parts.length > 0 ? parts.join(' · ') : 'Prix non renseigné';
+}
+
 function resolveLocationText(location) {
   if (!location) return "N/A";
 
@@ -217,14 +227,14 @@ function displayProperties(properties, groupByCity = false) {
     const title = property.title || "Sans titre";
     const description = property.description || "";
     const location = resolveLocationText(property.location);
-    const price = property.Price1 || "N/A";
+    const price = resolvePrice(property);
     const status = property.status || "N/A";
     const type = property.type_field || "N/A";
     const image = resolveImageUrl(property);
     const propertyRef = property.ID || property.ID1 || '';
 
     // Déterminer la couleur du badge
-    const badgeColor = type.toLowerCase().includes("to rent") ? "var(--accent)" : "var(--primary)";
+    const badgeColor = type.toLowerCase().includes("location") ? "var(--accent)" : "var(--primary)";
     const badgeStyle = `background:${badgeColor};color:#fff;font-size:10px;padding:4px 10px;border-radius:var(--radius-sm);font-weight:600`;
 
     return `
@@ -239,7 +249,7 @@ function displayProperties(properties, groupByCity = false) {
             <span class="listing-detail">🏷️ ${type}</span>
             <span class="listing-detail">📍 ${location}</span>
           </div>
-          <p class="listing-price">${price} DT</p>
+          <p class="listing-price">${price}</p>
           <p style="font-size:12px;color:#999;margin:8px 0">${description.substring(0, 80)}...</p>
           <a href="detail.html?id=${encodeURIComponent(propertyRef)}" class="cta-btn" style="margin:10px 0 0;padding:8px;font-size:13px;text-align:center;display:block">Voir le bien</a>
         </div>
@@ -280,12 +290,12 @@ function displayGroupedByCity(properties) {
           const title = property.title || "Sans titre";
           const description = property.description || "";
           const location = resolveLocationText(property.location);
-          const price = property.Price1 || "N/A";
+          const price = resolvePrice(property);
           const type = property.type_field || "N/A";
           const image = resolveImageUrl(property);
           const propertyRef = property.ID || property.ID1 || '';
 
-          const badgeColor = type.toLowerCase().includes("to rent") ? "var(--accent)" : "var(--primary)";
+          const badgeColor = type.toLowerCase().includes("location") ? "var(--accent)" : "var(--primary)";
           const badgeStyle = `background:${badgeColor};color:#fff;font-size:10px;padding:4px 10px;border-radius:var(--radius-sm);font-weight:600`;
 
           return `
@@ -300,7 +310,7 @@ function displayGroupedByCity(properties) {
                   <span class="listing-detail">🏷️ ${type}</span>
                   <span class="listing-detail">📍 ${location}</span>
                 </div>
-                <p class="listing-price">${price} DT</p>
+                <p class="listing-price">${price}</p>
                 <p style="font-size:12px;color:#999;margin:8px 0">${description.substring(0, 80)}...</p>
                 <a href="detail.html?id=${encodeURIComponent(propertyRef)}" class="cta-btn" style="margin:10px 0 0;padding:8px;font-size:13px;text-align:center;display:block">Voir le bien</a>
               </div>
@@ -366,23 +376,23 @@ function filterProperties(searchTerm) {
   let filtered = allProperties;
   let groupByCity = false;
 
-  // Get active filter chip
+  // Get active filter chip — read data-filter attribute, not textContent
   const activeChip = document.querySelector('.filter-chip.active');
-  const activeFilter = activeChip ? activeChip.textContent.trim().toLowerCase() : 'tous';
+  const activeFilter = activeChip ? (activeChip.dataset.filter || 'all') : 'all';
   currentFilter = activeFilter;
 
-  // ✅ Filter by type (Location, Vente, or all)
-  if (activeFilter === 'location') {
-    filtered = filtered.filter(property => 
-      (property.type_field || "").toLowerCase() === 'to rent'
-    );
-  } else if (activeFilter === 'vente') {
-    filtered = filtered.filter(property => 
-      (property.type_field || "").toLowerCase() === 'for sale'
-    );
-  } 
-  
-  // 'tous' shows all properties, no type filtering
+  // Filter by type
+  if (activeFilter === 'courte') {
+    filtered = filtered.filter(p => (p.type_field || '').toLowerCase().includes('courte'));
+  } else if (activeFilter === 'longue') {
+    filtered = filtered.filter(p => (p.type_field || '').toLowerCase().includes('longue'));
+  } else if (activeFilter === 'achat') {
+    filtered = filtered.filter(p => {
+      const t = (p.type_field || '').toLowerCase();
+      return t.includes('vente') || t.includes('achat');
+    });
+  }
+  // 'all' shows everything
 
   // ✅ Filter by search term (title, description, location, type)
   if (searchTerm) {
@@ -391,11 +401,11 @@ function filterProperties(searchTerm) {
       const description = (property.description || "").toLowerCase();
       const location = resolveLocationText(property.location).toLowerCase();
       const type = (property.type_field || "").toLowerCase();
-      const price = String(property.Price1 || "").toLowerCase();
+      const price = resolvePrice(property).toLowerCase();
 
-      return title.includes(searchTerm) || 
-             description.includes(searchTerm) || 
-             location.includes(searchTerm) || 
+      return title.includes(searchTerm) ||
+             description.includes(searchTerm) ||
+             location.includes(searchTerm) ||
              type.includes(searchTerm) ||
              price.includes(searchTerm);
     });

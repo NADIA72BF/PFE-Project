@@ -129,6 +129,15 @@
     .status.pending { background: var(--warning-soft); color: var(--warning); }
     .status.default { background: #f4e8ec; color: #704553; }
 
+    .btn-dl {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px; border-radius: 10px; font-size: 12px; font-weight: 600;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff;
+      text-decoration: none; white-space: nowrap;
+    }
+    .btn-dl:hover { opacity: 0.88; }
+    .btn-dl.disabled { background: #e8dde1; color: #9a7882; cursor: default; }
+
     .empty {
       padding: 24px 16px; color: var(--muted); text-align: center;
       border: 1px dashed var(--border); border-radius: 14px;
@@ -154,6 +163,9 @@
 
       <nav class="menu">
         <a class="menu-link" href="user_dashboard.html"><div><strong>Dashboard</strong><small>Vue d'ensemble</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="user_properties.html"><div><strong>Mes Propriétés</strong><small>Gestion des biens</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="owner_requests.html"><div><strong>Demandes reçues</strong><small>Réservations &amp; achats entrants</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="user_reservations.html"><div><strong>Mes demandes</strong><small>Suivi de vos demandes</small></div><span>&rarr;</span></a>
         <a class="menu-link active" href="user_contracts.html"><div><strong>Contrats</strong><small>Mes contrats utilisateur</small></div><span>&bull;</span></a>
         <a class="menu-link" href="user_payments.html"><div><strong>Paiements</strong><small>Historique des paiements</small></div><span>&rarr;</span></a>
         <a class="menu-link" href="owner_add_property.html"><div><strong>Publier un bien</strong><small>Espace proprietaire</small></div><span>&rarr;</span></a>
@@ -245,19 +257,27 @@
       };
     }
 
+    function extractUrl(v) {
+      if (!v) return '';
+      if (typeof v === 'string') return v.trim();
+      if (typeof v === 'object') return String(v.display_value || v.value || v.url || v.zc_display_value || '').trim();
+      return '';
+    }
+
     function mapContract(raw) {
       return {
-        id: normalizeText(raw.ID || raw.ID1 || raw.id) || '-',
-        property: normalizeText(raw.Property && raw.Property.display_value || raw.Property || raw.property || raw.Property_Title) || 'Bien non precise',
-        type: normalizeText(raw.Contract_Type || raw.Type || raw.type) || 'N/A',
+        id: normalizeText(raw.ID1 || raw.id1 || raw.ID || raw.id) || '-',
+        property: normalizeText(raw.Property) || String(raw.Property || '').trim() || 'Bien non précisé',
+        type: normalizeText(raw.type_field || raw.type || raw.Contract_Type || raw.Type) || 'N/A',
         status: normalizeText(raw.Status || raw.status || raw.Contract_Status) || 'N/A',
-        date: normalizeText(raw.Created_Time || raw.CreatedTime || raw.Date || raw.Start_Date || raw.created_time) || '-'
+        date_signature: normalizeText(raw.Date_signature || raw.date_signature || raw.creation_date || raw.Creation_date) || '-',
+        pdf_url: extractUrl(raw.Contrat_PDF_URL || raw.contrat_pdf_url || raw.PDF_URL || raw.pdf_url)
       };
     }
 
     function statusClass(status) {
       var s = String(status || '').toLowerCase();
-      if (s.includes('active') || s.includes('actif') || s.includes('approved') || s.includes('valide')) return 'active';
+      if (s.includes('sign') || s.includes('active') || s.includes('actif') || s.includes('approved') || s.includes('valide')) return 'active';
       if (s.includes('pending') || s.includes('attente')) return 'pending';
       return 'default';
     }
@@ -276,20 +296,57 @@
       }).join('');
     }
 
+    function downloadPdf(btn) {
+      var pdfUrl = btn.getAttribute('data-url');
+      var contractId = btn.getAttribute('data-id');
+      if (!pdfUrl) return;
+      var original = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Chargement...';
+
+      var proxyUrl = '/api/contracts/pdf-download?url=' + encodeURIComponent(pdfUrl) + '&id=' + encodeURIComponent(contractId);
+      fetch(proxyUrl, { credentials: 'include' })
+        .then(function(r) {
+          if (!r.ok) throw new Error('proxy-' + r.status);
+          return r.blob();
+        })
+        .then(function(blob) {
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'contrat-' + contractId + '.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+          btn.textContent = original;
+          btn.disabled = false;
+        })
+        .catch(function(err) {
+          console.warn('Proxy download failed (' + err.message + '), opening direct URL');
+          window.open(pdfUrl, '_blank');
+          btn.textContent = original;
+          btn.disabled = false;
+        });
+    }
+
     function renderContractsTable() {
       if (!state.contracts.length) {
         els.contractsWrap.innerHTML = '<div class="empty">Aucun contrat pour le moment.</div>';
         return;
       }
 
-      var head = '<th>ID</th><th>Bien</th><th>Type</th><th>Statut</th><th>Date</th>';
+      var head = '<th>ID</th><th>Bien</th><th>Type</th><th>Statut</th><th>Date de signature</th><th>Contrat</th>';
       var body = state.contracts.map(function(contract) {
+        var dlBtn = contract.pdf_url
+          ? '<button class="btn-dl" data-url="' + escapeHtml(contract.pdf_url) + '" data-id="' + escapeHtml(contract.id) + '" onclick="downloadPdf(this)">&#8681; Télécharger</button>'
+          : '<span class="btn-dl disabled">Indisponible</span>';
         return '<tr>' +
           '<td>' + escapeHtml(contract.id) + '</td>' +
           '<td>' + escapeHtml(contract.property) + '</td>' +
           '<td>' + escapeHtml(contract.type) + '</td>' +
           '<td><span class="status ' + statusClass(contract.status) + '">' + escapeHtml(contract.status) + '</span></td>' +
-          '<td>' + escapeHtml(contract.date) + '</td>' +
+          '<td>' + escapeHtml(contract.date_signature) + '</td>' +
+          '<td>' + dlBtn + '</td>' +
         '</tr>';
       }).join('');
 
@@ -313,11 +370,15 @@
 
     async function safeFetchJson(url) {
       try {
-        var response = await fetch(url);
+        console.log('Fetching:', url);
+        var response = await fetch(url, { credentials: 'include' });
         var payload = await response.json();
+        console.log('Response status:', response.status, '| URL:', url);
+        console.log('Data:', payload);
         if (!response.ok || payload.success === false) return { ok: false, error: payload.error || ('Erreur chargement: ' + url), payload: payload };
         return { ok: true, payload: payload };
       } catch (error) {
+        console.error('Fetch error for', url, ':', error.message);
         return { ok: false, error: error.message || ('Erreur reseau: ' + url) };
       }
     }
@@ -326,8 +387,11 @@
       setStatus('Chargement des donnees...', 'info');
 
       var authStatus = await requireAuth();
+      console.log('Auth status:', authStatus);
       if (!authStatus || !authStatus.loggedIn) return;
       state.authUser = authStatus.user || {};
+      console.log('Fetching contracts...');
+      console.log('User:', state.authUser);
 
       var results = await Promise.all([
         safeFetchJson('/api/agent/profile'),
@@ -336,6 +400,9 @@
 
       var profileRes = results[0];
       var contractsRes = results[1];
+
+      console.log('Profile result:', profileRes);
+      console.log('Contracts result:', contractsRes);
 
       state.profile = profileRes.ok ? mapProfile(profileRes.payload.user) : null;
       state.contracts = contractsRes.ok ? (Array.isArray(contractsRes.payload.data) ? contractsRes.payload.data : []).map(mapContract) : [];

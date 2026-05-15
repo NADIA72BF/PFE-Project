@@ -142,9 +142,15 @@ function displayProperties(properties) {
     const title = property.title || "Sans titre";
     const description = property.description || "";
     const location = resolveLocationText(property.location);
-    const price = property.Price1 || "N/A";
     const status = property.status || "N/A";
     const type = property.type_field || "N/A";
+    const typeLower = type.toLowerCase();
+    const priceParts = [];
+    if (typeLower.includes('courte') && property.prix_nuit) priceParts.push(`${property.prix_nuit} DT/nuit`);
+    if (typeLower.includes('longue') && property.loyer_mensuel) priceParts.push(`${property.loyer_mensuel} DT/mois`);
+    if ((typeLower.includes('vente') || typeLower.includes('achat')) && property.Price1) priceParts.push(`${property.Price1} DT`);
+    if (priceParts.length === 0 && property.Price1) priceParts.push(`${property.Price1} DT`);
+    const price = priceParts.length > 0 ? priceParts.join(' · ') : 'Prix non renseigné';
     const image = resolveImageUrl(property);
     const propertyRef = property.ID || property.ID1 || '';
 
@@ -162,7 +168,7 @@ function displayProperties(properties) {
             <div class="card-specs">
               <span>🏷️ ${type}</span>
             </div>
-            <p class="card-price">${price} DT</p>
+            <p class="card-price">${price}</p>
             <p style="font-size:12px;color:#999;margin-top:8px">${description.substring(0, 100)}...</p>
           </div>
         </div>

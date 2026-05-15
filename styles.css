@@ -135,6 +135,78 @@ a {
   transform: translateY(-1px);
 }
 
+/* ── Right-side auth area injected by auth-helper.js ── */
+#nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.nav-auth-user {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nav-auth-btn {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.nav-auth-btn--login {
+  background: linear-gradient(135deg, #8B1A2F, #a93226);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(139, 26, 47, 0.4);
+}
+.nav-auth-btn--login:hover {
+  background: linear-gradient(135deg, #7b1526, #922b21);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 26, 47, 0.5);
+}
+
+.nav-auth-btn--signup {
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+}
+.nav-auth-btn--signup:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #fff;
+}
+
+.nav-auth-btn--dashboard {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.nav-auth-btn--dashboard:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav-auth-btn--logout {
+  background: rgba(220, 38, 38, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+.nav-auth-btn--logout:hover {
+  background: rgba(220, 38, 38, 0.3);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  #nav-auth { gap: 6px; }
+  .nav-auth-btn { font-size: 12px; padding: 6px 10px; }
+  .nav-auth-user { display: none; }
+}
+
 /* ========== HERO SECTION ========== */
 .hero {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);

@@ -162,6 +162,7 @@
       </div>
       <nav class="menu">
         <a class="menu-link" href="user_dashboard.html"><div><strong>Dashboard</strong><small>Vue d'ensemble</small></div><span>&rarr;</span></a>
+        <a class="menu-link" href="user_properties.html"><div><strong>Mes Propriétés</strong><small>Gestion des biens</small></div><span>&rarr;</span></a>
         <a class="menu-link" href="user_contracts.html"><div><strong>Contrats</strong><small>Mes contrats</small></div><span>&rarr;</span></a>
         <a class="menu-link" href="user_payments.html"><div><strong>Paiements</strong><small>Historique</small></div><span>&rarr;</span></a>
         <a class="menu-link active" href="owner_add_property.html"><div><strong>Publier un bien</strong><small>Espace proprietaire</small></div><span>&bull;</span></a>
@@ -205,8 +206,10 @@
                 <label class="form-label">Type *</label>
                 <select id="propertyType" class="form-input" required>
                   <option value="">-- Sélectionner --</option>
-                  <option value="To Rent">Location</option>
-                  <option value="For Sale">Vente</option>
+                  <option value="Vente">Vente</option>
+                  <option value="Location courte durée">Location courte durée</option>
+                  <option value="Location longue durée">Location longue durée</option>
+                  <option value="Location courte et longue durée">Location courte et longue durée</option>
                 </select>
               </div>
               <div class="form-field">
@@ -220,9 +223,25 @@
                   <option value="Retiré du marché">Retiré du marché</option>
                 </select>
               </div>
-              <div class="form-field">
-                <label class="form-label">Prix (DT) *</label>
-                <input id="propertyPrice" class="form-input" type="number" placeholder="250000" step="0.01" required>
+              <div id="field-price-vente" class="form-field" style="display:none">
+                <label class="form-label">Prix de vente (TND) *</label>
+                <input id="propertyPriceVente" class="form-input" type="number" placeholder="250000" step="0.01" min="0">
+              </div>
+              <div id="field-prix-nuit" class="form-field" style="display:none">
+                <label class="form-label">Prix par nuit (TND) *</label>
+                <input id="propertyPrixNuit" class="form-input" type="number" placeholder="150" step="0.01" min="0">
+              </div>
+              <div id="field-caution-courte" class="form-field" style="display:none">
+                <label class="form-label">Caution courte durée (TND)</label>
+                <input id="propertyCautionCourte" class="form-input" type="number" placeholder="300" step="0.01" min="0">
+              </div>
+              <div id="field-loyer-mensuel" class="form-field" style="display:none">
+                <label class="form-label">Loyer mensuel (TND) *</label>
+                <input id="propertyLoyerMensuel" class="form-input" type="number" placeholder="800" step="0.01" min="0">
+              </div>
+              <div id="field-caution-longue" class="form-field" style="display:none">
+                <label class="form-label">Caution longue durée (TND)</label>
+                <input id="propertyCautionLongue" class="form-input" type="number" placeholder="1600" step="0.01" min="0">
               </div>
             </div>
             <div>
@@ -384,6 +403,25 @@
       }
     }
 
+    var PRICE_FIELDS_BY_TYPE = {
+      'Vente':                         ['field-price-vente'],
+      'Location courte durée':         ['field-prix-nuit', 'field-caution-courte'],
+      'Location longue durée':         ['field-loyer-mensuel', 'field-caution-longue'],
+      'Location courte et longue durée': ['field-prix-nuit', 'field-caution-courte', 'field-loyer-mensuel', 'field-caution-longue']
+    };
+    var ALL_PRICE_FIELD_IDS = ['field-price-vente', 'field-prix-nuit', 'field-caution-courte', 'field-loyer-mensuel', 'field-caution-longue'];
+
+    function updatePriceFields() {
+      var type = document.getElementById('propertyType').value;
+      var toShow = PRICE_FIELDS_BY_TYPE[type] || [];
+      ALL_PRICE_FIELD_IDS.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = toShow.indexOf(id) >= 0 ? '' : 'none';
+      });
+    }
+
+    document.getElementById('propertyType').addEventListener('change', updatePriceFields);
+
     document.addEventListener('DOMContentLoaded', async () => {
       const authStatus = await requireAuth();
       if (authStatus && authStatus.loggedIn) {
@@ -396,31 +434,56 @@
       e.preventDefault();
       const title = document.getElementById('propertyTitle').value.trim();
       const type = document.getElementById('propertyType').value;
-      const price = document.getElementById('propertyPrice').value;
       const status = document.getElementById('propertyStatus').value;
-      if (!title || !type || !price || !status) {
+
+      const priceVente   = document.getElementById('propertyPriceVente').value;
+      const prixNuit     = document.getElementById('propertyPrixNuit').value;
+      const loyerMensuel = document.getElementById('propertyLoyerMensuel').value;
+      const cautionCourte = document.getElementById('propertyCautionCourte').value;
+      const cautionLongue = document.getElementById('propertyCautionLongue').value;
+
+      if (!title || !type || !status) {
         showAlert('error', 'Champs obligatoires manquants.');
         return;
       }
+
+      var priceValid = false;
+      if (type === 'Vente') priceValid = !!priceVente;
+      else if (type === 'Location courte durée') priceValid = !!prixNuit;
+      else if (type === 'Location longue durée') priceValid = !!loyerMensuel;
+      else if (type === 'Location courte et longue durée') priceValid = !!prixNuit && !!loyerMensuel;
+
+      if (!priceValid) {
+        showAlert('error', 'Veuillez renseigner les champs de prix requis.');
+        return;
+      }
+
       const btn = e.target.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
       btn.disabled = true;
+      btn.textContent = 'Envoi en cours...';
       try {
         const response = await fetch('/api/properties/create', {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             title,
             type,
-            price: parseFloat(price),
+            price:          priceVente    ? parseFloat(priceVente)    : null,
+            prix_nuit:      prixNuit      ? parseFloat(prixNuit)      : null,
+            loyer_mensuel:  loyerMensuel  ? parseFloat(loyerMensuel)  : null,
+            caution_courte: cautionCourte ? parseFloat(cautionCourte) : null,
+            caution_longue: cautionLongue ? parseFloat(cautionLongue) : null,
             status,
-            description: document.getElementById('propertyDescription').value.trim(),
+            description:  document.getElementById('propertyDescription').value.trim(),
             address_line_1: document.getElementById('propertyAddressLine1').value.trim(),
             address_line_2: document.getElementById('propertyAddressLine2').value.trim(),
-            city_district: document.getElementById('propertyCityDistrict').value.trim(),
-            bedrooms: parseInt(document.getElementById('propertyRooms').value) || 0,
+            city_district:  document.getElementById('propertyCityDistrict').value.trim(),
+            bedrooms:  parseInt(document.getElementById('propertyRooms').value)     || 0,
             bathrooms: parseInt(document.getElementById('propertyBathrooms').value) || 0,
-            surface: parseInt(document.getElementById('propertySurface').value) || 0,
-            floor: parseInt(document.getElementById('propertyFloor').value) || 0,
+            surface:   parseInt(document.getElementById('propertySurface').value)   || 0,
+            floor:     parseInt(document.getElementById('propertyFloor').value)     || 0,
             year_built: document.getElementById('propertyYearBuilt').value || '',
             images: state.selectedImages
           })
@@ -430,12 +493,13 @@
           showAlert('success', 'Propriété créée avec succès !');
           setTimeout(() => window.location.href = 'user_dashboard.html', 2000);
         } else {
-          showAlert('error', data.error || 'Erreur créationpropriété.');
+          showAlert('error', data.error || 'Erreur création propriété.');
         }
       } catch (error) {
         showAlert('error', 'Erreur: ' + error.message);
       } finally {
         btn.disabled = false;
+        btn.textContent = originalText;
       }
     });
   </script>

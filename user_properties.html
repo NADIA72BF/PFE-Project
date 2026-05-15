@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GI User | Mes Propriétés</title>
+  <style>
+    :root {
+      --sidebar: #2b0f19;
+      --sidebar-text: #fff8fb;
+      --sidebar-muted: #d2bdc6;
+      --surface: #ffffff;
+      --surface-alt: #fff8fa;
+      --border: #ead8df;
+      --text: #2a1219;
+      --muted: #7a5d68;
+      --danger: #b42318;
+      --danger-soft: #fee4e2;
+      --success: #067647;
+      --success-soft: #d1fadf;
+      --warning: #b54708;
+      --warning-soft: #ffead5;
+      --accent: #8f1d3a;
+      --accent-2: #d14b5e;
+      --shadow: 0 20px 50px rgba(42,18,25,0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(143,29,58,0.15), transparent 26%),
+        linear-gradient(180deg, #fff4f7 0%, #fff9fb 100%);
+      min-height: 100vh;
+    }
+    .layout { display: grid; grid-template-columns: 280px minmax(0,1fr); min-height: 100vh; }
+    .sidebar {
+      background: linear-gradient(180deg, #3a131f 0%, #2b0f19 100%);
+      color: var(--sidebar-text);
+      padding: 28px 22px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .brand-badge {
+      width: 46px; height: 46px; border-radius: 14px;
+      background: linear-gradient(135deg, #8f1d3a, #d14b5e);
+      display: grid; place-items: center; font-weight: 700; color: #fff; font-size: 15px;
+    }
+    .brand h1 { margin: 10px 0 6px; font-size: 22px; }
+    .brand p { margin: 0; color: var(--sidebar-muted); font-size: 13px; }
+    .menu { display: flex; flex-direction: column; gap: 10px; }
+    .menu-link {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; border-radius: 16px; color: var(--sidebar-text);
+      text-decoration: none; background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .menu-link.active { background: rgba(209,75,94,0.22); border-color: rgba(209,75,94,0.45); }
+    .menu-link strong { display: block; margin-bottom: 4px; font-size: 14px; }
+    .menu-link small { color: var(--sidebar-muted); font-size: 12px; }
+    .side-card {
+      margin-top: auto; padding: 18px; border-radius: 18px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    }
+    .side-card h2 { margin: 0 0 8px; font-size: 16px; }
+    .side-card code {
+      display: inline-block; margin-top: 10px; padding: 6px 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.08); color: #ffd5de; font-size: 12px;
+    }
+    .content { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+    .hero {
+      background: var(--surface); border: 1px solid rgba(42,18,25,0.08);
+      border-radius: 24px; box-shadow: var(--shadow);
+      padding: 24px; display: flex; justify-content: space-between; gap: 16px; align-items: center;
+    }
+    .hero h2 { font-size: 28px; margin-bottom: 6px; }
+    .hero p { color: var(--muted); font-size: 14px; }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      border: 0; border-radius: 14px; padding: 10px 16px; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--surface-alt); }
+    .btn-danger { background: var(--danger-soft); color: var(--danger); }
+    .btn-danger:hover { background: #fcd0ce; }
+    .pill {
+      display: inline-flex; align-items: center; min-height: 34px; padding: 6px 14px;
+      border-radius: 999px; font-size: 13px; border: 1px solid transparent;
+    }
+    .pill.info { background: #fff2f6; color: var(--muted); border-color: var(--border); }
+    .pill.success { background: var(--success-soft); color: var(--success); }
+    .pill.error { background: var(--danger-soft); color: var(--danger); }
+
+    /* KPI Stats */
+    .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .metric {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 20px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .metric span { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+    .metric strong { font-size: 32px; font-weight: 700; color: var(--accent); }
+    .metric small { font-size: 12px; color: var(--muted); }
+
+    /* Panel */
+    .panel {
+      background: var(--surface); border: 1px solid rgba(42,18,25,0.08);
+      border-radius: 24px; box-shadow: var(--shadow); overflow: hidden;
+    }
+    .panel-head {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .panel-head h3 { font-size: 18px; margin-bottom: 4px; }
+    .panel-head p { color: var(--muted); font-size: 13px; }
+    .panel-body { padding: 24px; }
+
+    /* Property Grid */
+    .prop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .prop-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow 0.2s;
+    }
+    .prop-card:hover { box-shadow: 0 8px 30px rgba(143,29,58,0.12); }
+    .prop-card-img {
+      width: 100%; height: 180px; object-fit: cover;
+      background: linear-gradient(135deg, #f4eaee, #ffe0e8);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; color: var(--border);
+    }
+    .prop-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prop-card-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .prop-title { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .prop-location { font-size: 12px; color: var(--muted); }
+    .prop-specs {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      font-size: 12px; color: var(--muted);
+    }
+    .prop-spec { display: flex; align-items: center; gap: 3px; }
+    .prop-prices { display: flex; flex-direction: column; gap: 4px; }
+    .prop-price-row { display: flex; justify-content: space-between; font-size: 13px; }
+    .prop-price-label { color: var(--muted); }
+    .prop-price-val { font-weight: 700; color: var(--accent); }
+    .prop-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600;
+    }
+    .badge-type-vente { background: #dbeafe; color: #1d4ed8; }
+    .badge-type-courte { background: #ffedd5; color: #c2410c; }
+    .badge-type-longue { background: #dcfce7; color: #15803d; }
+    .badge-type-both { background: #f3e8ff; color: #7e22ce; }
+    .badge-approved { background: var(--success-soft); color: var(--success); }
+    .badge-pending { background: var(--warning-soft); color: var(--warning); }
+    .badge-rejected { background: var(--danger-soft); color: var(--danger); }
+    .badge-available { background: #d1fae5; color: #065f46; }
+    .badge-vendu { background: var(--danger-soft); color: var(--danger); }
+    .badge-occupe { background: var(--warning-soft); color: var(--warning); }
+    .prop-card-actions {
+      display: flex; gap: 8px; padding: 12px 16px;
+      border-top: 1px solid var(--border); background: var(--surface-alt);
+    }
+    .prop-card-actions .btn { flex: 1; justify-content: center; font-size: 13px; padding: 8px 10px; border-radius: 10px; }
+
+    /* Skeleton */
+    .skeleton { animation: pulse 1.4s ease-in-out infinite; }
+    .skeleton-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
+    }
+    .skeleton-img { height: 180px; background: #f4eaee; }
+    .skeleton-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .skeleton-line { height: 12px; border-radius: 6px; background: #f4eaee; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    /* Empty state */
+    .empty-state {
+      padding: 60px 24px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+    .empty-state .empty-icon { font-size: 52px; opacity: 0.4; }
+    .empty-state p { color: var(--muted); font-size: 15px; }
+
+    /* Edit Modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(42,18,25,0.55); backdrop-filter: blur(4px);
+      z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface); border-radius: 24px; width: 100%; max-width: 640px;
+      max-height: 90vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(42,18,25,0.25);
+    }
+    .modal-head {
+      padding: 22px 24px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0;
+      background: var(--surface); z-index: 1;
+    }
+    .modal-head h3 { font-size: 18px; }
+    .modal-close {
+      background: none; border: none; font-size: 22px; cursor: pointer;
+      color: var(--muted); line-height: 1; padding: 4px 8px; border-radius: 8px;
+    }
+    .modal-close:hover { background: var(--surface-alt); color: var(--text); }
+    .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+    .modal-footer {
+      padding: 16px 24px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px; justify-content: flex-end;
+      position: sticky; bottom: 0; background: var(--surface);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 13px; font-weight: 600; color: var(--muted); }
+    .form-group input, .form-group textarea, .form-group select {
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: 12px;
+      font-size: 14px; font-family: inherit; color: var(--text);
+      background: var(--surface); transition: border-color 0.15s;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      outline: none; border-color: var(--accent);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-section-title {
+      font-size: 13px; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+
+    /* Confirm dialog */
+    .confirm-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(42,18,25,0.55); backdrop-filter: blur(4px);
+      z-index: 1100; align-items: center; justify-content: center;
+    }
+    .confirm-overlay.open { display: flex; }
+    .confirm-box {
+      background: var(--surface); border-radius: 20px; padding: 32px;
+      max-width: 400px; width: 90%; text-align: center;
+      box-shadow: 0 20px 60px rgba(42,18,25,0.25);
+    }
+    .confirm-box p { color: var(--muted); margin: 12px 0 24px; font-size: 14px; }
+    .confirm-actions { display: flex; gap: 10px; justify-content: center; }
+
+    @media (max-width: 760px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .metrics-row { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-badge">GI</div>
+        <div>
+          <h1>User Console</h1>
+          <p>Gestion des propriétés synchronisée avec Zoho Creator.</p>
+        </div>
+      </div>
+      <nav class="menu">
+        <a class="menu-link" href="user_dashboard.html">
+          <div><strong>Dashboard</strong><small>Vue d'ensemble</small></div><span>&rarr;</span>
+        </a>
+        <a class="menu-link active" href="user_properties.html">
+          <div><strong>Mes Propriétés</strong><small>Gestion des biens</small></div><span>&bull;</span>
+        </a>
+        <a class="menu-link" href="owner_requests.html">
+          <div><strong>Demandes reçues</strong><small>Réservations &amp; achats entrants</small></div><span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="user_reservations.html">
+          <div><strong>Mes demandes</strong><small>Suivi de vos demandes</small></div><span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="user_contracts.html">
+          <div><strong>Contrats</strong><small>Mes contrats utilisateur</small></div><span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="user_payments.html">
+          <div><strong>Paiements</strong><small>Historique des paiements</small></div><span>&rarr;</span>
+        </a>
+        <a class="menu-link" href="owner_add_property.html">
+          <div><strong>Publier un bien</strong><small>Espace propriétaire</small></div><span>&rarr;</span>
+        </a>
+      </nav>
+      <div class="side-card">
+        <h2>Source</h2>
+        <p>Données chargées depuis Zoho Creator via l'API backend.</p>
+        <code id="sideSource">Chargement...</code>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <div>
+          <h2 id="heroTitle">Mes Propriétés</h2>
+          <p id="heroSubtitle">Gérez et suivez vos biens immobiliers publiés.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" id="refreshBtn" type="button">Actualiser</button>
+          <a class="btn btn-primary" href="owner_add_property.html">+ Ajouter une propriété</a>
+        </div>
+      </section>
+
+      <div style="display:flex;gap:10px;align-items:center;">
+        <div class="pill info" id="loadStatus">Chargement des données...</div>
+      </div>
+
+      <div class="metrics-row" id="kpiGrid">
+        <div class="metric skeleton"><span>&nbsp;</span><strong>&nbsp;</strong><small>&nbsp;</small></div>
+        <div class="metric skeleton"><span>&nbsp;</span><strong>&nbsp;</strong><small>&nbsp;</small></div>
+        <div class="metric skeleton"><span>&nbsp;</span><strong>&nbsp;</strong><small>&nbsp;</small></div>
+        <div class="metric skeleton"><span>&nbsp;</span><strong>&nbsp;</strong><small>&nbsp;</small></div>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Liste des propriétés <span id="propCount" style="font-size:14px;color:var(--muted);font-weight:400;">(0)</span></h3>
+            <p>Biens immobiliers liés à votre compte.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="prop-grid" id="propGrid">
+            <!-- skeleton placeholders -->
+            <div class="skeleton-card skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:70%"></div><div class="skeleton-line" style="width:50%"></div><div class="skeleton-line" style="width:90%"></div></div></div>
+            <div class="skeleton-card skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line" style="width:60%"></div><div class="skeleton-line" style="width:80%"></div><div class="skeleton-line" style="width:40%"></div></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal-overlay" id="editOverlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h3>Modifier la propriété</h3>
+        <button class="modal-close" id="editClose" type="button">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editId">
+        <div class="form-section-title">Informations générales</div>
+        <div class="form-group">
+          <label>Titre</label>
+          <input type="text" id="editTitle" placeholder="Titre de la propriété">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="editDescription" placeholder="Description..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Localisation</label>
+          <input type="text" id="editLocation" placeholder="Ville, région...">
+        </div>
+
+        <div class="form-section-title">Caractéristiques</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Surface (m²)</label>
+            <input type="number" id="editSurface" placeholder="85">
+          </div>
+          <div class="form-group">
+            <label>Étage</label>
+            <input type="number" id="editFloor" placeholder="2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Chambres</label>
+            <input type="number" id="editRooms" placeholder="3">
+          </div>
+          <div class="form-group">
+            <label>Salles de bain</label>
+            <input type="number" id="editBathrooms" placeholder="2">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Année de construction</label>
+          <input type="number" id="editYearBuilt" placeholder="2010">
+        </div>
+
+        <div class="form-section-title">Prix</div>
+        <div class="form-row" id="priceVente">
+          <div class="form-group">
+            <label>Prix de vente (TND)</label>
+            <input type="number" id="editPrice1" placeholder="150000">
+          </div>
+        </div>
+        <div id="priceRent">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prix/nuit (TND)</label>
+              <input type="number" id="editPrixNuit" placeholder="150">
+            </div>
+            <div class="form-group">
+              <label>Caution courte durée (TND)</label>
+              <input type="number" id="editCautionCourte" placeholder="300">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Loyer mensuel (TND)</label>
+              <input type="number" id="editLoyer" placeholder="800">
+            </div>
+            <div class="form-group">
+              <label>Caution longue durée (TND)</label>
+              <input type="number" id="editCautionLongue" placeholder="1600">
+            </div>
+          </div>
+        </div>
+        <div id="editError" style="color:var(--danger);font-size:13px;display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="editCancel" type="button">Annuler</button>
+        <button class="btn btn-primary" id="editSave" type="button">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirm -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <div style="font-size:40px;">🗑️</div>
+      <h3 style="margin-top:12px;">Supprimer la propriété ?</h3>
+      <p>Cette action est irréversible. La propriété sera définitivement supprimée.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" id="confirmCancel" type="button">Annuler</button>
+        <button class="btn btn-danger" id="confirmDelete" type="button">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="auth-helper.js"></script>
+  <script>
+    var state = { properties: [], authUser: null };
+    var pendingDeleteId = null;
+
+    var els = {
+      loadStatus: document.getElementById('loadStatus'),
+      sideSource: document.getElementById('sideSource'),
+      heroTitle: document.getElementById('heroTitle'),
+      heroSubtitle: document.getElementById('heroSubtitle'),
+      refreshBtn: document.getElementById('refreshBtn'),
+      kpiGrid: document.getElementById('kpiGrid'),
+      propCount: document.getElementById('propCount'),
+      propGrid: document.getElementById('propGrid'),
+      editOverlay: document.getElementById('editOverlay'),
+      editId: document.getElementById('editId'),
+      editTitle: document.getElementById('editTitle'),
+      editDescription: document.getElementById('editDescription'),
+      editLocation: document.getElementById('editLocation'),
+      editSurface: document.getElementById('editSurface'),
+      editFloor: document.getElementById('editFloor'),
+      editRooms: document.getElementById('editRooms'),
+      editBathrooms: document.getElementById('editBathrooms'),
+      editYearBuilt: document.getElementById('editYearBuilt'),
+      editPrice1: document.getElementById('editPrice1'),
+      editPrixNuit: document.getElementById('editPrixNuit'),
+      editCautionCourte: document.getElementById('editCautionCourte'),
+      editLoyer: document.getElementById('editLoyer'),
+      editCautionLongue: document.getElementById('editCautionLongue'),
+      editError: document.getElementById('editError'),
+      editSave: document.getElementById('editSave'),
+      editClose: document.getElementById('editClose'),
+      editCancel: document.getElementById('editCancel'),
+      priceVente: document.getElementById('priceVente'),
+      priceRent: document.getElementById('priceRent'),
+      confirmOverlay: document.getElementById('confirmOverlay'),
+      confirmDelete: document.getElementById('confirmDelete'),
+      confirmCancel: document.getElementById('confirmCancel')
+    };
+
+    function setStatus(msg, type) {
+      els.loadStatus.textContent = msg;
+      els.loadStatus.className = 'pill ' + (type || 'info');
+    }
+
+    function normalizeText(v) {
+      if (v == null) return '';
+      if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') return String(v).trim();
+      if (Array.isArray(v)) { for (var i = 0; i < v.length; i++) { var n = normalizeText(v[i]); if (n) return n; } return ''; }
+      if (typeof v === 'object') {
+        if (v.display_value) return normalizeText(v.display_value);
+        if (v.zc_display_value) return normalizeText(v.zc_display_value);
+        if (v.value) return normalizeText(v.value);
+      }
+      return '';
+    }
+
+    function escHtml(v) {
+      return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    function mapProperty(raw) {
+      return {
+        id:         normalizeText(raw.ID || raw.id) || '-',
+        id1:        normalizeText(raw.ID1 || raw.id1) || '-',
+        title:      normalizeText(raw.title || raw.Title) || 'Sans titre',
+        location:   normalizeText(raw.location || raw.Location || (raw.location && raw.location.display_value)) || '-',
+        type:       normalizeText(raw.type_field || raw.Type || raw.type) || '-',
+        surface:    normalizeText(raw.Surface1 || raw.surface) || '-',
+        rooms:      normalizeText(raw.Rooms1 || raw.rooms) || '-',
+        bathrooms:  normalizeText(raw.Bathrooms1 || raw.bathrooms) || '-',
+        floor:      normalizeText(raw.Floor || raw.floor) || '-',
+        yearBuilt:  normalizeText(raw.Year_Built || raw.year_built) || '-',
+        price1:     normalizeText(raw.Price1 || raw.price) || '-',
+        prixNuit:   normalizeText(raw.prix_nuit) || '-',
+        loyer:      normalizeText(raw.loyer_mensuel) || '-',
+        cautionC:   normalizeText(raw.caution_courte) || '-',
+        cautionL:   normalizeText(raw.caution_longue) || '-',
+        validation: normalizeText(raw.Validation_Status || raw.validation_status) || 'pending',
+        status:     normalizeText(raw.status || raw.Status) || 'Available',
+        image:      raw.image_proxy_url || raw.image_url || '',
+        description: normalizeText(raw.description || raw.Description) || '',
+        _raw: raw
+      };
+    }
+
+    function typeBadge(type) {
+      var t = String(type || '').toLowerCase();
+      if (t.includes('vente')) return '<span class="badge badge-type-vente">Vente</span>';
+      if (t.includes('courte') && t.includes('longue')) return '<span class="badge badge-type-both">Courte &amp; Longue durée</span>';
+      if (t.includes('courte')) return '<span class="badge badge-type-courte">Location courte durée</span>';
+      if (t.includes('longue')) return '<span class="badge badge-type-longue">Location longue durée</span>';
+      return '<span class="badge" style="background:#f1f5f9;color:#64748b">' + escHtml(type) + '</span>';
+    }
+
+    function validationBadge(val) {
+      var v = String(val || '').toLowerCase();
+      if (v === 'approved') return '<span class="badge badge-approved">✅ Publiée</span>';
+      if (v === 'rejected') return '<span class="badge badge-rejected">❌ Refusée</span>';
+      return '<span class="badge badge-pending">⏳ En attente</span>';
+    }
+
+    function statusBadge(st) {
+      var s = String(st || '').toLowerCase();
+      if (s === 'vendu') return '<span class="badge badge-vendu">🔴 Vendu</span>';
+      if (s === 'occupé' || s === 'occupe') return '<span class="badge badge-occupe">🟡 Occupé</span>';
+      return '<span class="badge badge-available">🟢 Disponible</span>';
+    }
+
+    function priceBlock(p) {
+      var t = String(p.type || '').toLowerCase();
+      var rows = [];
+      if (t.includes('vente')) {
+        if (p.price1 !== '-') rows.push(['Prix', p.price1 + ' TND']);
+      }
+      if (t.includes('courte')) {
+        if (p.prixNuit !== '-') rows.push(['Prix/nuit', p.prixNuit + ' TND']);
+        if (p.cautionC !== '-') rows.push(['Caution', p.cautionC + ' TND']);
+      }
+      if (t.includes('longue')) {
+        if (p.loyer !== '-') rows.push(['Loyer', p.loyer + ' TND']);
+        if (p.cautionL !== '-') rows.push(['Caution', p.cautionL + ' TND']);
+      }
+      if (!rows.length) return '';
+      return '<div class="prop-prices">' + rows.map(function(r) {
+        return '<div class="prop-price-row"><span class="prop-price-label">' + escHtml(r[0]) + '</span><span class="prop-price-val">' + escHtml(r[1]) + '</span></div>';
+      }).join('') + '</div>';
+    }
+
+    function buildCard(p, idx) {
+      var imgHtml = p.image
+        ? '<div class="prop-card-img"><img src="' + escHtml(p.image) + '" alt="" onerror="this.parentNode.innerHTML=\'🏠\'"></div>'
+        : '<div class="prop-card-img">🏠</div>';
+
+      var specs = [
+        p.surface !== '-' ? '<span class="prop-spec">📐 ' + escHtml(p.surface) + ' m²</span>' : '',
+        p.rooms    !== '-' ? '<span class="prop-spec">🛏 ' + escHtml(p.rooms) + '</span>' : '',
+        p.bathrooms !== '-' ? '<span class="prop-spec">🚿 ' + escHtml(p.bathrooms) + '</span>' : '',
+        p.floor    !== '-' ? '<span class="prop-spec">🏢 Ét. ' + escHtml(p.floor) + '</span>' : '',
+        p.yearBuilt !== '-' ? '<span class="prop-spec">📅 ' + escHtml(p.yearBuilt) + '</span>' : ''
+      ].filter(Boolean).join('');
+
+      return '<div class="prop-card" data-idx="' + idx + '">' +
+        imgHtml +
+        '<div class="prop-card-body">' +
+          '<div class="prop-title">' + escHtml(p.title) + '</div>' +
+          (p.location !== '-' ? '<div class="prop-location">📍 ' + escHtml(p.location) + '</div>' : '') +
+          (specs ? '<div class="prop-specs">' + specs + '</div>' : '') +
+          priceBlock(p) +
+          '<div class="prop-badges">' + typeBadge(p.type) + validationBadge(p.validation) + statusBadge(p.status) + '</div>' +
+        '</div>' +
+        '<div class="prop-card-actions">' +
+          '<button class="btn btn-secondary edit-btn" data-idx="' + idx + '" type="button">✏️ Modifier</button>' +
+          '<button class="btn btn-danger delete-btn" data-idx="' + idx + '" type="button">🗑️ Supprimer</button>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function renderKpis() {
+      var props = state.properties;
+      var total    = props.length;
+      var publiees = props.filter(function(p) { return String(p.validation).toLowerCase() === 'approved'; }).length;
+      var attente  = props.filter(function(p) { return String(p.validation).toLowerCase() === 'pending'; }).length;
+      var vendues  = props.filter(function(p) { return String(p.status).toLowerCase() === 'vendu'; }).length;
+      els.kpiGrid.innerHTML = [
+        { label: 'Total', value: total,    note: 'Toutes les propriétés' },
+        { label: 'Publiées',  value: publiees, note: 'Validation approuvée' },
+        { label: 'En attente', value: attente,  note: 'En cours de validation' },
+        { label: 'Vendues',   value: vendues,  note: 'Propriétés vendues' }
+      ].map(function(k) {
+        return '<div class="metric"><span>' + escHtml(k.label) + '</span><strong>' + k.value + '</strong><small>' + escHtml(k.note) + '</small></div>';
+      }).join('');
+    }
+
+    function renderGrid() {
+      var props = state.properties;
+      els.propCount.textContent = '(' + props.length + ')';
+      if (!props.length) {
+        els.propGrid.innerHTML =
+          '<div class="empty-state" style="grid-column:1/-1">' +
+            '<div class="empty-icon">🏠</div>' +
+            '<p>Vous n\'avez pas encore de propriétés listées.</p>' +
+            '<a class="btn btn-primary" href="owner_add_property.html">+ Ajouter ma première propriété</a>' +
+          '</div>';
+        return;
+      }
+      els.propGrid.innerHTML = props.map(buildCard).join('');
+
+      els.propGrid.querySelectorAll('.edit-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { openEdit(parseInt(btn.getAttribute('data-idx'))); });
+      });
+      els.propGrid.querySelectorAll('.delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { openConfirm(parseInt(btn.getAttribute('data-idx'))); });
+      });
+    }
+
+    // ── Edit Modal ──
+    function openEdit(idx) {
+      var p = state.properties[idx];
+      if (!p) return;
+      var t = String(p.type || '').toLowerCase();
+      els.editId.value = p.id;
+      els.editTitle.value = p.title === 'Sans titre' ? '' : p.title;
+      els.editDescription.value = p.description;
+      els.editLocation.value = p.location === '-' ? '' : p.location;
+      els.editSurface.value = p.surface === '-' ? '' : p.surface;
+      els.editFloor.value = p.floor === '-' ? '' : p.floor;
+      els.editRooms.value = p.rooms === '-' ? '' : p.rooms;
+      els.editBathrooms.value = p.bathrooms === '-' ? '' : p.bathrooms;
+      els.editYearBuilt.value = p.yearBuilt === '-' ? '' : p.yearBuilt;
+      els.editPrice1.value = p.price1 === '-' ? '' : p.price1;
+      els.editPrixNuit.value = p.prixNuit === '-' ? '' : p.prixNuit;
+      els.editCautionCourte.value = p.cautionC === '-' ? '' : p.cautionC;
+      els.editLoyer.value = p.loyer === '-' ? '' : p.loyer;
+      els.editCautionLongue.value = p.cautionL === '-' ? '' : p.cautionL;
+      els.priceVente.style.display = t.includes('vente') ? '' : 'none';
+      els.priceRent.style.display = (t.includes('courte') || t.includes('longue')) ? '' : 'none';
+      els.editError.style.display = 'none';
+      els.editOverlay.classList.add('open');
+    }
+
+    function closeEdit() { els.editOverlay.classList.remove('open'); }
+
+    els.editClose.addEventListener('click', closeEdit);
+    els.editCancel.addEventListener('click', closeEdit);
+    els.editOverlay.addEventListener('click', function(e) { if (e.target === els.editOverlay) closeEdit(); });
+
+    els.editSave.addEventListener('click', async function() {
+      var id = els.editId.value;
+      if (!id) return;
+      els.editSave.disabled = true;
+      els.editSave.textContent = 'Enregistrement...';
+      els.editError.style.display = 'none';
+
+      var body = {};
+      var fields = [
+        ['title', els.editTitle], ['description', els.editDescription],
+        ['location', els.editLocation], ['Surface1', els.editSurface],
+        ['Floor', els.editFloor], ['Rooms1', els.editRooms],
+        ['Bathrooms1', els.editBathrooms], ['Year_Built', els.editYearBuilt],
+        ['Price1', els.editPrice1], ['prix_nuit', els.editPrixNuit],
+        ['caution_courte', els.editCautionCourte], ['loyer_mensuel', els.editLoyer],
+        ['caution_longue', els.editCautionLongue]
+      ];
+      fields.forEach(function(f) { var v = f[1].value.trim(); if (v) body[f[0]] = v; });
+
+      try {
+        var res = await fetch('/api/properties/update/' + encodeURIComponent(id), {
+          method: 'PATCH', credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        var data = await res.json();
+        if (!res.ok || data.success === false) throw new Error(data.error || 'Erreur mise à jour');
+        closeEdit();
+        loadPage();
+      } catch (err) {
+        els.editError.textContent = err.message;
+        els.editError.style.display = 'block';
+      } finally {
+        els.editSave.disabled = false;
+        els.editSave.textContent = 'Enregistrer';
+      }
+    });
+
+    // ── Delete Confirm ──
+    function openConfirm(idx) {
+      var p = state.properties[idx];
+      if (!p) return;
+      pendingDeleteId = p.id || p.id1;
+      els.confirmOverlay.classList.add('open');
+    }
+
+    function closeConfirm() {
+      els.confirmOverlay.classList.remove('open');
+      pendingDeleteId = null;
+    }
+
+    els.confirmCancel.addEventListener('click', closeConfirm);
+    els.confirmOverlay.addEventListener('click', function(e) { if (e.target === els.confirmOverlay) closeConfirm(); });
+
+    els.confirmDelete.addEventListener('click', async function() {
+      if (!pendingDeleteId) return;
+      els.confirmDelete.disabled = true;
+      els.confirmDelete.textContent = 'Suppression...';
+      try {
+        var res = await fetch('/api/admin/properties/delete', {
+          method: 'POST', credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ID: pendingDeleteId })
+        });
+        var data = await res.json();
+        if (!res.ok || data.success === false) throw new Error(data.error || 'Erreur suppression');
+        closeConfirm();
+        loadPage();
+      } catch (err) {
+        alert('Erreur: ' + err.message);
+      } finally {
+        els.confirmDelete.disabled = false;
+        els.confirmDelete.textContent = 'Supprimer';
+      }
+    });
+
+    // ── Data loading ──
+    async function loadPage() {
+      setStatus('Chargement des données...', 'info');
+      var authStatus = await requireAuth();
+      if (!authStatus || !authStatus.loggedIn) return;
+      state.authUser = authStatus.user || {};
+      els.heroTitle.textContent = 'Mes Propriétés';
+      els.heroSubtitle.textContent = 'Bonjour ' + (state.authUser.name || state.authUser.email || '') + ' — données synchronisées depuis Zoho Creator.';
+
+      try {
+        var res = await fetch('/api/properties/user', { credentials: 'include' });
+        var payload = await res.json();
+        if (!res.ok || payload.success === false) throw new Error(payload.error || 'Erreur chargement');
+        state.properties = (Array.isArray(payload.data) ? payload.data : []).map(mapProperty);
+        els.sideSource.textContent = 'zoho';
+        setStatus('Données chargées avec succès.', 'success');
+      } catch (err) {
+        state.properties = [];
+        els.sideSource.textContent = 'erreur';
+        setStatus('Erreur: ' + err.message, 'error');
+      }
+      renderKpis();
+      renderGrid();
+    }
+
+    els.refreshBtn.addEventListener('click', loadPage);
+    loadPage();
+  </script>
+</body>
+</html>
